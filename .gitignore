@@ -1,0 +1,13 @@
+node_modules/
+
+dist/
+
+.env
+.env.production
+
+logs/
+*.log
+
+.DS_Store
+
+.vscode/
