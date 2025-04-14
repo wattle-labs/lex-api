@@ -35,6 +35,12 @@ export type findOneOptions<T> = {
   options?: QueryOptions<T> | null;
 };
 
+export type findByBusinessIdOptions<T> = {
+  businessId: string;
+  fields?: string | string[] | null;
+  options?: QueryOptions<T> | null;
+};
+
 export type updateOptions<T> = {
   filter: FilterQuery<T & Document>;
   update: UpdateQuery<T>;
@@ -51,6 +57,7 @@ export interface IRepository<T> {
   find(options: findAllOptions<T>): Promise<T[]>;
   findOne(options: findOneOptions<T>): Promise<T | null>;
   findById(options: findByIdOptions<T>): Promise<T | null>;
+  findByBusinessId(options: findByBusinessIdOptions<T>): Promise<T | null>;
   update(options: updateOptions<T>): Promise<T | null>;
   delete(options: deleteOptions<T>): Promise<boolean>;
 }

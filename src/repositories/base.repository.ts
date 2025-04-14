@@ -6,6 +6,7 @@ import {
   createOptions,
   deleteOptions,
   findAllOptions,
+  findByBusinessIdOptions,
   findByIdOptions,
   findOneOptions,
   updateOptions,
@@ -56,6 +57,18 @@ export class BaseRepository<T> implements IRepository<T> {
     options,
   }: findOneOptions<T>): Promise<T | null> {
     const result = await this.model.findOne(filter, fields, options).lean();
+
+    return result as T | null;
+  }
+
+  public async findByBusinessId({
+    businessId,
+    fields,
+    options,
+  }: findByBusinessIdOptions<T>): Promise<T | null> {
+    const result = await this.model
+      .findOne({ businessId }, fields, options)
+      .lean();
 
     return result as T | null;
   }

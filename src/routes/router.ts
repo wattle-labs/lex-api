@@ -3,10 +3,13 @@ import { OpenAPIHono } from '@hono/zod-openapi';
 
 import { version as releaseVersion } from '../../package.json';
 import { API_BASE_PATH } from '../constants/api.constants';
+import { BlobStoreController } from '../controllers/blobStore.controller';
 import BusinessController from '../controllers/businesses.controller';
 import ContractController from '../controllers/contracts.controller';
+import { blobStoreService } from '../services/blobStore.service';
 import { businessService } from '../services/businesses.service';
 import { contractsService } from '../services/contracts.service';
+import { BlobStoreRoutes } from './blobStore.routes';
 import { BusinessRoutes } from './businesses.routes';
 import { ContractRoutes } from './contracts.routes';
 
@@ -37,8 +40,13 @@ const contractRoutes = new ContractRoutes(
   new ContractController(contractsService),
 );
 
+const blobStoreRoutes = new BlobStoreRoutes(
+  new BlobStoreController(blobStoreService),
+);
+
 router.route(businessRoutes.PATH, businessRoutes.getRouter());
 router.route(contractRoutes.PATH, contractRoutes.getRouter());
+router.route(blobStoreRoutes.PATH, blobStoreRoutes.getRouter());
 
 // Register health check
 

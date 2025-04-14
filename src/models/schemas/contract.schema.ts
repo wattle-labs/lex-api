@@ -1,6 +1,6 @@
 import { Schema } from 'mongoose';
 
-import { Contract } from '../interfaces/contract';
+import { Contract, ContractStatus } from '../interfaces/contract';
 import { MongooseModel } from '../interfaces/document.interface';
 
 export const contractSchema = new Schema<MongooseModel<Contract>>(
@@ -15,6 +15,11 @@ export const contractSchema = new Schema<MongooseModel<Contract>>(
       type: Schema.Types.ObjectId,
       ref: 'Business',
       required: true,
+    },
+    status: {
+      type: String,
+      enum: Object.values(ContractStatus),
+      default: ContractStatus.PENDING,
     },
     createdBy: { type: String },
     updatedBy: { type: String },

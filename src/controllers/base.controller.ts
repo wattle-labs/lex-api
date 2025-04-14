@@ -71,6 +71,25 @@ export class BaseController<T extends Document, S extends BaseService<T>> {
     }
   };
 
+  findByBusinessId = async (ctx: Context): Promise<Response> => {
+    try {
+      const resources = await this.service.findByBusinessId(
+        ctx.req.param('businessId'),
+      );
+      return ctx.json(ResponseBuilder.success(resources), 200);
+    } catch (error) {
+      logger.error(`Failed to get ${this.resourceName} by business ID`, {
+        error,
+      });
+      return ctx.json(
+        ResponseBuilder.serverError(
+          `Failed to get ${this.resourceName} by business ID`,
+        ),
+        500,
+      );
+    }
+  };
+
   create = async (ctx: Context): Promise<Response> => {
     try {
       const data = await ctx.req.json();

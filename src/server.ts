@@ -21,7 +21,7 @@ const PORT = process.env.PORT || 8080;
     dbName: process.env.MONGO_DB_NAME || 'lex-db',
     options: {
       appName: process.env.MONGO_APP_NAME,
-      replicaSet: process.env.MONGO_REPLICA_SET,
+      replicaSet: process.env.MONGO_REPLICA_SET || undefined,
     },
   });
 

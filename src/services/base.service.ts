@@ -32,7 +32,7 @@ export abstract class BaseService<T> {
     }
   }
 
-  async findAll({ options }: { options: FindOptionsType }): Promise<T[]> {
+  async findAll({ options }: { options?: FindOptionsType }): Promise<T[]> {
     try {
       const filter = {};
       const { page = 1, pageSize = QUERY_CONFIG.DEFAULT_PAGE_SIZE } =
@@ -62,6 +62,24 @@ export abstract class BaseService<T> {
       return document;
     } catch (error) {
       logger.error(`Error getting ${this.resourceName} by ID: ${id}`, {
+        error,
+      });
+      throw error;
+    }
+  }
+
+  async findByBusinessId(id: string): Promise<T | null> {
+    try {
+      const document = await this.repository.findByBusinessId({
+        businessId: id,
+      });
+      if (!document) {
+        logger.warn(`${this.resourceName} not found with business ID: ${id}`);
+        return null;
+      }
+      return document;
+    } catch (error) {
+      logger.error(`Error getting ${this.resourceName} by business ID: ${id}`, {
         error,
       });
       throw error;
