@@ -3,13 +3,16 @@ import { OpenAPIHono } from '@hono/zod-openapi';
 
 import { version as releaseVersion } from '../../package.json';
 import { API_BASE_PATH } from '../constants/api.constants';
+import { BlobStoreController } from '../controllers/blobStore.controller';
 import BusinessController from '../controllers/businesses.controller';
 import ContractController from '../controllers/contracts.controller';
 import UserController from '../controllers/users.controller';
 import { authMiddleware } from '../middlewares/auth.middleware';
+import { blobStoreService } from '../services/blobStore.service';
 import { businessService } from '../services/businesses.service';
 import { contractsService } from '../services/contracts.service';
 import { usersService } from '../services/users.service';
+import { BlobStoreRoutes } from './blobStore.routes';
 import { BusinessRoutes } from './businesses.routes';
 import { ContractRoutes } from './contracts.routes';
 import { UserRoutes } from './users.routes';
@@ -42,6 +45,13 @@ const contractRoutes = new ContractRoutes(
 );
 
 const userRoutes = new UserRoutes(new UserController(usersService));
+const blobStoreRoutes = new BlobStoreRoutes(
+  new BlobStoreController(blobStoreService),
+);
+
+router.route(businessRoutes.PATH, businessRoutes.getRouter());
+router.route(contractRoutes.PATH, contractRoutes.getRouter());
+router.route(blobStoreRoutes.PATH, blobStoreRoutes.getRouter());
 
 protectedRouter.route(businessRoutes.PATH, businessRoutes.getRouter());
 protectedRouter.route(contractRoutes.PATH, contractRoutes.getRouter());

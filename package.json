@@ -18,6 +18,8 @@
   },
   "dependencies": {
     "@clerk/express": "^1.4.7",
+    "@google-cloud/pubsub": "^4.11.0",
+    "@google-cloud/storage": "^7.16.0",
     "@hono/node-server": "^1.14.0",
     "@hono/swagger-ui": "^0.5.1",
     "@hono/zod-openapi": "^0.19.2",
@@ -47,5 +49,6 @@
     "vite": "^6.2.2"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "packageManager": "pnpm@9.12.1+sha512.e5a7e52a4183a02d5931057f7a0dbff9d5e9ce3161e33fa68ae392125b79282a8a8a470a51dfc8a0ed86221442eb2fb57019b0990ed24fab519bf0e1bc5ccfc4"
 }

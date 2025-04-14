@@ -40,6 +40,12 @@ export type findOneOptions<T> = {
   session?: ClientSession;
 };
 
+export type findByBusinessIdOptions<T> = {
+  businessId: string;
+  fields?: string | string[] | null;
+  options?: QueryOptions<T> | null;
+};
+
 export type updateOptions<T> = {
   filter: FilterQuery<T & Document>;
   update?: UpdateQuery<T>;

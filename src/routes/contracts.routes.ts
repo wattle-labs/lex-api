@@ -1,7 +1,18 @@
 import { createRoute } from '@hono/zod-openapi';
 
+import { VALIDATION_TARGETS } from '../constants/validation.constants';
 import ContractController from '../controllers/contracts.controller';
 import { contractsMiddleware } from '../middlewares/resources/contracts.middleware';
+import {
+  ErrorResponseSchema,
+  createPaginatedResponseSchema,
+  createSuccessResponseSchema,
+} from '../utils/swagger-response.utils';
+import {
+  contractFindAllQueryValidator,
+  contractIdPathParamValidator,
+} from '../validators/contracts/contracts.validation';
+import { contractSchema } from '../validators/schemas/contract.schema';
 import { BaseRoutes } from './base.routes';
 
 export class ContractRoutes extends BaseRoutes {
@@ -23,11 +34,17 @@ export class ContractRoutes extends BaseRoutes {
           path: '/',
           summary: 'Get all contracts',
           tags: [this.RESOURCE_NAME],
-          request: {},
+          request: {
+            query: contractFindAllQueryValidator.openapi('Query parameters'),
+          },
           responses: {
             '200': {
               description: 'Successful response',
-              content: {},
+              content: {
+                'application/json': {
+                  schema: createPaginatedResponseSchema(contractSchema),
+                },
+              },
             },
             '404': {
               description: 'Contracts not found',
@@ -40,6 +57,12 @@ export class ContractRoutes extends BaseRoutes {
           },
         }),
         handler: this.contractController.findAll,
+        validations: [
+          {
+            target: VALIDATION_TARGETS.QUERY,
+            schema: contractFindAllQueryValidator,
+          },
+        ],
       },
       {
         route: createRoute({
@@ -47,28 +70,48 @@ export class ContractRoutes extends BaseRoutes {
           path: '/:id',
           summary: 'Get contract by ID',
           tags: [this.RESOURCE_NAME],
-          request: {},
+          request: {
+            params: contractIdPathParamValidator.openapi('Path parameters'),
+          },
           responses: {
             '200': {
               description: 'Successful response',
-              content: {},
+              content: {
+                'application/json': {
+                  schema: createSuccessResponseSchema(contractSchema),
+                },
+              },
             },
             '404': {
               description: 'Contract not found',
-              content: {},
+              content: {
+                'application/json': {
+                  schema: ErrorResponseSchema,
+                },
+              },
             },
             '500': {
               description: 'Internal server error',
-              content: {},
+              content: {
+                'application/json': {
+                  schema: ErrorResponseSchema,
+                },
+              },
             },
           },
         }),
         handler: this.contractController.findById,
+        validations: [
+          {
+            target: VALIDATION_TARGETS.PARAMS,
+            schema: contractIdPathParamValidator,
+          },
+        ],
       },
     ];
 
-    routes.forEach(({ route, handler }) => {
-      this.registerRoute(route, handler);
+    routes.forEach(({ route, handler, validations }) => {
+      this.registerRoute(route, handler, { validations });
     });
   }
 }

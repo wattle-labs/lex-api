@@ -12,11 +12,6 @@ export class ContractRepository extends BaseRepository<
   constructor(model: Model<MongooseModel<Contract>>) {
     super(model);
   }
-
-  async findByBusinessId(businessId: string): Promise<Contract | null> {
-    const result = await this.findOne({ filter: { businessId } });
-    return result;
-  }
 }
 
 export const contractRepository = mongoService.createRepository(
