@@ -22,6 +22,7 @@ export const contractSchema = new Schema<MongooseModel<Contract>>(
       enum: Object.values(ContractStatus),
       default: ContractStatus.PENDING,
     },
+    tags: { type: [String] },
     createdBy: { type: String },
     updatedBy: { type: String },
   },

@@ -1,6 +1,6 @@
 import { ObjectId } from 'mongoose';
 
-export interface ContractTypeKeyTerm {
+export interface ContractKeyTermDefinition {
   term: string;
   description: string;
   outputFormat: string;
@@ -12,7 +12,7 @@ export interface ContractType {
   shortName: string;
   longName: string;
   description?: string;
-  keyTerms: ContractTypeKeyTerm[];
+  keyTerms: ContractKeyTermDefinition[];
   createdAt?: Date;
   updatedAt?: Date;
 }
