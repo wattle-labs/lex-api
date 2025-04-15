@@ -49,7 +49,6 @@ router.route(contractRoutes.PATH, contractRoutes.getRouter());
 router.route(blobStoreRoutes.PATH, blobStoreRoutes.getRouter());
 
 // Register health check
-
 router.get('/health', c => {
   return c.json({
     message: 'OK',
