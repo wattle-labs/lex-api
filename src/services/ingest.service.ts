@@ -5,8 +5,9 @@ import {
   businessRepository,
   contractRepository,
 } from '../repositories';
-import { getSignedUrl, streamingUpload } from '../utils/google-cloud';
+import { streamingUpload } from '../utils/google-cloud';
 import { BaseService } from './base.service';
+import { blobStoreService } from './blobStore.service';
 import { QueueService } from './queue.service';
 
 /**
@@ -134,16 +135,16 @@ export class IngestService extends BaseService<Contract> {
   /**
    * Run the workflow for contract ingestion when triggered via API
    * 1. Create a new contract record in the database
-   * 2. Create a signed URL for the file
+   * 2. Create a signed URL for the file (for read)
    * 3. Send the contract to the queue
    *
    * @param bucketName - The name of the bucket
    * @param fileName - The name of the file
+   * @param businessId - The ID of the business
    */
-  async runWorkflowForUpload(
+  async runPostUploadWorkflow(
     bucketName: string,
     fileName: string,
-    fileType: string,
     businessId: string = DUMMY_BUSINESS_ID,
   ) {
     const business = await businessRepository.findById({ id: businessId });
@@ -152,11 +153,15 @@ export class IngestService extends BaseService<Contract> {
       throw new Error('Business not found');
     }
 
-    const url = await getSignedUrl(fileName, bucketName, 'read', 527040); // 1 year read rights
+    const url = await blobStoreService.getDownloadUrl(
+      fileName,
+      bucketName,
+      527040,
+    ); // 1 year read rights
     const contract = await this.createContractRecord(
       fileName,
       bucketName,
-      url as string,
+      url as string, // Why is this required now?
       businessId,
     );
     const messageId = await this.sendContractToQueue(contract);

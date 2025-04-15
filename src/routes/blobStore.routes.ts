@@ -25,8 +25,10 @@ export class BlobStoreRoutes extends BaseRoutes {
             query: z.object({
               fileName: z.string(),
               bucketName: z.string(),
-              mode: z.enum(['upload', 'download']).default('download'),
-              contentType: z.string().optional(),
+              mode: z
+                .enum(['upload', 'download'])
+                .default('download')
+                .optional(),
             }),
           },
           responses: {
@@ -105,7 +107,7 @@ export class BlobStoreRoutes extends BaseRoutes {
         route: createRoute({
           method: 'post',
           path: '/process',
-          summary: 'Run workflow for contract ingestion when uploading a file',
+          summary: 'Run workflow for contract ingestion after uploading a file',
           tags: [this.RESOURCE_NAME, 'runWorkflowForUpload'],
           request: {
             body: {
@@ -114,10 +116,12 @@ export class BlobStoreRoutes extends BaseRoutes {
                   schema: z.object({
                     fileName: z.string(),
                     bucketName: z.string(),
+                    businessId: z.string().optional(),
                   }),
                 },
               },
-              description: 'The fileName and bucketName to process',
+              description:
+                'The fileName, bucketName, and businessId to process',
               required: true,
             },
           },

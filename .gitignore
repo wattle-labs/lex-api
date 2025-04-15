@@ -14,3 +14,5 @@ logs/
 
 RBAC*.md
 seeds/
+# Service account keys
+lexai-455520-ce26d8f05ea2.json

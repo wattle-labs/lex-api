@@ -10,11 +10,15 @@ import { getSignedUrl } from '../utils/google-cloud';
 export class BlobStoreController {
   constructor(protected readonly service: BlobStoreService) {}
 
-  async getUploadUrl(ctx: Context) {
+  getUploadUrl = async (ctx: Context) => {
     try {
       // TODO: contentType needs to be used
       const { fileName, bucketName } = ctx.req.query();
+      logger.debug(
+        `Getting upload url for file ${fileName} in bucket ${bucketName}`,
+      );
       const url = await this.service.getUploadUrl(fileName, bucketName);
+      logger.debug(`Successfully got upload url`, { url });
 
       return ctx.json(ResponseBuilder.success({ url }), 200);
     } catch (error) {
@@ -26,12 +30,12 @@ export class BlobStoreController {
         500,
       );
     }
-  }
+  };
 
-  async runWorkflowForUpload(ctx: Context) {
+  runWorkflowForUpload = async (ctx: Context) => {
     try {
       const { fileName, bucketName, fileType } = await ctx.req.json();
-      await ingestService.runWorkflowForUpload(bucketName, fileName, fileType);
+      await ingestService.runPostUploadWorkflow(bucketName, fileName, fileType);
       return ctx.json(ResponseBuilder.success(null), 201);
     } catch (error) {
       logger.error(`Failed to run workflow for upload`, {
@@ -42,9 +46,9 @@ export class BlobStoreController {
         500,
       );
     }
-  }
+  };
 
-  async getSignedUrl(ctx: Context) {
+  getSignedUrl = async (ctx: Context) => {
     try {
       const { fileName, bucketName } = ctx.req.query();
       const url = await getSignedUrl(fileName, bucketName);
@@ -58,7 +62,7 @@ export class BlobStoreController {
         500,
       );
     }
-  }
+  };
 }
 
 export const blobStoreController = new BlobStoreController(blobStoreService);

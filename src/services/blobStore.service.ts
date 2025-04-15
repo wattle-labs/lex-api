@@ -35,8 +35,9 @@ export class BlobStoreService {
   async getDownloadUrl(
     fileName: string,
     bucketName: string = 'contracts-default',
+    expirationInMinutes: number = 60,
   ) {
-    return getSignedUrl(fileName, bucketName, 'read', 60);
+    return getSignedUrl(fileName, bucketName, 'read', expirationInMinutes);
   }
 }
 
