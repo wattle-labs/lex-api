@@ -5,6 +5,13 @@ export enum ContractStatus {
   PROCESSED = 'processed',
   ERROR = 'error',
 }
+
+export interface ContractTerm {
+  term: string;
+  value: string | number;
+  snippet: string;
+}
+
 export interface Contract {
   id?: string | ObjectId;
   url: string;
@@ -12,8 +19,9 @@ export interface Contract {
   fileName: string;
   contractTypeId?: string | ObjectId;
   summary?: string;
-  terms?: Record<string, string>[];
+  terms?: ContractTerm[];
   businessId: string | ObjectId;
+  tags: string[];
   status: ContractStatus;
   createdAt?: Date;
   updatedAt?: Date;
