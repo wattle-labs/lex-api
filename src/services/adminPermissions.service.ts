@@ -12,7 +12,7 @@ export class AdminPermissionService extends BaseService<
   private adminPermissionRepository: AdminPermissionRepository;
 
   constructor(repository: AdminPermissionRepository) {
-    super(repository, 'admin_permissions');
+    super(repository, 'adminPermissions');
     this.adminPermissionRepository = repository;
   }
 

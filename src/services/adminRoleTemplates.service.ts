@@ -12,7 +12,7 @@ export class AdminRoleTemplateService extends BaseService<
   private adminRoleTemplateRepository: AdminRoleTemplateRepository;
 
   constructor(repository: AdminRoleTemplateRepository) {
-    super(repository, 'admin_role_templates');
+    super(repository, 'adminRoleTemplates');
     this.adminRoleTemplateRepository = repository;
   }
 
