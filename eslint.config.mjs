@@ -8,7 +8,7 @@ export default [
     files: ['**/*.{js,mjs,cjs,ts}'],
   },
   {
-    ignores: ['node_modules/*', 'dist/*'],
+    ignores: ['node_modules/*', 'dist/*', 'seeds/*'],
   },
   pluginJs.configs.recommended,
   ...tseslint.configs.recommended,

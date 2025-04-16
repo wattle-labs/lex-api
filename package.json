@@ -13,7 +13,8 @@
     "format:fix": "prettier . --write",
     "prepare": "husky || true",
     "generate:schemas": "tsx scripts/generate-zod-schemas.ts",
-    "prebuild": "npm run generate:schemas"
+    "prebuild": "npm run generate:schemas",
+    "seed:admin": "tsx seeds/seed-admin-data.ts"
   },
   "dependencies": {
     "@hono/node-server": "^1.14.0",
