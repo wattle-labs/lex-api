@@ -15,6 +15,44 @@ export const businessSchema = z.object({
    * @pattern ^[a-zA-Z0-9_]+$
    */
   slug: z.string().regex(/^[a-zA-Z0-9_]+$/),
+  /**
+   * Associated email domains for auto-assignment
+   */
+  domains: z.array(z.string()),
+  settings: z.object({
+    defaultRoleId: z.union([z.string(), objectIdSchema]).optional(),
+    /**
+     * Hours invitations remain valid
+     */
+    invitationExpiry: z.number(),
+    /**
+     * Whether to strictly enforce hierarchy rules
+     */
+    enforceHierarchy: z.boolean(),
+    /**
+     * "restrictive" or "permissive" defaults
+     */
+    permissionPolicy: z.string(),
+  }),
+  setup: z.object({
+    /**
+     * "pending", "owner_invited", "active", "suspended"
+     */
+    status: z.string(),
+    /**
+     * Array of completed onboarding steps
+     */
+    completedSteps: z.array(z.string()),
+    /**
+     * Admin who created the business
+     */
+    createdBy: z.union([z.string(), objectIdSchema]).optional(),
+    ownerInvitationId: z.union([z.string(), objectIdSchema]).optional(),
+  }),
+  /**
+   * User who last updated the business
+   */
+  updatedBy: z.union([z.string(), objectIdSchema]).optional(),
   createdAt: z.date().optional(),
   updatedAt: z.date().optional(),
 });
