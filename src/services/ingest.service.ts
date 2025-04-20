@@ -5,16 +5,14 @@ import {
   businessRepository,
   contractRepository,
 } from '../repositories';
-import { streamingUpload } from '../utils/google-cloud';
+import { getSignedUrl, streamingUpload } from '../utils/google-cloud';
 import { BaseService } from './base.service';
-import { blobStoreService } from './blobStore.service';
 import { QueueService } from './queue.service';
 
 /**
  * IngestService
  *
- * This service is responsible for ingesting files into the database.
- * It is responsible for uploading files to the storage bucket and creating a new contract in the database.
+ * This service is responsible for uploading files to the storage bucket and creating a new contract in the database.
  *
  * @TODO: Create a new storage bucket for new organizations and use that bucket for all ingestion
  *
@@ -30,6 +28,8 @@ export class IngestService extends BaseService<Contract> {
   /**
    * Upload a file to the storage bucket in chunks
    * Uses a streaming upload to upload the file to the storage bucket
+   *
+   * @NOTUSED
    *
    * @param file - The file to upload
    * @param fileName - The name of the file
@@ -74,6 +74,8 @@ export class IngestService extends BaseService<Contract> {
       },
     });
 
+    logger.info(`Created contract ${contract.id}`);
+
     return contract;
   }
 
@@ -90,6 +92,8 @@ export class IngestService extends BaseService<Contract> {
       contractType: contract.contractTypeId,
       businessId: contract.businessId,
     };
+
+    logger.info(`Sending contract to queue`, { payload });
 
     const queue = new QueueService<Partial<Contract>>('contract-ingestion');
     return await queue.add('contract', payload);
@@ -133,6 +137,40 @@ export class IngestService extends BaseService<Contract> {
   }
 
   /**
+   * Get a signed URL for Google Cloud Storage
+   *
+   * @param fileName - The name of the file
+   * @param bucketName - The name of the bucket
+   * @param mode: 'upload' | 'download' - The mode of the URL
+   * @param expirationInMinutes - The expiration time of the URL
+   * @param cleanedFileName - The cleaned name of the file
+   * @param contentType - The content type of the file
+   * @returns The signed URL
+   */
+  async getSignedUrl(
+    fileName: string,
+    bucketName: string = 'contracts-default',
+    mode: 'upload' | 'download' = 'download',
+    expirationInMinutes: number = 60,
+    cleanedFileName?: string,
+    contentType?: string,
+  ) {
+    switch (mode) {
+      case 'upload':
+        return getSignedUrl(
+          fileName,
+          bucketName,
+          'write',
+          15,
+          cleanedFileName,
+          contentType,
+        ); // Keep it short for upload
+      case 'download':
+        return getSignedUrl(fileName, bucketName, 'read', expirationInMinutes);
+    }
+  }
+
+  /**
    * Run the workflow for contract ingestion when triggered via API
    * 1. Create a new contract record in the database
    * 2. Create a signed URL for the file (for read)
@@ -153,17 +191,21 @@ export class IngestService extends BaseService<Contract> {
       throw new Error('Business not found');
     }
 
-    const url = await blobStoreService.getDownloadUrl(
+    const tenYearsInMinutes = 10 * 365 * 24 * 60;
+    const url = await this.getSignedUrl(
       fileName,
       bucketName,
-      527040,
-    ); // 1 year read rights
+      'download',
+      tenYearsInMinutes,
+    );
+
     const contract = await this.createContractRecord(
       fileName,
       bucketName,
-      url as string, // Why is this required now?
+      url as string,
       businessId,
     );
+
     const messageId = await this.sendContractToQueue(contract);
     logger.info(
       `Contract ${contract.id} sent to queue with message ID ${messageId}`,

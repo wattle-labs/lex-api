@@ -19,13 +19,13 @@ export class ContractsService extends BaseService<MongooseModel<Contract>> {
    * @param contractType - The short name of the contract type = e.g. "nda", "msa", "sow", etc.
    * @returns The contract type reference
    */
-  async getContractTypeRef(
+  getContractTypeRef = async (
     contractType: string,
-  ): Promise<string | ObjectId | null> {
+  ): Promise<string | ObjectId | null> => {
     const contractTypeRef =
       await contractTypeRepository.findByShortName(contractType);
     return contractTypeRef?.id ?? null;
-  }
+  };
 }
 
 export const contractsService = new ContractsService(contractRepository);

@@ -3,15 +3,15 @@ import { OpenAPIHono } from '@hono/zod-openapi';
 
 import { version as releaseVersion } from '../../package.json';
 import { API_BASE_PATH } from '../constants/api.constants';
-import { BlobStoreController } from '../controllers/blobStore.controller';
 import BusinessController from '../controllers/businesses.controller';
 import ContractController from '../controllers/contracts.controller';
-import { blobStoreService } from '../services/blobStore.service';
+import { IngestController } from '../controllers/ingest.controller';
 import { businessService } from '../services/businesses.service';
 import { contractsService } from '../services/contracts.service';
-import { BlobStoreRoutes } from './blobStore.routes';
+import { ingestService } from '../services/ingest.service';
 import { BusinessRoutes } from './businesses.routes';
 import { ContractRoutes } from './contracts.routes';
+import { IngestRoutes } from './ingest.routes';
 
 const router = new OpenAPIHono();
 
@@ -40,13 +40,11 @@ const contractRoutes = new ContractRoutes(
   new ContractController(contractsService),
 );
 
-const blobStoreRoutes = new BlobStoreRoutes(
-  new BlobStoreController(blobStoreService),
-);
+const ingestRoutes = new IngestRoutes(new IngestController(ingestService));
 
 router.route(businessRoutes.PATH, businessRoutes.getRouter());
 router.route(contractRoutes.PATH, contractRoutes.getRouter());
-router.route(blobStoreRoutes.PATH, blobStoreRoutes.getRouter());
+router.route(ingestRoutes.PATH, ingestRoutes.getRouter());
 
 // Register health check
 router.get('/health', c => {

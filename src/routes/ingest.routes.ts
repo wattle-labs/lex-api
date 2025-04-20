@@ -1,14 +1,14 @@
 import { createRoute, z } from '@hono/zod-openapi';
 
-import { BlobStoreController } from '../controllers/blobStore.controller';
+import { IngestController } from '../controllers/ingest.controller';
 import { BaseRoutes } from './base.routes';
 
-export class BlobStoreRoutes extends BaseRoutes {
+export class IngestRoutes extends BaseRoutes {
   PATH = '/upload';
 
   protected RESOURCE_NAME = 'uploadFile';
 
-  constructor(protected readonly blobStoreController: BlobStoreController) {
+  constructor(protected readonly ingestController: IngestController) {
     super();
     this.setupRoutes();
   }
@@ -22,14 +22,26 @@ export class BlobStoreRoutes extends BaseRoutes {
           summary: 'Get signed URL for GCS',
           tags: [this.RESOURCE_NAME, 'getSignedUrl'],
           request: {
-            query: z.object({
-              fileName: z.string(),
-              bucketName: z.string(),
-              mode: z
-                .enum(['upload', 'download'])
-                .default('download')
-                .optional(),
-            }),
+            query: z
+              .object({
+                fileName: z.string(),
+                bucketName: z.string(),
+                mode: z
+                  .enum(['upload', 'download'])
+                  .default('download')
+                  .optional(),
+                contentType: z.string().optional(),
+                cleanedFileName: z.string().optional(),
+              })
+              .transform(data => {
+                if (data.mode === 'upload') {
+                  return {
+                    ...data,
+                    contentType: data.contentType ?? 'application/octet-stream',
+                  };
+                }
+                return data;
+              }),
           },
           responses: {
             '200': {
@@ -64,44 +76,7 @@ export class BlobStoreRoutes extends BaseRoutes {
             },
           },
         }),
-        handler: this.blobStoreController.getUploadUrl,
-      },
-      {
-        route: createRoute({
-          method: 'get',
-          path: '/get-new-url',
-          summary: 'Get new signed URL for GCS',
-          tags: [this.RESOURCE_NAME, 'getNewSignedUrl'],
-          request: {
-            query: z.object({
-              fileName: z.string(),
-              bucketName: z.string(),
-            }),
-          },
-          responses: {
-            '200': {
-              description: 'Successful response',
-              content: {},
-            },
-            '400': {
-              description: 'Bad request',
-              content: {
-                'application/json': {
-                  schema: z.any(),
-                },
-              },
-            },
-            '500': {
-              description: 'Internal server error',
-              content: {
-                'application/json': {
-                  schema: z.any(),
-                },
-              },
-            },
-          },
-        }),
-        handler: this.blobStoreController.getSignedUrl,
+        handler: this.ingestController.getSignedUrl,
       },
       {
         route: createRoute({
@@ -140,7 +115,7 @@ export class BlobStoreRoutes extends BaseRoutes {
             },
           },
         }),
-        handler: this.blobStoreController.runWorkflowForUpload,
+        handler: this.ingestController.runPostUploadWorkflow,
       },
     ];
 

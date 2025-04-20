@@ -114,10 +114,12 @@ export const DO_NOT_USE__getSignedUrl = async (
 /**
  * Gets a new signed URL for a file in Google Cloud Storage
  *
- * @param fileName - The name of the file
+ * @param fileName - The original name of the file
  * @param bucketName - The name of the bucket
  * @param action - The action to perform on the file
  * @param expiresInMinutes - The number of minutes the URL will be valid (default: 60)
+ *
+ * @param contentType - The content type of the file
  * @returns The signed URL
  */
 export const getSignedUrl = async (
@@ -125,6 +127,8 @@ export const getSignedUrl = async (
   bucketName: string = 'contracts-default',
   action: 'read' | 'write' | 'delete' = 'read',
   expiresInMinutes: number = 60,
+  cleanedFileName?: string,
+  contentType?: string,
 ): Promise<string | null> => {
   const storage = new Storage();
   const bucket = storage.bucket(bucketName);
@@ -133,6 +137,8 @@ export const getSignedUrl = async (
     const [url] = await file.getSignedUrl({
       expires: Date.now() + expiresInMinutes * 60 * 1000,
       action,
+      contentType,
+      // responseDisposition: cleanedFileName ? `attachment; filename="${cleanedFileName}"` : undefined,
     });
     return url;
   } catch (error) {
@@ -140,6 +146,7 @@ export const getSignedUrl = async (
       error: error instanceof Error ? error.message : 'Unknown error',
       fileName,
       bucketName,
+      cleanedFileName,
     });
     return null;
   }
