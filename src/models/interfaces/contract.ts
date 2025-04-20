@@ -8,6 +8,7 @@ export enum ContractStatus {
 
 export interface ContractTerm {
   term: string;
+  id: string;
   value: string | number;
   snippet: string;
 }
@@ -16,6 +17,7 @@ export interface Contract {
   id?: string | ObjectId;
   url: string;
   gsBucketName?: string;
+  text?: string;
   fileName: string;
   contractTypeId?: string | ObjectId;
   summary?: string;
