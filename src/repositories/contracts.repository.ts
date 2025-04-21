@@ -24,7 +24,7 @@ export class ContractRepository extends BaseRepository<
   }: findAllOptions<Contract>): Promise<MongooseModel<Contract>[]> => {
     const result = await this.model
       .find(filter ?? {}, fields, options)
-      .populate('contractTypeId', 'short_name long_name')
+      .populate('contractTypeId', 'shortName longName')
       .limit(limit ?? 10)
       .skip(skip ?? 0)
       .sort(sort);

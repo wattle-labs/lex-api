@@ -1,11 +1,14 @@
 import { ContractType } from '../models/interfaces/contractType';
+import { MongooseModel } from '../models/interfaces/document.interface';
 import {
   ContractTypeRepository,
   contractTypeRepository,
 } from '../repositories';
 import { BaseService } from './base.service';
 
-export class ContractTypeService extends BaseService<ContractType> {
+export class ContractTypeService extends BaseService<
+  MongooseModel<ContractType>
+> {
   constructor(repository: ContractTypeRepository) {
     super(repository, 'contractType');
   }

@@ -56,7 +56,6 @@ src/
 ├── utils/ # Utility functions
 └── validators/ # Input validation schemas
 
-
 ## Contributing
 
 ### Development Workflow

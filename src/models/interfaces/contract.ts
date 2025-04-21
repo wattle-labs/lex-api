@@ -21,7 +21,8 @@ export interface Contract {
   fileName: string;
   contractTypeId?: string | ObjectId;
   summary?: string;
-  terms?: ContractTerm[];
+  label: string;
+  terms?: Record<string, ContractTerm>;
   businessId: string | ObjectId;
   tags: string[];
   status: ContractStatus;

@@ -67,6 +67,7 @@ export class IngestService extends BaseService<Contract> {
     const contract = await this.repository.create({
       data: {
         url,
+        label: fileName.split('.').slice(0, -1).join('.'),
         businessId,
         gsBucketName: bucketName,
         fileName,
