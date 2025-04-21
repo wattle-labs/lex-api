@@ -11,7 +11,8 @@ export const contractSchema = new Schema<MongooseModel<Contract>>(
     fileName: { type: String, required: true },
     contractTypeId: { type: Schema.Types.ObjectId, ref: 'ContractType' },
     summary: { type: String },
-    terms: { type: [Schema.Types.Mixed] },
+    terms: { type: Schema.Types.Mixed },
+    label: { type: String, required: true },
     text: { type: String },
     businessId: {
       type: Schema.Types.ObjectId,

@@ -9,7 +9,7 @@ import {
 } from '../repositories';
 import { BaseService } from './base.service';
 
-export class ContractsService extends BaseService<MongooseModel<Contract>> {
+export class ContractService extends BaseService<MongooseModel<Contract>> {
   constructor(repository: ContractRepository) {
     super(repository, 'contract');
   }
@@ -28,4 +28,4 @@ export class ContractsService extends BaseService<MongooseModel<Contract>> {
   };
 }
 
-export const contractsService = new ContractsService(contractRepository);
+export const contractService = new ContractService(contractRepository);

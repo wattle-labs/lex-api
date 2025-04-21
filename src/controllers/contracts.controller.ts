@@ -2,10 +2,10 @@ import { Context } from 'hono';
 
 import { logger } from '../lib/logger';
 import { ResponseBuilder } from '../lib/response.handler';
-import { ContractsService } from '../services/contracts.service';
+import { ContractService } from '../services/contracts.service';
 
 class ContractController {
-  constructor(private readonly service: ContractsService) {}
+  constructor(private readonly service: ContractService) {}
 
   findByBusinessId = async (c: Context): Promise<Response> => {
     try {

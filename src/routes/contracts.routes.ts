@@ -108,6 +108,46 @@ export class ContractRoutes extends BaseRoutes {
           },
         ],
       },
+      {
+        route: createRoute({
+          method: 'delete',
+          path: '/:id',
+          summary: 'Delete contract by ID',
+          tags: [this.RESOURCE_NAME],
+          request: {
+            params: contractIdPathParamValidator.openapi('Path parameters'),
+          },
+          responses: {
+            '204': {
+              description: 'Successful response',
+              content: {},
+            },
+            '404': {
+              description: 'Contract not found',
+              content: {
+                'application/json': {
+                  schema: ErrorResponseSchema,
+                },
+              },
+            },
+            '500': {
+              description: 'Internal server error',
+              content: {
+                'application/json': {
+                  schema: ErrorResponseSchema,
+                },
+              },
+            },
+          },
+        }),
+        handler: this.contractController.delete,
+        validations: [
+          {
+            target: VALIDATION_TARGETS.PARAMS,
+            schema: contractIdPathParamValidator,
+          },
+        ],
+      },
     ];
 
     routes.forEach(({ route, handler, validations }) => {
