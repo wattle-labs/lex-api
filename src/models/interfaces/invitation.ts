@@ -61,7 +61,7 @@ export interface Invitation {
   /**
    * Security details
    */
-  security: {
+  security?: {
     /**
      * Secure invitation token
      */

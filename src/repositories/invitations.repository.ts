@@ -13,7 +13,7 @@ export class InvitationRepository extends BaseRepository<
     super(model);
   }
 
-  async findByEmail(email: string, businessId: string): Promise<Invitation[]> {
+  async findByEmail(email: string, businessId?: string): Promise<Invitation[]> {
     const results = await this.find({
       filter: { email, businessId } as FilterQuery<MongooseModel<Invitation>>,
     });

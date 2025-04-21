@@ -1,7 +1,9 @@
+import { User as ClerkUser } from '@clerk/express';
 import { Model } from 'mongoose';
 
 import { mongoService } from '../lib/mongo';
 import { MongooseModel } from '../models/interfaces/document.interface';
+import { Invitation } from '../models/interfaces/invitation';
 import { User } from '../models/interfaces/user';
 import UserModel from '../models/users.model';
 import { BaseRepository } from './base.repository';
@@ -33,6 +35,40 @@ export class UserRepository extends BaseRepository<MongooseModel<User>> {
       filter: { 'hierarchy.managerId': managerId },
     });
     return results;
+  }
+
+  async acceptInvitation(
+    invitation: Invitation,
+    externalUser: ClerkUser,
+  ): Promise<User | null> {
+    const userData = {
+      externalId: externalUser.id,
+      email: invitation.email,
+      businessId: invitation.businessId,
+      status: 'active',
+      onboarding: {
+        completedAt: new Date(),
+        invitationId: invitation.id,
+        isBusinessOwner: invitation.role === 'owner',
+      },
+      profile: {
+        firstName: externalUser.firstName,
+        lastName: externalUser.lastName,
+      },
+      authProvider: {
+        provider: 'clerk',
+        lastLogin: new Date(),
+        metadata: {
+          clerkId: externalUser.id,
+        },
+      },
+    };
+
+    const user = await this.create({
+      data: userData as Partial<MongooseModel<User>>,
+    });
+
+    return user;
   }
 }
 

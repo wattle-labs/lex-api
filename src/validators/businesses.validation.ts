@@ -3,7 +3,8 @@ import {
   mergeValidators,
   paginationQueryValidator,
   sortingQueryValidator,
-} from '../index';
+} from './index';
+import { businessSchema } from './schemas/business.schema';
 
 export const businessFindAllQueryValidator = mergeValidators(
   paginationQueryValidator,
@@ -11,7 +12,7 @@ export const businessFindAllQueryValidator = mergeValidators(
 );
 
 export const businessIdPathParamValidator = createPathParamValidator(
-  'id',
+  'businessId',
   'Business ID is required',
 );
 
@@ -19,3 +20,9 @@ export const businessSlugPathParamValidator = createPathParamValidator(
   'slug',
   'Business slug is required',
 );
+
+export const businessCreateBodyValidator = businessSchema.omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});

@@ -68,28 +68,30 @@ export const invitationSchema = z.object({
   /**
    * Security details
    */
-  security: z.object({
-    /**
-     * Secure invitation token
-     */
-    token: z.string(),
-    /**
-     * Hash for verification
-     */
-    tokenHash: z.string(),
-    /**
-     * When invitation was created
-     */
-    createdAt: z.date().optional(),
-    /**
-     * When invitation expires
-     */
-    expiresAt: z.date(),
-    /**
-     * When invitation was accepted
-     */
-    usedAt: z.date().optional(),
-  }),
+  security: z
+    .object({
+      /**
+       * Secure invitation token
+       */
+      token: z.string(),
+      /**
+       * Hash for verification
+       */
+      tokenHash: z.string(),
+      /**
+       * When invitation was created
+       */
+      createdAt: z.date().optional(),
+      /**
+       * When invitation expires
+       */
+      expiresAt: z.date(),
+      /**
+       * When invitation was accepted
+       */
+      usedAt: z.date().optional(),
+    })
+    .optional(),
   /**
    * Track reminder attempts
    */

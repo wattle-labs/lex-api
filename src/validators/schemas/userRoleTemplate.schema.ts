@@ -24,12 +24,14 @@ export const userRoleTemplateSchema = z.object({
     domain: z.string().optional(),
     canManageRoles: z.array(z.union([z.string(), objectIdSchema])).optional(),
   }),
-  basePermissions: z.array(z.string()),
-  metaPermissions: z.object({
-    canInviteUsers: z.boolean(),
-    canCreateProjects: z.boolean(),
-    canAssignRoles: z.boolean(),
-  }),
+  basePermissions: z.array(z.union([z.string(), objectIdSchema])),
+  metaPermissions: z
+    .object({
+      canInviteUsers: z.boolean(),
+      canCreateProjects: z.boolean(),
+      canAssignRoles: z.boolean(),
+    })
+    .optional(),
   constraints: z
     .object({
       maxProjects: z.number().optional(),

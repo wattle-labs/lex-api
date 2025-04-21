@@ -21,8 +21,8 @@ export interface UserRoleTemplate {
     domain?: string;
     canManageRoles?: (string | ObjectId)[];
   };
-  basePermissions: string[];
-  metaPermissions: {
+  basePermissions: (string | ObjectId)[];
+  metaPermissions?: {
     canInviteUsers: boolean;
     canCreateProjects: boolean;
     canAssignRoles: boolean;

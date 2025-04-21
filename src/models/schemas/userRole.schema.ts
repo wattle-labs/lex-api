@@ -54,8 +54,7 @@ export const userRoleSchema = new Schema<MongooseModel<UserRole>>(
     },
     customPermissions: [customPermissionSchema],
     assignedBy: {
-      type: Schema.Types.ObjectId,
-      ref: 'User',
+      type: Schema.Types.Mixed,
       required: true,
     },
     assignedAt: {

@@ -13,10 +13,10 @@
     "format:fix": "prettier . --write",
     "prepare": "husky || true",
     "generate:schemas": "tsx scripts/generate-zod-schemas.ts",
-    "prebuild": "npm run generate:schemas",
-    "seed:admin": "tsx seeds/seed-admin-data.ts"
+    "prebuild": "npm run generate:schemas"
   },
   "dependencies": {
+    "@clerk/express": "^1.4.7",
     "@hono/node-server": "^1.14.0",
     "@hono/swagger-ui": "^0.5.1",
     "@hono/zod-openapi": "^0.19.2",

@@ -11,6 +11,11 @@ export class AdminRepository extends BaseRepository<MongooseModel<Admin>> {
     super(model);
   }
 
+  async findByUserId(userId: string): Promise<Admin | null> {
+    const result = await this.findOne({ filter: { userId } });
+    return result;
+  }
+
   async findByEmail(email: string): Promise<Admin | null> {
     const result = await this.findOne({ filter: { email } });
     return result;

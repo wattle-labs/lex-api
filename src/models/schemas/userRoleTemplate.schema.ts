@@ -44,7 +44,8 @@ export const userRoleTemplateSchema = new Schema<
       ],
     },
     basePermissions: {
-      type: [String],
+      type: [Schema.Types.ObjectId],
+      ref: 'UserPermission',
       default: [],
     },
     metaPermissions: {

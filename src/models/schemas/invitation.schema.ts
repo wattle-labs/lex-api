@@ -88,11 +88,9 @@ export const invitationSchema = new Schema<MongooseModel<Invitation>>(
     security: {
       token: {
         type: String,
-        required: true,
       },
       tokenHash: {
         type: String,
-        required: true,
       },
       createdAt: {
         type: Date,
@@ -100,7 +98,6 @@ export const invitationSchema = new Schema<MongooseModel<Invitation>>(
       },
       expiresAt: {
         type: Date,
-        required: true,
       },
       usedAt: Date,
     },
@@ -115,10 +112,7 @@ export const invitationSchema = new Schema<MongooseModel<Invitation>>(
 
 // Indexes for faster lookups
 invitationSchema.index({ email: 1, businessId: 1 });
-invitationSchema.index({ 'security.token': 1 });
-invitationSchema.index({ 'security.tokenHash': 1 });
 invitationSchema.index({ status: 1 });
-invitationSchema.index({ 'security.expiresAt': 1 });
 
 // Helper method to generate token
 invitationSchema.statics.generateToken = function (): {
@@ -132,17 +126,13 @@ invitationSchema.statics.generateToken = function (): {
 
 // Auto-expire invitations
 invitationSchema.virtual('isExpired').get(function () {
+  if (!this.security) return false;
   return this.status === 'pending' && this.security.expiresAt < new Date();
 });
 
 // Pre-save hook to update status if expired
 invitationSchema.pre('save', function (next) {
   this.updatedAt = new Date();
-
-  // Update status to expired if past expiration date
-  if (this.status === 'pending' && this.security.expiresAt < new Date()) {
-    this.status = 'expired';
-  }
 
   next();
 });

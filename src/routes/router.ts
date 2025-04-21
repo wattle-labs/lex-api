@@ -5,12 +5,19 @@ import { version as releaseVersion } from '../../package.json';
 import { API_BASE_PATH } from '../constants/api.constants';
 import BusinessController from '../controllers/businesses.controller';
 import ContractController from '../controllers/contracts.controller';
+import UserController from '../controllers/users.controller';
+import { authMiddleware } from '../middlewares/auth.middleware';
 import { businessService } from '../services/businesses.service';
 import { contractsService } from '../services/contracts.service';
+import { usersService } from '../services/users.service';
 import { BusinessRoutes } from './businesses.routes';
 import { ContractRoutes } from './contracts.routes';
+import { UserRoutes } from './users.routes';
 
 const router = new OpenAPIHono();
+const protectedRouter = new OpenAPIHono();
+
+protectedRouter.use('*', authMiddleware);
 
 // Docs
 router.get('/docs/spec', c => {
@@ -37,8 +44,13 @@ const contractRoutes = new ContractRoutes(
   new ContractController(contractsService),
 );
 
-router.route(businessRoutes.PATH, businessRoutes.getRouter());
-router.route(contractRoutes.PATH, contractRoutes.getRouter());
+const userRoutes = new UserRoutes(new UserController(usersService));
+
+protectedRouter.route(businessRoutes.PATH, businessRoutes.getRouter());
+protectedRouter.route(contractRoutes.PATH, contractRoutes.getRouter());
+protectedRouter.route(userRoutes.PATH, userRoutes.getRouter());
+
+router.route('/', protectedRouter);
 
 // Register health check
 

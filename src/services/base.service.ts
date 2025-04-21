@@ -4,6 +4,8 @@ import { QUERY_CONFIG } from '../config/api.config';
 import { SORT_ORDER } from '../constants/request.constants';
 import { IRepository } from '../interfaces/repository.interface';
 import { logger } from '../lib/logger';
+import { userRoleTemplateRepository } from '../repositories/userRoleTemplates.repository';
+import { userRoleRepository } from '../repositories/userRoles.repository';
 import { FindOptionsType } from '../types/pagination.types';
 
 export abstract class BaseService<T> {
@@ -109,5 +111,32 @@ export abstract class BaseService<T> {
       });
       throw error;
     }
+  }
+
+  async assignRoleToUser(
+    businessId: string,
+    userId: string,
+    roleTemplateId: string,
+    assignedBy: string,
+  ): Promise<void> {
+    const userRoleTemplate = await userRoleTemplateRepository.findOne({
+      filter: {
+        _id: roleTemplateId,
+        businessId,
+      },
+    });
+
+    if (!userRoleTemplate) {
+      throw new Error('User role template not found');
+    }
+
+    await userRoleRepository.create({
+      data: {
+        userId,
+        businessId,
+        userRoleTemplateId: userRoleTemplate._id,
+        assignedBy,
+      },
+    });
   }
 }

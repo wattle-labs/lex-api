@@ -2,18 +2,10 @@ import { Context } from 'hono';
 
 import { logger } from '../lib/logger';
 import { ResponseBuilder } from '../lib/response.handler';
-import { Contract } from '../models/interfaces/contract';
-import { MongooseModel } from '../models/interfaces/document.interface';
 import { ContractsService } from '../services/contracts.service';
-import { BaseController } from './base.controller';
 
-class ContractController extends BaseController<
-  MongooseModel<Contract>,
-  ContractsService
-> {
-  constructor(service: ContractsService) {
-    super(service, 'contract');
-  }
+class ContractController {
+  constructor(private readonly service: ContractsService) {}
 
   findByBusinessId = async (c: Context): Promise<Response> => {
     try {

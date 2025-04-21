@@ -14,7 +14,7 @@ export class InvitationService extends BaseService<MongooseModel<Invitation>> {
     this.invitationRepository = repository;
   }
 
-  async findByEmail(email: string, businessId: string): Promise<Invitation[]> {
+  async findByEmail(email: string, businessId?: string): Promise<Invitation[]> {
     return await this.invitationRepository.findByEmail(email, businessId);
   }
 
@@ -27,7 +27,6 @@ export class InvitationService extends BaseService<MongooseModel<Invitation>> {
       businessId,
     );
   }
-
   async findByToken(token: string): Promise<Invitation | null> {
     return await this.invitationRepository.findByToken(token);
   }

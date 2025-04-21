@@ -1,9 +1,19 @@
 import { Context, Next } from 'hono';
 
-import { logger } from '../../lib/logger';
+import { businessRepository } from '../../repositories/businesses.repository';
 
-export const businessesMiddleware = async (_ctx: Context, next: Next) => {
-  logger.info('Businesses middleware executed');
+export const businessesMiddleware = async (ctx: Context, next: Next) => {
+  const businessId = ctx.req.param('businessId');
 
-  await next();
+  if (!businessId) {
+    return ctx.json({ error: 'Business ID is required' }, 400);
+  }
+
+  const business = await businessRepository.findById({ id: businessId });
+
+  if (!business) {
+    return ctx.json({ error: 'Business not found' }, 404);
+  }
+
+  return await next();
 };

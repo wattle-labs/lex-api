@@ -9,7 +9,7 @@ export const adminRoleTemplateSchema = new Schema<
   {
     name: { type: String, required: true },
     description: { type: String, required: true },
-    basePermissions: [{ type: String }],
+    basePermissions: [{ type: Schema.Types.ObjectId, ref: 'AdminPermission' }],
     hierarchy: {
       level: { type: Number, required: true, min: 1 },
       canManageRoles: [{ type: String }],

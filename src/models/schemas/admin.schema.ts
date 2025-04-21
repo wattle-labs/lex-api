@@ -8,12 +8,17 @@ export const adminSchema = new Schema<MongooseModel<Admin>>(
     userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     email: { type: String, required: true },
     adminRoleTemplateId: {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: 'AdminRoleTemplate',
       required: true,
     },
     customPermissions: [
       {
-        permission: { type: String, required: true },
+        permission: {
+          type: Schema.Types.ObjectId,
+          ref: 'AdminPermission',
+          required: true,
+        },
         granted: { type: Boolean, required: true },
         resources: [{ type: String }],
       },

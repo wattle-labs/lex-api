@@ -4,3 +4,6 @@ export * from './contractTypes.repository';
 export * from './admins.repository';
 export * from './adminPermissions.repository';
 export * from './adminRoleTemplates.repository';
+export * from './userRoles.repository';
+export * from './userRoleTemplates.repository';
+export * from './permissions.repository';

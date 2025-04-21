@@ -1,5 +1,5 @@
 import { OpenAPIHono, createRoute } from '@hono/zod-openapi';
-import { Context } from 'hono';
+import { Context, Next } from 'hono';
 
 import { validate } from '../middlewares/validation.middleware';
 import { ValidationOptions } from '../types/routing.types';
@@ -27,10 +27,17 @@ export abstract class BaseRoutes {
     options?: {
       allowedContentTypes?: string[];
       validations?: ValidationOptions[];
+      middlewares?: ((ctx: Context, next: Next) => Promise<Response | void>)[];
     },
   ) {
     if (options?.validations) {
       this.router.use(route.path, validate(options.validations));
+    }
+
+    if (options?.middlewares) {
+      options.middlewares.forEach(middleware => {
+        this.router.use(route.path, middleware);
+      });
     }
 
     this.router.openapi(route, async ctx => {

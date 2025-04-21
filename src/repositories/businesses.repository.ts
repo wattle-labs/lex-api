@@ -17,11 +17,6 @@ export class BusinessRepository extends BaseRepository<
     const result = await this.findOne({ filter: { slug } });
     return result;
   }
-
-  async findBusinessesByDomain(domain: string): Promise<Business[]> {
-    const results = await this.find({ filter: { domains: domain } });
-    return results;
-  }
 }
 
 export const businessRepository = mongoService.createRepository(

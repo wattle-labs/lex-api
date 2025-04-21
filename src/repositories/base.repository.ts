@@ -63,10 +63,15 @@ export class BaseRepository<T> implements IRepository<T> {
   public async update({
     filter,
     update,
+    push,
     options,
   }: updateOptions<T>): Promise<T | null> {
+    const updateQuery = {
+      ...(push ? { $push: push } : {}),
+      ...(update ? { $set: update } : {}),
+    };
     const result = await this.model
-      .findOneAndUpdate(filter, { $set: update } as UpdateQuery<T & Document>, {
+      .findOneAndUpdate(filter, updateQuery as UpdateQuery<T & Document>, {
         new: true,
         ...options,
       })
