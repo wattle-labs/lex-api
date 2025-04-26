@@ -3,7 +3,7 @@ import { Model } from 'mongoose';
 import { mongoService } from '../lib/mongo';
 import ContractTypeModel from '../models/contractTypes.model';
 import { ContractType } from '../models/interfaces/contractType';
-import { MongooseModel } from '../models/interfaces/document.interface';
+import { MongooseModel } from '../models/interfaces/document';
 import { BaseRepository } from './base.repository';
 
 export class ContractTypeRepository extends BaseRepository<

@@ -1,19 +1,13 @@
 import { Schema } from 'mongoose';
 
-import { Business } from '../interfaces/business';
 import { MongooseModel } from '../interfaces/document';
+import { Party } from '../interfaces/party';
 
-export const businessSchema = new Schema<MongooseModel<Business>>(
+export const partySchema = new Schema<MongooseModel<Party>>(
   {
     name: { type: String, required: true },
-    slug: {
-      type: String,
-      required: true,
-      match: [
-        /^[a-zA-Z0-9_]+$/,
-        'Slug can only contain alphanumeric characters and underscores',
-      ],
-    },
+    createdBy: { type: String },
+    updatedBy: { type: String },
   },
   {
     timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' },
@@ -22,7 +16,9 @@ export const businessSchema = new Schema<MongooseModel<Business>>(
   },
 );
 
-businessSchema.pre('save', function (next) {
+partySchema.pre('save', function (next) {
   this.updatedAt = new Date();
   next();
 });
+
+partySchema.index({ name: 'text' }, { name: 'party-names' });

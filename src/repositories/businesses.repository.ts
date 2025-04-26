@@ -3,7 +3,7 @@ import { Model } from 'mongoose';
 import { mongoService } from '../lib/mongo';
 import BusinessModel from '../models/businesses.model';
 import { Business } from '../models/interfaces/business';
-import { MongooseModel } from '../models/interfaces/document.interface';
+import { MongooseModel } from '../models/interfaces/document';
 import { BaseRepository } from './base.repository';
 
 export class BusinessRepository extends BaseRepository<

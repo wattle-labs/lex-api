@@ -7,7 +7,7 @@ import {
 import { logger } from '../lib/logger';
 import { ResponseBuilder } from '../lib/response.handler';
 import { Business } from '../models/interfaces/business';
-import { MongooseModel } from '../models/interfaces/document.interface';
+import { MongooseModel } from '../models/interfaces/document';
 import { BusinessService } from '../services/businesses.service';
 import { BaseController } from './base.controller';
 

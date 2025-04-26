@@ -4,7 +4,7 @@ import { findAllOptions } from '../interfaces/repository.interface';
 import { mongoService } from '../lib/mongo';
 import ContractModel from '../models/contracts.model';
 import { Contract } from '../models/interfaces/contract';
-import { MongooseModel } from '../models/interfaces/document.interface';
+import { MongooseModel } from '../models/interfaces/document';
 import { BaseRepository } from './base.repository';
 
 export class ContractRepository extends BaseRepository<

@@ -1,5 +1,5 @@
 import { Business } from '../models/interfaces/business';
-import { MongooseModel } from '../models/interfaces/document.interface';
+import { MongooseModel } from '../models/interfaces/document';
 import { BusinessRepository, businessRepository } from '../repositories';
 import { BaseService } from './base.service';
 

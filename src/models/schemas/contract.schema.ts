@@ -1,7 +1,7 @@
 import { Schema } from 'mongoose';
 
 import { Contract, ContractStatus } from '../interfaces/contract';
-import { MongooseModel } from '../interfaces/document.interface';
+import { MongooseModel } from '../interfaces/document';
 
 export const contractSchema = new Schema<MongooseModel<Contract>>(
   {
@@ -11,6 +11,8 @@ export const contractSchema = new Schema<MongooseModel<Contract>>(
     contractTypeId: { type: Schema.Types.ObjectId, ref: 'ContractType' },
     summary: { type: String },
     terms: { type: Schema.Types.Mixed },
+    obligations: { type: Schema.Types.Mixed },
+    parties: { type: [Schema.Types.ObjectId], ref: 'Party' },
     label: { type: String, required: true },
     text: { type: String },
     businessId: {

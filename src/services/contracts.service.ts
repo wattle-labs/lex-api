@@ -1,7 +1,7 @@
 import { ObjectId } from 'mongoose';
 
 import { Contract } from '../models/interfaces/contract';
-import { MongooseModel } from '../models/interfaces/document.interface';
+import { MongooseModel } from '../models/interfaces/document';
 import {
   ContractRepository,
   contractRepository,

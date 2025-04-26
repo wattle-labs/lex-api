@@ -1,7 +1,7 @@
 import { Schema } from 'mongoose';
 
 import { ContractType } from '../interfaces/contractType';
-import { MongooseModel } from '../interfaces/document.interface';
+import { MongooseModel } from '../interfaces/document';
 
 export const contractTypeSchema = new Schema<MongooseModel<ContractType>>(
   {

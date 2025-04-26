@@ -1,7 +1,7 @@
 import { model } from 'mongoose';
 
 import { Contract } from './interfaces/contract';
-import { MongooseModel } from './interfaces/document.interface';
+import { MongooseModel } from './interfaces/document';
 import { contractSchema } from './schemas/contract.schema';
 
 const ContractModel = model<MongooseModel<Contract>>(

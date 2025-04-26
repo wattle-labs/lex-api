@@ -1,5 +1,5 @@
 import { Contract } from '../models/interfaces/contract';
-import { MongooseModel } from '../models/interfaces/document.interface';
+import { MongooseModel } from '../models/interfaces/document';
 import { ContractService } from '../services/contracts.service';
 import { BaseController } from './base.controller';
 

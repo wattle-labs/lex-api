@@ -1,19 +1,15 @@
 import { Schema } from 'mongoose';
 
-import { Business } from '../interfaces/business';
 import { MongooseModel } from '../interfaces/document';
+import { Project } from '../interfaces/project';
 
-export const businessSchema = new Schema<MongooseModel<Business>>(
+export const projectSchema = new Schema<MongooseModel<Project>>(
   {
     name: { type: String, required: true },
-    slug: {
-      type: String,
-      required: true,
-      match: [
-        /^[a-zA-Z0-9_]+$/,
-        'Slug can only contain alphanumeric characters and underscores',
-      ],
-    },
+    userIds: { type: [Schema.Types.ObjectId], ref: 'User' },
+    contractIds: { type: [Schema.Types.ObjectId], ref: 'Contract' },
+    createdBy: { type: String },
+    updatedBy: { type: String },
   },
   {
     timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' },
@@ -22,7 +18,7 @@ export const businessSchema = new Schema<MongooseModel<Business>>(
   },
 );
 
-businessSchema.pre('save', function (next) {
+projectSchema.pre('save', function (next) {
   this.updatedAt = new Date();
   next();
 });

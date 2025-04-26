@@ -5,17 +5,36 @@ import { ContractStatus } from '../../models/interfaces/contract';
 
 export const contractStatusSchema = z.nativeEnum(ContractStatus);
 
+export const contractTermSchema = z.object({
+  term: z.string(),
+  id: z.string(),
+  value: z.union([z.string(), z.number()]),
+  snippet: z.string(),
+});
+
 const objectIdSchema = z.any();
+
+export const contractObligationSchema = z.object({
+  id: z.string(),
+  label: z.string(),
+  dueDate: z.date().optional(),
+  responsibleParty: z.union([z.string(), objectIdSchema]).optional(),
+});
 
 export const contractSchema = z.object({
   id: z.union([z.string(), objectIdSchema]).optional(),
   url: z.string(),
   gsBucketName: z.string().optional(),
+  parties: z.union([z.array(z.string()), z.array(objectIdSchema)]),
+  obligations: z.record(contractObligationSchema),
+  text: z.string().optional(),
   fileName: z.string(),
   contractTypeId: z.union([z.string(), objectIdSchema]).optional(),
   summary: z.string().optional(),
-  terms: z.array(z.record(z.string())).optional(),
+  label: z.string(),
+  terms: z.record(contractTermSchema).optional(),
   businessId: z.union([z.string(), objectIdSchema]),
+  tags: z.array(z.string()),
   status: contractStatusSchema,
   createdAt: z.date().optional(),
   updatedAt: z.date().optional(),
