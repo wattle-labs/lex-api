@@ -13,10 +13,19 @@ export interface ContractTerm {
   snippet: string;
 }
 
+export interface ContractObligation {
+  id: string;
+  label: string;
+  dueDate?: Date;
+  responsibleParty?: string | ObjectId;
+}
+
 export interface Contract {
   id?: string | ObjectId;
   url: string;
   gsBucketName?: string;
+  parties: string[] | ObjectId[];
+  obligations: Record<string, ContractObligation>;
   text?: string;
   fileName: string;
   contractTypeId?: string | ObjectId;

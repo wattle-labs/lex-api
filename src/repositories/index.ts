@@ -8,3 +8,4 @@ export * from './userRoles.repository';
 export * from './userRoleTemplates.repository';
 export * from './userPermissions.repository';
 export * from './users.repository';
+export * from './parties.repository';

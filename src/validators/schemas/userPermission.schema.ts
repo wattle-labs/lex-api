@@ -5,7 +5,6 @@ const objectIdSchema = z.any();
 
 export const userPermissionSchema = z.object({
   id: z.union([z.string(), objectIdSchema]).optional(),
-  businessId: z.union([z.string(), objectIdSchema]),
   name: z.string(),
   description: z.string(),
   resource: z.string(),
