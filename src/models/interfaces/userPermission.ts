@@ -13,11 +13,17 @@ export interface UserPermission {
    */
   resource: string;
   /**
+   * Sub-resource type (e.g. "settings", "members", "timeline")
+   * This is the second part of the permission name in a 3-part permission
+   */
+  subResource?: string;
+  /**
    * Action ("create", "read", "update", etc.)
    */
   action: string;
   /**
    * Grouping ("legal", "sales", "admin")
+   * Used for UI representation only, not for permission logic
    */
   category: string;
   /**

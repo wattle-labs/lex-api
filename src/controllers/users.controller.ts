@@ -40,8 +40,14 @@ class UserController {
         ResponseBuilder.success(user, 'Invitation accepted', 200),
         200,
       );
-    } catch (error) {
-      logger.error('Error accepting invitation', { error });
+    } catch (error: unknown) {
+      logger.error(
+        'Error accepting invitation',
+        {
+          message: error instanceof Error ? error.message : 'Unknown error',
+        },
+        error instanceof Error ? error : undefined,
+      );
       return c.json(ResponseBuilder.error('Internal Server Error'), 500);
     }
   };

@@ -1,4 +1,4 @@
-import { Context } from 'hono';
+import type { Context } from 'hono';
 
 import {
   VALIDATION_MIDDLEWARE_KEY,
@@ -8,9 +8,13 @@ import { logger } from '../lib/logger';
 import { ResponseBuilder } from '../lib/response.handler';
 import { BusinessService } from '../services/businesses.service';
 
-class BusinessController {
+// Define a class that satisfies the decorator requirements
+class BusinessController implements Record<string, unknown> {
+  [key: string]: unknown;
+
   constructor(private readonly service: BusinessService) {}
 
+  // Public endpoint - no permission required
   findBySlug = async (ctx: Context): Promise<Response> => {
     const { slug } = ctx.get(
       `${VALIDATION_MIDDLEWARE_KEY}:${VALIDATION_TARGETS.PARAMS}`,
@@ -40,7 +44,7 @@ class BusinessController {
     }
   };
 
-  createInvitation = async (ctx: Context): Promise<Response> => {
+  async createInvitation(ctx: Context): Promise<Response> {
     const data = ctx.get(
       `${VALIDATION_MIDDLEWARE_KEY}:${VALIDATION_TARGETS.BODY}`,
     );
@@ -51,9 +55,9 @@ class BusinessController {
     const invitation = await this.service.createInvitation(businessId, data);
 
     return ctx.json(ResponseBuilder.success(invitation), 201);
-  };
+  }
 
-  assignRoleToUser = async (ctx: Context): Promise<Response> => {
+  async assignRoleToUser(ctx: Context): Promise<Response> {
     const assignee = ctx.get('user');
     const { roleTemplateId } = ctx.get(
       `${VALIDATION_MIDDLEWARE_KEY}:${VALIDATION_TARGETS.BODY}`,
@@ -72,9 +76,9 @@ class BusinessController {
     logger.info('Assigned role to user', { userId, roleTemplateId });
 
     return ctx.json(ResponseBuilder.success(null), 201);
-  };
+  }
 
-  create = async (ctx: Context): Promise<Response> => {
+  async create(ctx: Context): Promise<Response> {
     const data = ctx.get(
       `${VALIDATION_MIDDLEWARE_KEY}:${VALIDATION_TARGETS.BODY}`,
     );
@@ -85,16 +89,18 @@ class BusinessController {
 
       return ctx.json(ResponseBuilder.success(business), 201);
     } catch (error) {
-      logger.error('Failed to create business', { error });
+      logger.error('Failed to create business', {
+        message: error instanceof Error ? error.message : String(error),
+      });
 
       return ctx.json(
         ResponseBuilder.badRequest('Failed to create business'),
         400,
       );
     }
-  };
+  }
 
-  createPermission = async (ctx: Context): Promise<Response> => {
+  async createPermission(ctx: Context): Promise<Response> {
     const data = ctx.get(
       `${VALIDATION_MIDDLEWARE_KEY}:${VALIDATION_TARGETS.BODY}`,
     );
@@ -105,9 +111,9 @@ class BusinessController {
     const permission = await this.service.createPermission(businessId, data);
 
     return ctx.json(ResponseBuilder.success(permission), 201);
-  };
+  }
 
-  createRoleTemplate = async (ctx: Context): Promise<Response> => {
+  async createRoleTemplate(ctx: Context): Promise<Response> {
     const data = ctx.get(
       `${VALIDATION_MIDDLEWARE_KEY}:${VALIDATION_TARGETS.BODY}`,
     );
@@ -121,9 +127,9 @@ class BusinessController {
     );
 
     return ctx.json(ResponseBuilder.success(roleTemplate), 201);
-  };
+  }
 
-  listPermissions = async (ctx: Context): Promise<Response> => {
+  async listPermissions(ctx: Context): Promise<Response> {
     const { businessId } = ctx.get(
       `${VALIDATION_MIDDLEWARE_KEY}:${VALIDATION_TARGETS.PARAMS}`,
     );
@@ -144,9 +150,9 @@ class BusinessController {
 
       return ctx.json(ResponseBuilder.badRequest(message), 400);
     }
-  };
+  }
 
-  listRoleTemplates = async (ctx: Context): Promise<Response> => {
+  async listRoleTemplates(ctx: Context): Promise<Response> {
     const { businessId } = ctx.get(
       `${VALIDATION_MIDDLEWARE_KEY}:${VALIDATION_TARGETS.PARAMS}`,
     );
@@ -169,9 +175,9 @@ class BusinessController {
 
       return ctx.json(ResponseBuilder.badRequest(message), 400);
     }
-  };
+  }
 
-  listUserRoles = async (ctx: Context): Promise<Response> => {
+  async listUserRoles(ctx: Context): Promise<Response> {
     const { businessId, userId } = ctx.get(
       `${VALIDATION_MIDDLEWARE_KEY}:${VALIDATION_TARGETS.PARAMS}`,
     );
@@ -192,9 +198,9 @@ class BusinessController {
 
       return ctx.json(ResponseBuilder.badRequest(message), 400);
     }
-  };
+  }
 
-  addPermissionsToRoleTemplate = async (ctx: Context): Promise<Response> => {
+  async addPermissionsToRoleTemplate(ctx: Context): Promise<Response> {
     const { businessId, templateId } = ctx.get(
       `${VALIDATION_MIDDLEWARE_KEY}:${VALIDATION_TARGETS.PARAMS}`,
     );
@@ -208,14 +214,13 @@ class BusinessController {
         templateId,
         permissionIds,
       });
-
-      const updatedTemplate = await this.service.addPermissionsToRoleTemplate(
+      await this.service.addPermissionsToRoleTemplate(
         businessId,
         templateId,
         permissionIds,
       );
 
-      return ctx.json(ResponseBuilder.success(updatedTemplate), 200);
+      return ctx.json(ResponseBuilder.success(null), 200);
     } catch (error) {
       logger.error(
         'Failed to add permissions to role template',
@@ -229,21 +234,18 @@ class BusinessController {
 
       return ctx.json(ResponseBuilder.badRequest(message), 400);
     }
-  };
+  }
 
-  deleteRoleTemplate = async (ctx: Context): Promise<Response> => {
+  async deleteRoleTemplate(ctx: Context): Promise<Response> {
     const { businessId, templateId } = ctx.get(
       `${VALIDATION_MIDDLEWARE_KEY}:${VALIDATION_TARGETS.PARAMS}`,
     );
 
     try {
       logger.info('Deleting role template', { businessId, templateId });
-      const deleted = await this.service.deleteRoleTemplate(
-        businessId,
-        templateId,
-      );
+      await this.service.deleteRoleTemplate(businessId, templateId);
 
-      return ctx.json(ResponseBuilder.success(deleted), 200);
+      return ctx.json(ResponseBuilder.success(null), 200);
     } catch (error) {
       logger.error(
         'Failed to delete role template',
@@ -254,6 +256,44 @@ class BusinessController {
         error instanceof Error
           ? error.message
           : 'Failed to delete role template';
+
+      return ctx.json(ResponseBuilder.badRequest(message), 400);
+    }
+  }
+
+  // Any user can get their own permissions
+  getCurrentUserPermissions = async (ctx: Context): Promise<Response> => {
+    const user = ctx.get('user');
+    const { businessId } = ctx.get(
+      `${VALIDATION_MIDDLEWARE_KEY}:${VALIDATION_TARGETS.PARAMS}`,
+    );
+
+    const userId = user._id;
+
+    try {
+      logger.info('Getting current user permissions', {
+        userId,
+        businessId,
+      });
+
+      const permissions = []; // TODO: Implement this after RBACv2 is ready
+
+      return ctx.json(
+        ResponseBuilder.success({
+          permissions,
+        }),
+        200,
+      );
+    } catch (error) {
+      logger.error(
+        'Failed to get current user permissions',
+        { userId, businessId },
+        error instanceof Error ? error : new Error(String(error)),
+      );
+      const message =
+        error instanceof Error
+          ? error.message
+          : 'Failed to get current user permissions';
 
       return ctx.json(ResponseBuilder.badRequest(message), 400);
     }

@@ -16,11 +16,17 @@ export const userPermissionSchema = z.object({
    */
   resource: z.string(),
   /**
+   * Sub-resource type (e.g. "settings", "members", "timeline")
+   * This is the second part of the permission name in a 3-part permission
+   */
+  subResource: z.string().optional(),
+  /**
    * Action ("create", "read", "update", etc.)
    */
   action: z.string(),
   /**
    * Grouping ("legal", "sales", "admin")
+   * Used for UI representation only, not for permission logic
    */
   category: z.string(),
   /**

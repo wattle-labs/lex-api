@@ -35,11 +35,11 @@ export interface Business {
     /**
      * "pending", "owner_invited", "active", "suspended"
      */
-    status: string;
+    status?: string;
     /**
      * Array of completed onboarding steps
      */
-    completedSteps: string[];
+    completedSteps?: string[];
     /**
      * Admin who created the business
      */

@@ -96,6 +96,10 @@ userSchema.virtual('fullName').get(function () {
   return `${this.profile.firstName} ${this.profile.lastName}`;
 });
 
+userSchema.virtual('id').get(function () {
+  return this._id;
+});
+
 userSchema.index({ businessId: 1 });
 userSchema.index({ externalId: 1 }, { unique: true });
 userSchema.index({ email: 1 }, { unique: true });

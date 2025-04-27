@@ -6,4 +6,5 @@ export * from './adminPermissions.repository';
 export * from './adminRoleTemplates.repository';
 export * from './userRoles.repository';
 export * from './userRoleTemplates.repository';
-export * from './permissions.repository';
+export * from './userPermissions.repository';
+export * from './users.repository';

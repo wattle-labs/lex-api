@@ -1,4 +1,9 @@
-import mongoose, { ConnectOptions, Document, Model } from 'mongoose';
+import mongoose, {
+  ClientSession,
+  ConnectOptions,
+  Document,
+  Model,
+} from 'mongoose';
 
 import { BaseRepository } from '../repositories/base.repository';
 import { logger } from './logger';
@@ -39,7 +44,7 @@ export class MongoService {
       const connectionOptions: ConnectOptions = {
         ...config.options,
         dbName: config.dbName,
-        readPreference: 'secondaryPreferred',
+        // autoIndex: true,
       };
 
       this.client = await mongoose.connect(config.uri, connectionOptions);
@@ -81,6 +86,80 @@ export class MongoService {
       await this.client.connection.close();
       this.initialized = false;
       logger.info('MongoDB client disconnected');
+    }
+  }
+
+  /**
+   * Start a MongoDB transaction
+   * @returns A MongoDB session with a transaction
+   */
+  public async startTransaction(): Promise<ClientSession> {
+    if (!this.initialized || !this.client) {
+      throw new Error(
+        'MongoDB client not initialized. Call initialize() first.',
+      );
+    }
+
+    const session = await this.client.startSession();
+    session.startTransaction();
+    return session;
+  }
+
+  /**
+   * Commit a MongoDB transaction
+   * @param session The session with an active transaction
+   */
+  public async commitTransaction(session: ClientSession): Promise<void> {
+    try {
+      await session.commitTransaction();
+      logger.debug('Transaction committed successfully');
+    } finally {
+      session.endSession();
+    }
+  }
+
+  /**
+   * Abort a MongoDB transaction
+   * @param session The session with an active transaction
+   */
+  public async abortTransaction(session: ClientSession): Promise<void> {
+    try {
+      await session.abortTransaction();
+      logger.debug('Transaction aborted');
+    } finally {
+      session.endSession();
+    }
+  }
+
+  /**
+   * Execute a function within a transaction
+   * @param fn The function to execute within the transaction
+   * @returns The result of the function
+   */
+  public async withTransaction<T>(
+    fn: (session: ClientSession) => Promise<T>,
+  ): Promise<T> {
+    if (!this.initialized || !this.client) {
+      throw new Error(
+        'MongoDB client not initialized. Call initialize() first.',
+      );
+    }
+
+    const session = await this.client.startSession();
+    let result: T;
+
+    try {
+      session.startTransaction();
+      result = await fn(session);
+      await session.commitTransaction();
+      logger.debug('Transaction committed successfully');
+      return result;
+    } catch (error) {
+      logger.error('Transaction failed, aborting', { error });
+      await session.abortTransaction();
+      throw error;
+    } finally {
+      session.endSession();
     }
   }
 

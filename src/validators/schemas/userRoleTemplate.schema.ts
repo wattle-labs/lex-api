@@ -30,6 +30,11 @@ export const userRoleTemplateSchema = z.object({
       canInviteUsers: z.boolean(),
       canCreateProjects: z.boolean(),
       canAssignRoles: z.boolean(),
+      canManageTeams: z.boolean(),
+      canApproveContracts: z.boolean(),
+      canExportData: z.boolean(),
+      canAccessReports: z.boolean(),
+      canManageSettings: z.boolean(),
     })
     .optional(),
   constraints: z

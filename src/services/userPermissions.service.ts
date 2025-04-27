@@ -3,7 +3,7 @@ import { UserPermission } from '../models/interfaces/userPermission';
 import {
   UserPermissionRepository,
   userPermissionRepository,
-} from '../repositories/permissions.repository';
+} from '../repositories/userPermissions.repository';
 import { BaseService } from './base.service';
 
 export class UserPermissionService extends BaseService<

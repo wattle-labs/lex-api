@@ -23,17 +23,22 @@ export class UserRepository extends BaseRepository<MongooseModel<User>> {
     return result;
   }
 
-  async findUsersByBusiness(businessId: string): Promise<User[]> {
-    const results = await this.find({
-      filter: { businessId, status: 'active' },
+  async findUserByBusiness(
+    userId: string,
+    businessId: string,
+  ): Promise<User | null> {
+    const user = await this.findOne({
+      filter: { _id: userId, businessId, status: 'active' },
     });
-    return results;
+
+    return user;
   }
 
   async findUsersByManager(managerId: string): Promise<User[]> {
     const results = await this.find({
       filter: { 'hierarchy.managerId': managerId },
     });
+
     return results;
   }
 

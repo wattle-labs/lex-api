@@ -3,7 +3,7 @@ import { FilterQuery, Model } from 'mongoose';
 import { mongoService } from '../lib/mongo';
 import { MongooseModel } from '../models/interfaces/document.interface';
 import { UserPermission } from '../models/interfaces/userPermission';
-import UserPermissionModel from '../models/permissions.model';
+import UserPermissionModel from '../models/userPermissions.model';
 import { BaseRepository } from './base.repository';
 
 export class UserPermissionRepository extends BaseRepository<

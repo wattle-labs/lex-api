@@ -26,6 +26,11 @@ export interface UserRoleTemplate {
     canInviteUsers: boolean;
     canCreateProjects: boolean;
     canAssignRoles: boolean;
+    canManageTeams: boolean;
+    canApproveContracts: boolean;
+    canExportData: boolean;
+    canAccessReports: boolean;
+    canManageSettings: boolean;
   };
   constraints?: {
     maxProjects?: number;

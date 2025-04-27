@@ -31,12 +31,25 @@ export abstract class BaseRoutes {
     },
   ) {
     if (options?.validations) {
-      this.router.use(route.path, validate(options.validations));
+      const validationMiddleware = validate(options.validations);
+      // Apply validation middleware with method check
+      this.router.use(route.path, async (ctx, next) => {
+        if (ctx.req.method.toUpperCase() === route.method.toUpperCase()) {
+          return await validationMiddleware(ctx, next);
+        }
+        return await next();
+      });
     }
 
     if (options?.middlewares) {
       options.middlewares.forEach(middleware => {
-        this.router.use(route.path, middleware);
+        // Apply each middleware with method check
+        this.router.use(route.path, async (ctx, next) => {
+          if (ctx.req.method.toUpperCase() === route.method.toUpperCase()) {
+            return await middleware(ctx, next);
+          }
+          return await next();
+        });
       });
     }
 

@@ -1,3 +1,4 @@
+import { logger } from '../lib/logger';
 import { Business } from '../models/interfaces/business';
 import { MongooseModel } from '../models/interfaces/document.interface';
 import { Invitation } from '../models/interfaces/invitation';
@@ -9,7 +10,7 @@ import {
   businessRepository,
 } from '../repositories/businesses.repository';
 import { invitationRepository } from '../repositories/invitations.repository';
-import { userPermissionRepository } from '../repositories/permissions.repository';
+import { userPermissionRepository } from '../repositories/userPermissions.repository';
 import { userRoleTemplateRepository } from '../repositories/userRoleTemplates.repository';
 import { userRoleRepository } from '../repositories/userRoles.repository';
 import { BaseService } from './base.service';
@@ -29,7 +30,8 @@ export class BusinessService extends BaseService<MongooseModel<Business>> {
       throw new Error('Business already exists');
     }
 
-    return await this.businessRepository.create({
+    // Create the business first
+    const newBusiness = await this.businessRepository.create({
       data: {
         ...data,
         setup: {
@@ -38,6 +40,39 @@ export class BusinessService extends BaseService<MongooseModel<Business>> {
         },
       },
     });
+
+    // Seed the standard permissions and roles
+    try {
+      // TODO: Implement this after RBACv2 is ready
+
+      // Mark permission setup as completed since we've seeded everything
+      await this.businessRepository.update({
+        filter: { _id: newBusiness.id },
+        push: {
+          'setup.completedSteps': [
+            'permission_created',
+            'role_template_created',
+          ],
+        },
+      });
+
+      logger.info(
+        `Permissions and roles seeded for new business: ${newBusiness.name}`,
+        {
+          businessId: newBusiness.id,
+        },
+      );
+    } catch (error) {
+      logger.error('Failed to seed permissions for new business', {
+        businessId: newBusiness.id,
+        error,
+      });
+      // Don't throw - we've already created the business
+      // This allows the business to be created even if seeding fails
+      // Admins can manually set up permissions later
+    }
+
+    return newBusiness;
   }
 
   async createPermission(

@@ -33,13 +33,12 @@ export const userRoleTemplateSchema = new Schema<
       level: {
         type: Number,
         required: true,
-        min: 1,
+        min: 0,
       },
       domain: String,
       canManageRoles: [
         {
-          type: Schema.Types.ObjectId,
-          ref: 'UserRoleTemplate',
+          type: Schema.Types.Mixed,
         },
       ],
     },
@@ -58,6 +57,26 @@ export const userRoleTemplateSchema = new Schema<
         default: false,
       },
       canAssignRoles: {
+        type: Boolean,
+        default: false,
+      },
+      canManageTeams: {
+        type: Boolean,
+        default: false,
+      },
+      canApproveContracts: {
+        type: Boolean,
+        default: false,
+      },
+      canExportData: {
+        type: Boolean,
+        default: false,
+      },
+      canAccessReports: {
+        type: Boolean,
+        default: false,
+      },
+      canManageSettings: {
         type: Boolean,
         default: false,
       },

@@ -4,13 +4,7 @@ import { z as zod } from 'zod';
 
 import { VALIDATION_TARGETS } from '../constants/validation.constants';
 import BusinessController from '../controllers/businesses.controller';
-import {
-  requireBusinessOwner,
-  requirePermission,
-  requirePermissionAny,
-} from '../middlewares/policy.middleware';
 import { businessesMiddleware } from '../middlewares/resources/businesses.middleware';
-import { userRoleTemplateRepository } from '../repositories';
 import {
   ErrorResponseSchema,
   createPaginatedResponseSchema,
@@ -81,7 +75,9 @@ export class BusinessRoutes extends BaseRoutes {
             },
           },
         }),
-        handler: this.businessController.findBySlug,
+        handler: this.businessController.findBySlug.bind(
+          this.businessController,
+        ),
         validations: [
           {
             target: VALIDATION_TARGETS.PARAMS,
@@ -116,7 +112,9 @@ export class BusinessRoutes extends BaseRoutes {
             },
           },
         }),
-        handler: this.businessController.createInvitation,
+        handler: this.businessController.createInvitation.bind(
+          this.businessController,
+        ),
         validations: [
           {
             target: VALIDATION_TARGETS.PARAMS,
@@ -132,10 +130,7 @@ export class BusinessRoutes extends BaseRoutes {
             }),
           },
         ],
-        middlewares: [
-          businessesMiddleware,
-          requirePermission('business:invitations:create'),
-        ],
+        middlewares: [businessesMiddleware],
       },
       {
         route: createRoute({
@@ -163,7 +158,9 @@ export class BusinessRoutes extends BaseRoutes {
             },
           },
         }),
-        handler: this.businessController.assignRoleToUser,
+        handler: this.businessController.assignRoleToUser.bind(
+          this.businessController,
+        ),
         validations: [
           {
             target: VALIDATION_TARGETS.PARAMS,
@@ -179,10 +176,7 @@ export class BusinessRoutes extends BaseRoutes {
             }),
           },
         ],
-        middlewares: [
-          businessesMiddleware,
-          requirePermission('business:users:assign-role'),
-        ],
+        middlewares: [businessesMiddleware],
       },
       {
         route: createRoute({
@@ -216,22 +210,6 @@ export class BusinessRoutes extends BaseRoutes {
                 },
               },
             },
-            '401': {
-              description: 'Unauthorized',
-              content: {
-                'application/json': {
-                  schema: ErrorResponseSchema,
-                },
-              },
-            },
-            '403': {
-              description: 'Forbidden',
-              content: {
-                'application/json': {
-                  schema: ErrorResponseSchema,
-                },
-              },
-            },
             '500': {
               description: 'Internal server error',
               content: {
@@ -242,14 +220,14 @@ export class BusinessRoutes extends BaseRoutes {
             },
           },
         }),
-        handler: this.businessController.create,
+        handler: this.businessController.create.bind(this.businessController),
         validations: [
           {
             target: VALIDATION_TARGETS.BODY,
             schema: businessCreateBodyValidator,
           },
         ],
-        middlewares: [requirePermission('business:create')],
+        middlewares: [businessesMiddleware],
       },
       {
         route: createRoute({
@@ -309,7 +287,9 @@ export class BusinessRoutes extends BaseRoutes {
             },
           },
         }),
-        handler: this.businessController.createPermission,
+        handler: this.businessController.createPermission.bind(
+          this.businessController,
+        ),
         validations: [
           {
             target: VALIDATION_TARGETS.PARAMS,
@@ -320,10 +300,7 @@ export class BusinessRoutes extends BaseRoutes {
             schema: userPermissionCreateBodyValidator,
           },
         ],
-        middlewares: [
-          requirePermission('business:user-permissions:create'),
-          businessesMiddleware,
-        ],
+        middlewares: [businessesMiddleware],
       },
       {
         route: createRoute({
@@ -383,7 +360,9 @@ export class BusinessRoutes extends BaseRoutes {
             },
           },
         }),
-        handler: this.businessController.createRoleTemplate,
+        handler: this.businessController.createRoleTemplate.bind(
+          this.businessController,
+        ),
         validations: [
           {
             target: VALIDATION_TARGETS.PARAMS,
@@ -394,10 +373,7 @@ export class BusinessRoutes extends BaseRoutes {
             schema: userRoleTemplateCreateBodyValidator,
           },
         ],
-        middlewares: [
-          requirePermission('business:user-role-templates:create'),
-          businessesMiddleware,
-        ],
+        middlewares: [businessesMiddleware],
       },
       {
         route: createRoute({
@@ -435,19 +411,69 @@ export class BusinessRoutes extends BaseRoutes {
             },
           },
         }),
-        handler: this.businessController.listPermissions,
+        handler: this.businessController.listPermissions.bind(
+          this.businessController,
+        ),
         validations: [
           {
             target: VALIDATION_TARGETS.PARAMS,
             schema: businessIdPathParamValidator,
           },
         ],
-        middlewares: [
-          requirePermission('business:user-permissions:read', {
-            businessIdFrom: 'param',
-          }),
-          businessesMiddleware,
+        middlewares: [businessesMiddleware],
+      },
+      {
+        route: createRoute({
+          method: 'get',
+          path: '/:businessId/permissions/me',
+          summary: "Get current user's effective permissions in this business",
+          tags: [this.RESOURCE_NAME],
+          request: {
+            params: businessIdPathParamValidator.openapi('Path parameters'),
+          },
+          responses: {
+            '200': {
+              description: 'Successful response',
+              content: {
+                'application/json': {
+                  schema: createSuccessResponseSchema(
+                    zod.object({
+                      userId: zod.string(),
+                      businessId: zod.string(),
+                      permissions: zod.array(zod.string()),
+                    }),
+                  ),
+                },
+              },
+            },
+            '401': {
+              description: 'Unauthorized',
+              content: {
+                'application/json': {
+                  schema: ErrorResponseSchema,
+                },
+              },
+            },
+            '500': {
+              description: 'Internal server error',
+              content: {
+                'application/json': {
+                  schema: ErrorResponseSchema,
+                },
+              },
+            },
+          },
+        }),
+        handler: this.businessController.getCurrentUserPermissions.bind(
+          this.businessController,
+        ),
+        validations: [
+          {
+            target: VALIDATION_TARGETS.PARAMS,
+            schema: businessIdPathParamValidator,
+          },
         ],
+        middlewares: [businessesMiddleware],
       },
       {
         route: createRoute({
@@ -485,19 +511,16 @@ export class BusinessRoutes extends BaseRoutes {
             },
           },
         }),
-        handler: this.businessController.listRoleTemplates,
+        handler: this.businessController.listRoleTemplates.bind(
+          this.businessController,
+        ),
         validations: [
           {
             target: VALIDATION_TARGETS.PARAMS,
             schema: businessIdPathParamValidator,
           },
         ],
-        middlewares: [
-          requirePermission('business:user-role-templates:read', {
-            businessIdFrom: 'param',
-          }),
-          businessesMiddleware,
-        ],
+        middlewares: [businessesMiddleware],
       },
       {
         route: createRoute({
@@ -538,7 +561,9 @@ export class BusinessRoutes extends BaseRoutes {
             },
           },
         }),
-        handler: this.businessController.listUserRoles,
+        handler: this.businessController.listUserRoles.bind(
+          this.businessController,
+        ),
         validations: [
           {
             target: VALIDATION_TARGETS.PARAMS,
@@ -548,17 +573,7 @@ export class BusinessRoutes extends BaseRoutes {
             ),
           },
         ],
-        middlewares: [
-          requirePermissionAny(['business:users:read'], {
-            businessIdFrom: 'param',
-            additionalCheck: ctx => {
-              const user = ctx.get('user');
-              const userId = ctx.req.param('userId');
-              return user.id === userId;
-            },
-          }),
-          businessesMiddleware,
-        ],
+        middlewares: [businessesMiddleware],
       },
       {
         route: createRoute({
@@ -618,7 +633,9 @@ export class BusinessRoutes extends BaseRoutes {
             },
           },
         }),
-        handler: this.businessController.addPermissionsToRoleTemplate,
+        handler: this.businessController.addPermissionsToRoleTemplate.bind(
+          this.businessController,
+        ),
         validations: [
           {
             target: VALIDATION_TARGETS.PARAMS,
@@ -636,13 +653,7 @@ export class BusinessRoutes extends BaseRoutes {
             }),
           },
         ],
-        middlewares: [
-          requirePermission('business:user-role-templates:update', {
-            businessIdFrom: 'param',
-            resourceIdFrom: ctx => ctx.req.param('templateId'),
-          }),
-          businessesMiddleware,
-        ],
+        middlewares: [businessesMiddleware],
       },
       {
         route: createRoute({
@@ -693,7 +704,9 @@ export class BusinessRoutes extends BaseRoutes {
             },
           },
         }),
-        handler: this.businessController.deleteRoleTemplate,
+        handler: this.businessController.deleteRoleTemplate.bind(
+          this.businessController,
+        ),
         validations: [
           {
             target: VALIDATION_TARGETS.PARAMS,
@@ -705,21 +718,7 @@ export class BusinessRoutes extends BaseRoutes {
             ),
           },
         ],
-        middlewares: [
-          requireBusinessOwner({
-            businessIdFrom: 'param',
-            additionalCheck: async ctx => {
-              const templateId = ctx.req.param('templateId');
-              const template = await userRoleTemplateRepository.findById({
-                id: templateId,
-              });
-              return !template?.isSystem;
-            },
-            errorMessage:
-              'Only business owners can delete custom role templates. System roles cannot be deleted.',
-          }),
-          businessesMiddleware,
-        ],
+        middlewares: [businessesMiddleware],
       },
     ];
 

@@ -38,11 +38,11 @@ export const businessSchema = z.object({
     /**
      * "pending", "owner_invited", "active", "suspended"
      */
-    status: z.string(),
+    status: z.string().optional(),
     /**
      * Array of completed onboarding steps
      */
-    completedSteps: z.array(z.string()),
+    completedSteps: z.array(z.string()).optional(),
     /**
      * Admin who created the business
      */
