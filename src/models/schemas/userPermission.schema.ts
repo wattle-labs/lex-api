@@ -1,4 +1,5 @@
 import { Schema } from 'mongoose';
+import { mongooseLeanVirtuals } from 'mongoose-lean-virtuals';
 
 import { MongooseModel } from '../interfaces/document.interface';
 import { UserPermission } from '../interfaces/userPermission';
@@ -55,12 +56,17 @@ export const userPermissionSchema = new Schema<MongooseModel<UserPermission>>(
   },
 );
 
+userPermissionSchema.virtual('id').get(function () {
+  return this._id.toString();
+});
+
+userPermissionSchema.plugin(mongooseLeanVirtuals);
+
 userPermissionSchema.pre('save', function (next) {
   this.updatedAt = new Date();
   next();
 });
 
-// Indexes for faster lookups
 userPermissionSchema.index({ businessId: 1, name: 1 });
 userPermissionSchema.index(
   { businessId: 1, resource: 1, subResource: 1, action: 1 },

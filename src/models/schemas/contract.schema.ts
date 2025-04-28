@@ -1,4 +1,5 @@
 import { Schema } from 'mongoose';
+import { mongooseLeanVirtuals } from 'mongoose-lean-virtuals';
 
 import { Contract } from '../interfaces/contract';
 import { MongooseModel } from '../interfaces/document.interface';
@@ -25,6 +26,12 @@ export const contractSchema = new Schema<MongooseModel<Contract>>(
     toObject: { virtuals: true, getters: true },
   },
 );
+
+contractSchema.virtual('id').get(function () {
+  return this._id.toString();
+});
+
+contractSchema.plugin(mongooseLeanVirtuals);
 
 contractSchema.pre('save', function (next) {
   this.updatedAt = new Date();

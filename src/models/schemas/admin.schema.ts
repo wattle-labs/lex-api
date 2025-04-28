@@ -1,4 +1,5 @@
 import { Schema } from 'mongoose';
+import { mongooseLeanVirtuals } from 'mongoose-lean-virtuals';
 
 import { Admin } from '../interfaces/admin';
 import { MongooseModel } from '../interfaces/document.interface';
@@ -40,6 +41,12 @@ export const adminSchema = new Schema<MongooseModel<Admin>>(
     toObject: { virtuals: true, getters: true },
   },
 );
+
+adminSchema.virtual('id').get(function () {
+  return this._id.toString();
+});
+
+adminSchema.plugin(mongooseLeanVirtuals);
 
 adminSchema.pre('save', function (next) {
   this.updatedAt = new Date();

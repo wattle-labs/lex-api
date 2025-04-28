@@ -1,4 +1,5 @@
 import { Schema } from 'mongoose';
+import { mongooseLeanVirtuals } from 'mongoose-lean-virtuals';
 
 import { AdminPermission } from '../interfaces/adminPermission';
 import { MongooseModel } from '../interfaces/document.interface';
@@ -18,6 +19,12 @@ export const adminPermissionSchema = new Schema<MongooseModel<AdminPermission>>(
     toObject: { virtuals: true, getters: true },
   },
 );
+
+adminPermissionSchema.virtual('id').get(function () {
+  return this._id.toString();
+});
+
+adminPermissionSchema.plugin(mongooseLeanVirtuals);
 
 adminPermissionSchema.pre('save', function (next) {
   this.updatedAt = new Date();

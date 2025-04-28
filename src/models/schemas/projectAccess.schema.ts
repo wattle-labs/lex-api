@@ -1,4 +1,5 @@
 import { Schema } from 'mongoose';
+import { mongooseLeanVirtuals } from 'mongoose-lean-virtuals';
 
 import { MongooseModel } from '../interfaces/document.interface';
 import { ProjectAccess } from '../interfaces/projectAccess';
@@ -54,13 +55,18 @@ export const projectAccessSchema = new Schema<MongooseModel<ProjectAccess>>(
   },
 );
 
-// Indexes for faster lookups
-projectAccessSchema.index({ projectId: 1, userId: 1 }, { unique: true });
-projectAccessSchema.index({ userId: 1 });
-projectAccessSchema.index({ businessId: 1 });
-projectAccessSchema.index({ 'constraints.expiresAt': 1 }, { sparse: true });
+projectAccessSchema.virtual('id').get(function () {
+  return this._id.toString();
+});
+
+projectAccessSchema.plugin(mongooseLeanVirtuals);
 
 projectAccessSchema.pre('save', function (next) {
   this.updatedAt = new Date();
   next();
 });
+
+projectAccessSchema.index({ projectId: 1, userId: 1 }, { unique: true });
+projectAccessSchema.index({ userId: 1 });
+projectAccessSchema.index({ businessId: 1 });
+projectAccessSchema.index({ 'constraints.expiresAt': 1 }, { sparse: true });

@@ -1,4 +1,5 @@
 import { Schema } from 'mongoose';
+import { mongooseLeanVirtuals } from 'mongoose-lean-virtuals';
 
 import { MongooseModel } from '../interfaces/document.interface';
 import { User } from '../interfaces/user';
@@ -87,17 +88,19 @@ export const userSchema = new Schema<MongooseModel<User>>(
   },
 );
 
-userSchema.pre('save', function (next) {
-  this.updatedAt = new Date();
-  next();
+userSchema.virtual('id').get(function () {
+  return this._id.toString();
 });
 
 userSchema.virtual('fullName').get(function () {
   return `${this.profile.firstName} ${this.profile.lastName}`;
 });
 
-userSchema.virtual('id').get(function () {
-  return this._id;
+userSchema.plugin(mongooseLeanVirtuals);
+
+userSchema.pre('save', function (next) {
+  this.updatedAt = new Date();
+  next();
 });
 
 userSchema.index({ businessId: 1 });

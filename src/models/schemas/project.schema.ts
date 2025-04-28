@@ -1,4 +1,5 @@
 import { Schema } from 'mongoose';
+import { mongooseLeanVirtuals } from 'mongoose-lean-virtuals';
 
 import { MongooseModel } from '../interfaces/document.interface';
 import { Project } from '../interfaces/project';
@@ -71,13 +72,18 @@ export const projectSchema = new Schema<MongooseModel<Project>>(
   },
 );
 
-// Indexes for faster lookups
 projectSchema.index({ businessId: 1 });
 projectSchema.index({ status: 1 });
 projectSchema.index({ 'ownership.primaryOwnerId': 1 });
 projectSchema.index({ 'metadata.region': 1 });
 projectSchema.index({ 'metadata.department': 1 });
 projectSchema.index({ 'dates.dueDate': 1 });
+
+projectSchema.virtual('id').get(function () {
+  return this._id.toString();
+});
+
+projectSchema.plugin(mongooseLeanVirtuals);
 
 projectSchema.pre('save', function (next) {
   this.updatedAt = new Date();

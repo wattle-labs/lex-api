@@ -1,4 +1,5 @@
 import { Schema } from 'mongoose';
+import { mongooseLeanVirtuals } from 'mongoose-lean-virtuals';
 
 import { AdminRoleTemplate } from '../interfaces/adminRoleTemplate';
 import { MongooseModel } from '../interfaces/document.interface';
@@ -21,6 +22,12 @@ export const adminRoleTemplateSchema = new Schema<
     toObject: { virtuals: true, getters: true },
   },
 );
+
+adminRoleTemplateSchema.virtual('id').get(function () {
+  return this._id.toString();
+});
+
+adminRoleTemplateSchema.plugin(mongooseLeanVirtuals);
 
 adminRoleTemplateSchema.pre('save', function (next) {
   this.updatedAt = new Date();

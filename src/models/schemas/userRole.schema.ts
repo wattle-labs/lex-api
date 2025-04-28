@@ -1,4 +1,5 @@
 import { Schema } from 'mongoose';
+import { mongooseLeanVirtuals } from 'mongoose-lean-virtuals';
 
 import { MongooseModel } from '../interfaces/document.interface';
 import { UserRole } from '../interfaces/userRole';
@@ -70,12 +71,17 @@ export const userRoleSchema = new Schema<MongooseModel<UserRole>>(
   },
 );
 
+userRoleSchema.virtual('id').get(function () {
+  return this._id.toString();
+});
+
+userRoleSchema.plugin(mongooseLeanVirtuals);
+
 userRoleSchema.pre('save', function (next) {
   this.updatedAt = new Date();
   next();
 });
 
-// Indexes for faster lookups
 userRoleSchema.index({ userId: 1, businessId: 1 });
 userRoleSchema.index({ userId: 1, isActive: 1 });
 userRoleSchema.index({ businessId: 1, userRoleTemplateId: 1 });

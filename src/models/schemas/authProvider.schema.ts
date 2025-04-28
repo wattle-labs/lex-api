@@ -1,4 +1,5 @@
 import { Schema } from 'mongoose';
+import { mongooseLeanVirtuals } from 'mongoose-lean-virtuals';
 
 import { AuthProvider } from '../interfaces/authProvider';
 import { MongooseModel } from '../interfaces/document.interface';
@@ -38,6 +39,12 @@ export const authProviderSchema = new Schema<MongooseModel<AuthProvider>>(
     toObject: { virtuals: true, getters: true },
   },
 );
+
+authProviderSchema.virtual('id').get(function () {
+  return this._id.toString();
+});
+
+authProviderSchema.plugin(mongooseLeanVirtuals);
 
 authProviderSchema.pre('save', function (next) {
   this.updatedAt = new Date();

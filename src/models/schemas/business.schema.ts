@@ -1,4 +1,5 @@
 import { Schema } from 'mongoose';
+import { mongooseLeanVirtuals } from 'mongoose-lean-virtuals';
 
 import { Business } from '../interfaces/business';
 import { MongooseModel } from '../interfaces/document.interface';
@@ -72,6 +73,12 @@ export const businessSchema = new Schema<MongooseModel<Business>>(
     toObject: { virtuals: true, getters: true },
   },
 );
+
+businessSchema.virtual('id').get(function () {
+  return this._id.toString();
+});
+
+businessSchema.plugin(mongooseLeanVirtuals);
 
 businessSchema.pre('save', function (next) {
   this.updatedAt = new Date();

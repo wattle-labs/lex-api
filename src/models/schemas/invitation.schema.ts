@@ -1,5 +1,6 @@
 import crypto from 'crypto';
 import { Schema } from 'mongoose';
+import { mongooseLeanVirtuals } from 'mongoose-lean-virtuals';
 
 import { MongooseModel } from '../interfaces/document.interface';
 import { Invitation } from '../interfaces/invitation';
@@ -110,7 +111,6 @@ export const invitationSchema = new Schema<MongooseModel<Invitation>>(
   },
 );
 
-// Indexes for faster lookups
 invitationSchema.index({ email: 1, businessId: 1 });
 invitationSchema.index({ status: 1 });
 
@@ -129,6 +129,12 @@ invitationSchema.virtual('isExpired').get(function () {
   if (!this.security) return false;
   return this.status === 'pending' && this.security.expiresAt < new Date();
 });
+
+invitationSchema.virtual('id').get(function () {
+  return this._id.toString();
+});
+
+invitationSchema.plugin(mongooseLeanVirtuals);
 
 // Pre-save hook to update status if expired
 invitationSchema.pre('save', function (next) {
