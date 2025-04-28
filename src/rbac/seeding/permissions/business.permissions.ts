@@ -1,0 +1,102 @@
+import { PermissionAction } from '../../../constants/permission-actions.constants';
+import {
+  PermissionResource,
+  PermissionSubResource,
+} from '../../../constants/permission-resources.constants';
+import { PermissionDefinition } from '../interfaces/permission-definition.interface';
+
+export const businessPermissions: PermissionDefinition[] = [
+  {
+    resource: PermissionResource.BUSINESS,
+    action: PermissionAction.MANAGE,
+    description: 'Ability to manage business settings',
+    category: 'business_administration',
+    isSystem: true,
+  },
+  {
+    resource: PermissionResource.BUSINESS,
+    action: PermissionAction.READ,
+    description: 'Ability to view business details',
+    category: 'business_administration',
+    isSystem: true,
+  },
+  {
+    resource: PermissionResource.BUSINESS,
+    action: PermissionAction.UPDATE,
+    description: 'Ability to update business details',
+    category: 'business_administration',
+    isSystem: true,
+  },
+  {
+    resource: PermissionResource.BUSINESS,
+    subResource: PermissionSubResource.USERS,
+    action: PermissionAction.INVITE,
+    description: 'Ability to invite users to the business',
+    category: 'business_administration',
+    isSystem: true,
+  },
+  {
+    resource: PermissionResource.BUSINESS,
+    subResource: PermissionSubResource.USERS,
+    action: PermissionAction.REMOVE,
+    description: 'Ability to remove users from the business',
+    category: 'business_administration',
+    isSystem: true,
+  },
+  {
+    resource: PermissionResource.BUSINESS,
+    subResource: PermissionSubResource.ROLES,
+    action: PermissionAction.MANAGE,
+    description: 'Ability to manage business roles',
+    category: 'business_administration',
+    isSystem: true,
+  },
+  {
+    resource: PermissionResource.BUSINESS,
+    subResource: PermissionSubResource.SETTINGS,
+    action: PermissionAction.MANAGE,
+    description: 'Ability to manage business settings',
+    category: 'business_administration',
+    isSystem: true,
+  },
+  {
+    resource: PermissionResource.BUSINESS,
+    subResource: PermissionSubResource.BILLING,
+    action: PermissionAction.MANAGE,
+    description: 'Ability to manage business billing',
+    category: 'business_administration',
+    isSystem: true,
+  },
+  {
+    resource: PermissionResource.BUSINESS,
+    subResource: PermissionSubResource.INVITES,
+    action: PermissionAction.READ,
+    description: 'Ability to view business invitations',
+    category: 'business_administration',
+    isSystem: true,
+  },
+  {
+    resource: PermissionResource.BUSINESS,
+    subResource: PermissionSubResource.INVITES,
+    action: PermissionAction.CREATE,
+    description: 'Ability to create business invitations',
+    category: 'business_administration',
+    isSystem: true,
+  },
+  {
+    resource: PermissionResource.BUSINESS,
+    subResource: PermissionSubResource.INVITES,
+    action: PermissionAction.DELETE,
+    description: 'Ability to delete business invitations',
+    category: 'business_administration',
+    isSystem: true,
+  },
+  {
+    resource: PermissionResource.BUSINESS,
+    subResource: PermissionSubResource.INVITES,
+    action: PermissionAction.RESEND,
+    description: 'Ability to resend business invitations',
+    category: 'business_administration',
+    isSystem: true,
+  },
+];

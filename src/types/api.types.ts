@@ -1,3 +1,5 @@
+import { Context } from 'hono';
+
 export type ApiResponse<T> = {
   success: boolean;
   data?: T;
@@ -5,4 +7,9 @@ export type ApiResponse<T> = {
   error?: string;
   statusCode?: number;
   validationErrors?: Array<{ path: string; message: string; code: string }>;
+};
+
+export type ControllerArgs = {
+  ctx: Context;
+  request: Request;
 };

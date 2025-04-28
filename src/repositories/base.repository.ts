@@ -11,7 +11,6 @@ import {
   updateOptions,
 } from '../interfaces/repository.interface';
 
-// Enhanced error interface
 interface EnhancedError extends Error {
   originalError?: Error;
   data?: unknown;
@@ -41,13 +40,12 @@ export class BaseRepository<T> implements IRepository<T> {
       return result[0].toObject() as T;
     } catch (error) {
       if (error instanceof Error) {
-        // Enhance error with more context
         const enhancedError: EnhancedError = new Error(
           `Failed to create document: ${error.message}`,
         );
-        // Preserve the original stack trace
+
         enhancedError.stack = error.stack;
-        // Add extra properties
+
         enhancedError.originalError = error;
         enhancedError.data = data;
         throw enhancedError;

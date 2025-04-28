@@ -44,7 +44,6 @@ export class MongoService {
       const connectionOptions: ConnectOptions = {
         ...config.options,
         dbName: config.dbName,
-        // autoIndex: true,
       };
 
       this.client = await mongoose.connect(config.uri, connectionOptions);
@@ -89,10 +88,6 @@ export class MongoService {
     }
   }
 
-  /**
-   * Start a MongoDB transaction
-   * @returns A MongoDB session with a transaction
-   */
   public async startTransaction(): Promise<ClientSession> {
     if (!this.initialized || !this.client) {
       throw new Error(
@@ -105,10 +100,6 @@ export class MongoService {
     return session;
   }
 
-  /**
-   * Commit a MongoDB transaction
-   * @param session The session with an active transaction
-   */
   public async commitTransaction(session: ClientSession): Promise<void> {
     try {
       await session.commitTransaction();
@@ -118,10 +109,6 @@ export class MongoService {
     }
   }
 
-  /**
-   * Abort a MongoDB transaction
-   * @param session The session with an active transaction
-   */
   public async abortTransaction(session: ClientSession): Promise<void> {
     try {
       await session.abortTransaction();
@@ -131,11 +118,6 @@ export class MongoService {
     }
   }
 
-  /**
-   * Execute a function within a transaction
-   * @param fn The function to execute within the transaction
-   * @returns The result of the function
-   */
   public async withTransaction<T>(
     fn: (session: ClientSession) => Promise<T>,
   ): Promise<T> {

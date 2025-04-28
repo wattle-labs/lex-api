@@ -31,7 +31,7 @@ export const businessSchema = new Schema<MongooseModel<Business>>(
       },
       invitationExpiry: {
         type: Number,
-        default: 72, // 72 hours (3 days) by default
+        default: 72,
       },
       enforceHierarchy: {
         type: Boolean,

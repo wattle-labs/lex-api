@@ -29,10 +29,6 @@ export class UsersService extends BaseService<MongooseModel<User>> {
     return await this.userRepository.findByExternalId(externalId);
   }
 
-  async findUsersByBusiness(businessId: string): Promise<User[]> {
-    return await this.userRepository.findUsersByBusiness(businessId);
-  }
-
   async findUsersByManager(managerId: string): Promise<User[]> {
     return await this.userRepository.findUsersByManager(managerId);
   }

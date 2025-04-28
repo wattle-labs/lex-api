@@ -2,14 +2,9 @@ import { ObjectId } from 'mongoose';
 
 export interface User {
   id?: string | ObjectId;
-  /**
-   * ID from auth provider
-   */
+
   externalId: string;
-  /**
-   * Primary email address
-   * @format email
-   */
+
   email: string;
   businessId: string | ObjectId;
   otherBusinesses?: (string | ObjectId)[];
@@ -28,17 +23,10 @@ export interface User {
     timezone?: string;
   };
   hierarchy?: {
-    /**
-     * Direct supervisor/manager
-     */
     managerId?: string | ObjectId;
-    /**
-     * Hierarchy level (lower = higher rank)
-     */
+
     level?: number;
-    /**
-     * Users reporting to this user
-     */
+
     directReports?: (string | ObjectId)[];
   };
   authProvider: {

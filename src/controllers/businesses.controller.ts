@@ -1,20 +1,24 @@
 import type { Context } from 'hono';
 
+import { PermissionAction } from '../constants/permission-actions.constants';
+import {
+  PermissionResource,
+  PermissionSubResource,
+} from '../constants/permission-resources.constants';
 import {
   VALIDATION_MIDDLEWARE_KEY,
   VALIDATION_TARGETS,
 } from '../constants/validation.constants';
 import { logger } from '../lib/logger';
 import { ResponseBuilder } from '../lib/response.handler';
+import { RequirePermission } from '../rbac';
 import { BusinessService } from '../services/businesses.service';
 
-// Define a class that satisfies the decorator requirements
 class BusinessController implements Record<string, unknown> {
   [key: string]: unknown;
 
   constructor(private readonly service: BusinessService) {}
 
-  // Public endpoint - no permission required
   findBySlug = async (ctx: Context): Promise<Response> => {
     const { slug } = ctx.get(
       `${VALIDATION_MIDDLEWARE_KEY}:${VALIDATION_TARGETS.PARAMS}`,
@@ -44,6 +48,11 @@ class BusinessController implements Record<string, unknown> {
     }
   };
 
+  @RequirePermission(PermissionResource.BUSINESS, PermissionAction.CREATE, {
+    subResource: PermissionSubResource.INVITES,
+    businessIdParam: 'businessId',
+    businessIdFrom: VALIDATION_TARGETS.PARAMS,
+  })
   async createInvitation(ctx: Context): Promise<Response> {
     const data = ctx.get(
       `${VALIDATION_MIDDLEWARE_KEY}:${VALIDATION_TARGETS.BODY}`,
@@ -57,6 +66,11 @@ class BusinessController implements Record<string, unknown> {
     return ctx.json(ResponseBuilder.success(invitation), 201);
   }
 
+  @RequirePermission(PermissionResource.USER, PermissionAction.ASSIGN, {
+    subResource: PermissionSubResource.ROLES,
+    businessIdParam: 'businessId',
+    businessIdFrom: VALIDATION_TARGETS.PARAMS,
+  })
   async assignRoleToUser(ctx: Context): Promise<Response> {
     const assignee = ctx.get('user');
     const { roleTemplateId } = ctx.get(
@@ -261,7 +275,6 @@ class BusinessController implements Record<string, unknown> {
     }
   }
 
-  // Any user can get their own permissions
   getCurrentUserPermissions = async (ctx: Context): Promise<Response> => {
     const user = ctx.get('user');
     const { businessId } = ctx.get(
@@ -276,7 +289,7 @@ class BusinessController implements Record<string, unknown> {
         businessId,
       });
 
-      const permissions = []; // TODO: Implement this after RBACv2 is ready
+      const permissions = [];
 
       return ctx.json(
         ResponseBuilder.success({

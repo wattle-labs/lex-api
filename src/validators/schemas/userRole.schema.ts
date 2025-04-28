@@ -17,21 +17,12 @@ export const userRoleSchema = z.object({
   userRoleTemplateId: z.union([z.string(), objectIdSchema]),
   isActive: z.boolean(),
   scope: z.object({
-    /**
-     * Applies business-wide
-     */
     isGlobal: z.boolean(),
-    /**
-     * Limited to specific projects
-     */
     projectIds: z.array(z.string()).optional(),
   }),
   customPermissions: z.array(customPermissionSchema).optional(),
   assignedBy: z.union([z.string(), objectIdSchema]),
   assignedAt: z.date().optional(),
-  /**
-   * Optional expiration
-   */
   expiresAt: z.date().optional(),
   createdAt: z.date().optional(),
   updatedAt: z.date().optional(),

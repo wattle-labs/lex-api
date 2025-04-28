@@ -181,7 +181,7 @@ export class BusinessRoutes extends BaseRoutes {
       {
         route: createRoute({
           method: 'post',
-          path: '',
+          path: '/',
           summary: 'Create a new business',
           tags: [this.RESOURCE_NAME],
           request: {
@@ -227,7 +227,6 @@ export class BusinessRoutes extends BaseRoutes {
             schema: businessCreateBodyValidator,
           },
         ],
-        middlewares: [businessesMiddleware],
       },
       {
         route: createRoute({

@@ -87,14 +87,11 @@ export class ProjectAccessService extends BaseService<
       };
     }
 
-    // Check if access already exists
     const existingAccess = await this.findByUserAndProject(userId, projectId);
 
     if (existingAccess) {
-      // Update existing access
       return await this.updateById(existingAccess.id!.toString(), accessData);
     } else {
-      // Create new access
       return await this.create(accessData);
     }
   }

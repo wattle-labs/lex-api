@@ -5,15 +5,8 @@ const objectIdSchema = z.any();
 
 export const userSchema = z.object({
   id: z.union([z.string(), objectIdSchema]).optional(),
-  /**
-   * ID from auth provider
-   */
   externalId: z.string(),
-  /**
-   * Primary email address
-   * @format email
-   */
-  email: z.string().email(),
+  email: z.string(),
   businessId: z.union([z.string(), objectIdSchema]),
   otherBusinesses: z.array(z.union([z.string(), objectIdSchema])).optional(),
   status: z.string(),
@@ -32,17 +25,8 @@ export const userSchema = z.object({
   }),
   hierarchy: z
     .object({
-      /**
-       * Direct supervisor/manager
-       */
       managerId: z.union([z.string(), objectIdSchema]).optional(),
-      /**
-       * Hierarchy level (lower = higher rank)
-       */
       level: z.number().optional(),
-      /**
-       * Users reporting to this user
-       */
       directReports: z.array(z.union([z.string(), objectIdSchema])).optional(),
     })
     .optional(),

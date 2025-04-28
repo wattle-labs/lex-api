@@ -7,7 +7,7 @@ import { adminRoleTemplateSchema } from './schemas/adminRoleTemplate.schema';
 const AdminRoleTemplateModel = model<MongooseModel<AdminRoleTemplate>>(
   'AdminRoleTemplate',
   adminRoleTemplateSchema,
-  'admin_role_templates',
+  'adminRoleTemplates',
 );
 
 export default AdminRoleTemplateModel;

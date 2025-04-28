@@ -7,7 +7,7 @@ import { adminPermissionSchema } from './schemas/adminPermission.schema';
 const AdminPermissionModel = model<MongooseModel<AdminPermission>>(
   'AdminPermission',
   adminPermissionSchema,
-  'admin_permissions',
+  'adminPermissions',
 );
 
 export default AdminPermissionModel;

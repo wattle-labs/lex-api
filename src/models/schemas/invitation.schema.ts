@@ -114,7 +114,6 @@ export const invitationSchema = new Schema<MongooseModel<Invitation>>(
 invitationSchema.index({ email: 1, businessId: 1 });
 invitationSchema.index({ status: 1 });
 
-// Helper method to generate token
 invitationSchema.statics.generateToken = function (): {
   token: string;
   tokenHash: string;
@@ -124,7 +123,6 @@ invitationSchema.statics.generateToken = function (): {
   return { token, tokenHash };
 };
 
-// Auto-expire invitations
 invitationSchema.virtual('isExpired').get(function () {
   if (!this.security) return false;
   return this.status === 'pending' && this.security.expiresAt < new Date();
@@ -136,7 +134,6 @@ invitationSchema.virtual('id').get(function () {
 
 invitationSchema.plugin(mongooseLeanVirtuals);
 
-// Pre-save hook to update status if expired
 invitationSchema.pre('save', function (next) {
   this.updatedAt = new Date();
 

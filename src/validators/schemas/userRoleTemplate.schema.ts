@@ -9,18 +9,9 @@ export const userRoleTemplateSchema = z.object({
   name: z.string(),
   description: z.string().optional(),
   isSystem: z.boolean(),
-  /**
-   * Optional parent role for inheritance
-   */
   parentRoleId: z.union([z.string(), objectIdSchema]).optional(),
-  /**
-   * Hierarchy information
-   */
   hierarchy: z.object({
     level: z.number(),
-    /**
-     * Functional area ("legal", "sales")
-     */
     domain: z.string().optional(),
     canManageRoles: z.array(z.union([z.string(), objectIdSchema])).optional(),
   }),

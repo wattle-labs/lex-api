@@ -1,4 +1,4 @@
-import { ApiResponse } from '../types/api.response';
+import { ApiResponse } from '../types/api.types';
 
 export const successResponse = <T>(
   data: T,

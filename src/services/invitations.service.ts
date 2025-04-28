@@ -75,7 +75,7 @@ export class InvitationService extends BaseService<MongooseModel<Invitation>> {
     }
 
     const { token, tokenHash } = this.invitationRepository.generateToken();
-    const expiryHours = options.expiryHours || 72; // Default 72 hours
+    const expiryHours = options.expiryHours || 72;
 
     const expiresAt = new Date();
     expiresAt.setHours(expiresAt.getHours() + expiryHours);

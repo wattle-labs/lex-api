@@ -5,11 +5,7 @@ const objectIdSchema = z.any();
 
 export const authProviderSchema = z.object({
   id: z.union([z.string(), objectIdSchema]).optional(),
-  /**
-   * Auth provider name (e.g., "clerk")
-   * @minLength 1 Provider name is required
-   */
-  provider: z.string().min(1, 'Provider name is required'),
+  provider: z.string(),
   isActive: z.boolean(),
   metadataMap: z.object({
     userId: z.string(),

@@ -6,36 +6,13 @@ const objectIdSchema = z.any();
 export const userPermissionSchema = z.object({
   id: z.union([z.string(), objectIdSchema]).optional(),
   businessId: z.union([z.string(), objectIdSchema]),
-  /**
-   * Unique identifier (e.g., "contract:approve")
-   */
   name: z.string(),
   description: z.string(),
-  /**
-   * Resource type ("contract", "project", etc.)
-   */
   resource: z.string(),
-  /**
-   * Sub-resource type (e.g. "settings", "members", "timeline")
-   * This is the second part of the permission name in a 3-part permission
-   */
   subResource: z.string().optional(),
-  /**
-   * Action ("create", "read", "update", etc.)
-   */
   action: z.string(),
-  /**
-   * Grouping ("legal", "sales", "admin")
-   * Used for UI representation only, not for permission logic
-   */
   category: z.string(),
-  /**
-   * Other permissions this includes
-   */
   implications: z.array(z.string()).optional(),
-  /**
-   * System-defined or custom
-   */
   isSystem: z.boolean(),
   createdAt: z.date().optional(),
   updatedAt: z.date().optional(),

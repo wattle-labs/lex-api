@@ -6,18 +6,12 @@ export interface UserRoleTemplate {
   name: string;
   description?: string;
   isSystem: boolean;
-  /**
-   * Optional parent role for inheritance
-   */
+
   parentRoleId?: string | ObjectId;
-  /**
-   * Hierarchy information
-   */
+
   hierarchy: {
     level: number;
-    /**
-     * Functional area ("legal", "sales")
-     */
+
     domain?: string;
     canManageRoles?: (string | ObjectId)[];
   };

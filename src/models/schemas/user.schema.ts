@@ -93,7 +93,7 @@ userSchema.virtual('id').get(function () {
 });
 
 userSchema.virtual('fullName').get(function () {
-  return `${this.profile.firstName} ${this.profile.lastName}`;
+  return `${this?.profile?.firstName ?? ''} ${this?.profile?.lastName ?? ''}`;
 });
 
 userSchema.plugin(mongooseLeanVirtuals);

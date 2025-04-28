@@ -2,10 +2,7 @@ import { ObjectId } from 'mongoose';
 
 export interface Project {
   id?: string | ObjectId;
-  /**
-   * Project name
-   * @minLength 1 Name is required
-   */
+
   name: string;
   client: string;
   businessId: string | ObjectId;

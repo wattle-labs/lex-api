@@ -5,11 +5,7 @@ const objectIdSchema = z.any();
 
 export const projectSchema = z.object({
   id: z.union([z.string(), objectIdSchema]).optional(),
-  /**
-   * Project name
-   * @minLength 1 Name is required
-   */
-  name: z.string().min(1, 'Name is required'),
+  name: z.string(),
   client: z.string(),
   businessId: z.union([z.string(), objectIdSchema]),
   type: z.string(),

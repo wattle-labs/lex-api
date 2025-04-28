@@ -53,7 +53,6 @@ export class UserPermissionService extends BaseService<
   async createPermission(
     data: Partial<UserPermission>,
   ): Promise<UserPermission> {
-    // Generate name if not provided
     if (!data.name && data.resource && data.action) {
       data.name = `${data.resource}:${data.action}`;
     }

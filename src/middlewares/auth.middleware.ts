@@ -42,9 +42,13 @@ export const authMiddleware = async (ctx: Context, next: Next) => {
     ctx.set('user', user);
     await next();
   } catch (error) {
-    logger.error('Error in auth middleware', {
-      error: error,
-    });
+    logger.error(
+      'Error in auth middleware',
+      {
+        error: error instanceof Error ? error.message : error,
+      },
+      error as Error,
+    );
     return ctx.json(unauthorizedResponse, 401);
   }
 };

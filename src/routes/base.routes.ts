@@ -32,7 +32,7 @@ export abstract class BaseRoutes {
   ) {
     if (options?.validations) {
       const validationMiddleware = validate(options.validations);
-      // Apply validation middleware with method check
+
       this.router.use(route.path, async (ctx, next) => {
         if (ctx.req.method.toUpperCase() === route.method.toUpperCase()) {
           return await validationMiddleware(ctx, next);
@@ -43,7 +43,6 @@ export abstract class BaseRoutes {
 
     if (options?.middlewares) {
       options.middlewares.forEach(middleware => {
-        // Apply each middleware with method check
         this.router.use(route.path, async (ctx, next) => {
           if (ctx.req.method.toUpperCase() === route.method.toUpperCase()) {
             return await middleware(ctx, next);

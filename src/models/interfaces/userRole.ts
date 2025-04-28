@@ -14,21 +14,14 @@ export interface UserRole {
   userRoleTemplateId: string | ObjectId;
   isActive: boolean;
   scope: {
-    /**
-     * Applies business-wide
-     */
     isGlobal: boolean;
-    /**
-     * Limited to specific projects
-     */
+
     projectIds?: string[];
   };
   customPermissions?: CustomPermission[];
   assignedBy: string | ObjectId;
   assignedAt?: Date;
-  /**
-   * Optional expiration
-   */
+
   expiresAt?: Date;
   createdAt?: Date;
   updatedAt?: Date;

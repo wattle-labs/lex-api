@@ -1,10 +1,12 @@
 import { logger } from '../lib/logger';
+import { mongoService } from '../lib/mongo';
 import { Business } from '../models/interfaces/business';
 import { MongooseModel } from '../models/interfaces/document.interface';
 import { Invitation } from '../models/interfaces/invitation';
 import { UserPermission } from '../models/interfaces/userPermission';
 import { UserRole } from '../models/interfaces/userRole';
 import { UserRoleTemplate } from '../models/interfaces/userRoleTemplate';
+import { businessSeederService } from '../rbac/seeding/services/business-seeder.service';
 import {
   BusinessRepository,
   businessRepository,
@@ -30,7 +32,6 @@ export class BusinessService extends BaseService<MongooseModel<Business>> {
       throw new Error('Business already exists');
     }
 
-    // Create the business first
     const newBusiness = await this.businessRepository.create({
       data: {
         ...data,
@@ -41,11 +42,12 @@ export class BusinessService extends BaseService<MongooseModel<Business>> {
       },
     });
 
-    // Seed the standard permissions and roles
     try {
-      // TODO: Implement this after RBACv2 is ready
+      await businessSeederService.seedNewBusiness(
+        newBusiness._id.toString(),
+        'default',
+      );
 
-      // Mark permission setup as completed since we've seeded everything
       await this.businessRepository.update({
         filter: { _id: newBusiness.id },
         push: {
@@ -67,9 +69,6 @@ export class BusinessService extends BaseService<MongooseModel<Business>> {
         businessId: newBusiness.id,
         error,
       });
-      // Don't throw - we've already created the business
-      // This allows the business to be created even if seeding fails
-      // Admins can manually set up permissions later
     }
 
     return newBusiness;
@@ -134,7 +133,6 @@ export class BusinessService extends BaseService<MongooseModel<Business>> {
     templateId: string,
     permissionIds: string[],
   ): Promise<UserRoleTemplate | null> {
-    // Verify permissions exist and belong to this business
     const permissions = await userPermissionRepository.find({
       filter: {
         _id: { $in: permissionIds },
@@ -148,7 +146,6 @@ export class BusinessService extends BaseService<MongooseModel<Business>> {
       );
     }
 
-    // Verify template exists and belongs to this business
     const template = await userRoleTemplateRepository.findOne({
       filter: {
         _id: templateId,
@@ -162,21 +159,18 @@ export class BusinessService extends BaseService<MongooseModel<Business>> {
       );
     }
 
-    // Add permissions to the template
     const existingPermissionIds = template.basePermissions.map(p =>
       typeof p === 'string' ? p : p.toString(),
     );
 
-    // Find only new permissions that aren't already in the template
     const newPermissionIds = permissionIds.filter(
       id => !existingPermissionIds.includes(id),
     );
 
     if (newPermissionIds.length === 0) {
-      return template; // No new permissions to add
+      return template;
     }
 
-    // Update the template with the new permissions
     return await userRoleTemplateRepository.update({
       filter: { _id: templateId },
       push: { basePermissions: newPermissionIds },
@@ -187,7 +181,6 @@ export class BusinessService extends BaseService<MongooseModel<Business>> {
     businessId: string,
     templateId: string,
   ): Promise<boolean> {
-    // Check if template exists and belongs to this business
     const template = await userRoleTemplateRepository.findOne({
       filter: {
         _id: templateId,
@@ -205,7 +198,6 @@ export class BusinessService extends BaseService<MongooseModel<Business>> {
       throw new Error('System role templates cannot be deleted');
     }
 
-    // Check if any users currently have this role assigned
     const usersWithRole = await userRoleRepository.find({
       filter: {
         userRoleTemplateId: templateId,
@@ -220,7 +212,6 @@ export class BusinessService extends BaseService<MongooseModel<Business>> {
       );
     }
 
-    // Delete the template
     const result = await userRoleTemplateRepository.delete({
       filter: { _id: templateId },
     });
@@ -293,6 +284,22 @@ export class BusinessService extends BaseService<MongooseModel<Business>> {
     });
 
     return invitation;
+  }
+
+  async createBusiness(businessData: Partial<Business>): Promise<Business> {
+    try {
+      return await mongoService.withTransaction(async session => {
+        const business = await businessRepository.create({
+          data: businessData,
+          session,
+        });
+
+        return business;
+      });
+    } catch (error) {
+      logger.error('Error creating business with permissions', { error });
+      throw error;
+    }
   }
 }
 

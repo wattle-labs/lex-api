@@ -19,7 +19,6 @@ const protectedRouter = new OpenAPIHono();
 
 protectedRouter.use('*', authMiddleware);
 
-// Docs
 router.get('/docs/spec', c => {
   return c.json(
     router.getOpenAPIDocument({
@@ -33,8 +32,6 @@ router.get('/docs/spec', c => {
 });
 
 router.get('/docs/ui', swaggerUI({ url: `${API_BASE_PATH}/docs/spec` }));
-
-// Register all routes
 
 const businessRoutes = new BusinessRoutes(
   new BusinessController(businessService),
@@ -51,8 +48,6 @@ protectedRouter.route(contractRoutes.PATH, contractRoutes.getRouter());
 protectedRouter.route(userRoutes.PATH, userRoutes.getRouter());
 
 router.route('/', protectedRouter);
-
-// Register health check
 
 router.get('/health', c => {
   return c.json({
