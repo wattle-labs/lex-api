@@ -76,7 +76,7 @@ export class BaseRepository<T> implements IRepository<T> {
       query.session(session);
     }
 
-    const result = await query;
+    const result = await query.lean({ virtuals: true });
     return result as T[];
   }
 
@@ -88,7 +88,7 @@ export class BaseRepository<T> implements IRepository<T> {
       query.session(session);
     }
 
-    const result = await query.lean();
+    const result = await query.lean({ virtuals: true });
     return result as T | null;
   }
 
@@ -100,7 +100,7 @@ export class BaseRepository<T> implements IRepository<T> {
       query.session(session);
     }
 
-    const result = await query.lean();
+    const result = await query.lean({ virtuals: true });
     return result as T | null;
   }
 
@@ -124,7 +124,7 @@ export class BaseRepository<T> implements IRepository<T> {
       query.session(session);
     }
 
-    const result = await query.lean();
+    const result = await query.lean({ virtuals: true });
     return result as T | null;
   }
 
