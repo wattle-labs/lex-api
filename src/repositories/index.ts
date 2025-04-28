@@ -9,3 +9,5 @@ export * from './userRoleTemplates.repository';
 export * from './userPermissions.repository';
 export * from './users.repository';
 export * from './parties.repository';
+export * from './views.repository';
+export * from './users.repository';
