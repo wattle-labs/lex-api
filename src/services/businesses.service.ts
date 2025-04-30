@@ -51,21 +51,18 @@ export class BusinessService extends BaseService<MongooseModel<Business>> {
       await this.businessRepository.update({
         filter: { _id: newBusiness.id },
         push: {
-          'setup.completedSteps': [
-            'permission_created',
-            'role_template_created',
-          ],
+          'setup.completedSteps': ['role_template_created'],
         },
       });
 
       logger.info(
-        `Permissions and roles seeded for new business: ${newBusiness.name}`,
+        `Role templates seeded for new business: ${newBusiness.name}`,
         {
           businessId: newBusiness.id,
         },
       );
     } catch (error) {
-      logger.error('Failed to seed permissions for new business', {
+      logger.error('Failed to seed role templates for new business', {
         businessId: newBusiness.id,
         error,
       });
@@ -79,10 +76,7 @@ export class BusinessService extends BaseService<MongooseModel<Business>> {
     data: Partial<UserPermission>,
   ): Promise<UserPermission> {
     const permission = await userPermissionRepository.create({
-      data: {
-        ...data,
-        businessId,
-      },
+      data,
     });
 
     await this.businessRepository.update({

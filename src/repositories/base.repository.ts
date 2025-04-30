@@ -64,14 +64,23 @@ export class BaseRepository<T> implements IRepository<T> {
       sort,
       session,
     } = options;
-    const query = this.model
-      .find(filter ?? {}, fields, queryOptions)
-      .limit(limit ?? 10)
-      .skip(skip ?? 0)
-      .sort(sort);
+
+    let query = this.model.find(filter ?? {}, fields, queryOptions);
+
+    if (limit !== undefined) {
+      query = query.limit(limit);
+    }
+
+    if (skip !== undefined) {
+      query = query.skip(skip);
+    }
+
+    if (sort) {
+      query = query.sort(sort);
+    }
 
     if (session) {
-      query.session(session);
+      query = query.session(session);
     }
 
     const result = await query.lean({ virtuals: true });
@@ -129,6 +138,18 @@ export class BaseRepository<T> implements IRepository<T> {
   public async delete(options: deleteOptions<T>): Promise<boolean> {
     const { filter, session } = options;
     const query = this.model.deleteOne(filter);
+
+    if (session) {
+      query.session(session);
+    }
+
+    const result = await query;
+    return result.deletedCount > 0;
+  }
+
+  public async deleteMany(options: deleteOptions<T>): Promise<boolean> {
+    const { filter, session } = options;
+    const query = this.model.deleteMany(filter);
 
     if (session) {
       query.session(session);

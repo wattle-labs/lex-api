@@ -6,11 +6,6 @@ import { UserPermission } from '../interfaces/userPermission';
 
 export const userPermissionSchema = new Schema<MongooseModel<UserPermission>>(
   {
-    businessId: {
-      type: Schema.Types.ObjectId,
-      ref: 'Business',
-      required: true,
-    },
     name: {
       type: String,
       required: true,
@@ -67,9 +62,8 @@ userPermissionSchema.pre('save', function (next) {
   next();
 });
 
-userPermissionSchema.index({ businessId: 1, name: 1 });
 userPermissionSchema.index(
-  { businessId: 1, resource: 1, subResource: 1, action: 1 },
+  { resource: 1, subResource: 1, action: 1 },
   { unique: true },
 );
 userPermissionSchema.index({ category: 1 });

@@ -1,7 +1,6 @@
 import { ClientSession, ObjectId } from 'mongoose';
 
 import { logger } from '../../../lib/logger';
-import { UserPermission } from '../../../models/interfaces/userPermission';
 import { userPermissionRepository } from '../../../repositories/userPermissions.repository';
 import { userRoleTemplateRepository } from '../../../repositories/userRoleTemplates.repository';
 import { RoleTemplateDefinition } from '../interfaces/role-template-definition.interface';
@@ -10,11 +9,25 @@ export const roleTemplateSeederService = {
   async seedRoleTemplates(
     businessId: string,
     roleTemplates: RoleTemplateDefinition[],
-    createdPermissions: Record<string, UserPermission>,
     session?: ClientSession,
   ): Promise<void> {
     logger.info(
       `Seeding ${roleTemplates.length} role templates for business ${businessId}`,
+    );
+
+    const userPermissions = await userPermissionRepository.find({
+      filter: { businessId: { $exists: false } },
+    });
+
+    const permissionNameToId = new Map<string, string>();
+    userPermissions.forEach(p => {
+      if (p.id) {
+        permissionNameToId.set(p.name, p.id.toString());
+      }
+    });
+
+    logger.info(
+      `Found ${userPermissions.length} UserPermissions for reference`,
     );
 
     for (const templateDef of roleTemplates) {
@@ -54,34 +67,34 @@ export const roleTemplateSeederService = {
       }
 
       const permissionIds: Array<string | ObjectId> = [];
+      const missingPermissions: string[] = [];
+
       for (const permDef of permissions) {
         const permName = permDef.subResource
           ? `${permDef.resource}:${permDef.subResource}:${permDef.action}`
           : `${permDef.resource}:${permDef.action}`;
 
-        const permission = createdPermissions[permName];
+        const permId = permissionNameToId.get(permName);
 
-        if (permission) {
-          const permId = permission.id?.toString();
-          if (permId) {
-            permissionIds.push(permId);
-          }
+        if (permId) {
+          permissionIds.push(permId);
         } else {
-          const dbPermission = await userPermissionRepository.findOne({
-            filter: { businessId, name: permName },
-          });
-
-          if (dbPermission) {
-            const permId = dbPermission.id?.toString();
-            if (permId) {
-              permissionIds.push(permId);
-            }
-          } else {
-            logger.warn(
-              `Permission ${permName} not found for business ${businessId}`,
-            );
-          }
+          missingPermissions.push(permName);
         }
+      }
+
+      if (missingPermissions.length > 0) {
+        logger.warn(
+          `Could not find these global permissions: ${missingPermissions.join(
+            ', ',
+          )}. Make sure to run the seed:permissions script first.`,
+        );
+      }
+
+      if (permissionIds.length === 0) {
+        logger.warn(
+          `No valid permissions found for role template ${name}. Template will be created with empty permissions.`,
+        );
       }
 
       await userRoleTemplateRepository.create({
@@ -97,7 +110,9 @@ export const roleTemplateSeederService = {
         session,
       });
 
-      logger.debug(`Created role template ${name} for business ${businessId}`);
+      logger.debug(
+        `Created role template ${name} for business ${businessId} with ${permissionIds.length} permissions`,
+      );
     }
 
     logger.info(`Completed seeding role templates for business ${businessId}`);

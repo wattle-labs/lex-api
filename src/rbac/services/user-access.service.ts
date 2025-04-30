@@ -93,8 +93,7 @@ export const userAccessService = {
         filter: {
           _id: {
             $in: Array.from(permissionIds),
-          } as unknown as FilterQuery<UserPermission>,
-          businessId,
+          } as FilterQuery<UserPermission>,
         },
       });
     } catch (error) {

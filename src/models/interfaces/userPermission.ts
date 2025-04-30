@@ -2,7 +2,6 @@ import { ObjectId } from 'mongoose';
 
 export interface UserPermission {
   id?: string | ObjectId;
-  businessId: string | ObjectId;
 
   name: string;
   description: string;

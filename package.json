@@ -13,6 +13,7 @@
     "format:fix": "prettier . --write",
     "prepare": "husky || true",
     "generate:schemas": "tsx scripts/generate-zod-schemas.ts",
+    "seed:permissions": "tsx scripts/seed-user-permissions.ts --local --clean",
     "prebuild": "npm run generate:schemas"
   },
   "dependencies": {
