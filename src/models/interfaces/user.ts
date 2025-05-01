@@ -5,6 +5,7 @@ export interface User {
   email: string;
   role: UserStatus;
   profile: UserProfile;
+  externalId: string;
   teamIds: string[] | ObjectId[];
   managedTeamIds: string[] | ObjectId[];
   viewIds: string[] | ObjectId[];

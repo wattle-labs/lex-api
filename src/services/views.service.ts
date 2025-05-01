@@ -4,6 +4,7 @@ import { View } from '../models/interfaces/view';
 import {
   ViewsRepository,
   contractRepository,
+  usersRepository,
   viewsRepository,
 } from '../repositories';
 import { BaseService } from './base.service';
@@ -39,20 +40,35 @@ export class ViewsService extends BaseService<MongooseModel<View>> {
     return Object.assign(view, { contracts: contracts ?? [] });
   }
 
-  async create(
-    data: Partial<MongooseModel<View>>,
-  ): Promise<MongooseModel<View>> {
+  /**
+   * @todo: This is not working as expected, need to verify and fix.
+   * Create a new view, and save it to the user's viewIds array
+   * @param data - The view data
+   * @returns The created view
+   */
+  async create(data: MongooseModel<View>): Promise<MongooseModel<View>> {
     if (!data.criteria) {
       throw new Error('Criteria is required');
     }
-    const view = await this.repository.create({
-      data: {
-        criteria: {
-          filter: data.criteria.filter,
-          sort: data.criteria.sort,
-        },
+
+    const view = await this.repository.create({ data });
+    console.log('viewId: ', view._id);
+
+    const userDocs = await usersRepository.find({
+      filter: { id: { $in: data.userIds } },
+      options: {
+        fields: 'id',
       },
     });
+    await Promise.all(
+      userDocs.map(async user => {
+        await usersRepository.update({
+          filter: { id: user.id },
+          update: { $push: { viewIds: view._id } },
+        });
+      }),
+    );
+
     return view;
   }
 }

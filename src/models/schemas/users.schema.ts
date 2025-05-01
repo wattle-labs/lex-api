@@ -18,6 +18,7 @@ export const userSchema = new Schema<MongooseModel<User>>(
     teamIds: { type: [Schema.Types.ObjectId], ref: 'Team' },
     managedTeamIds: { type: [Schema.Types.ObjectId], ref: 'Team' },
     viewIds: { type: [Schema.Types.ObjectId], ref: 'View' },
+    externalId: { type: String },
     createdBy: { type: String },
     updatedBy: { type: String },
   },
