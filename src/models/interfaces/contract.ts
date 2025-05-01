@@ -11,6 +11,8 @@ export interface ContractTerm {
   id: string;
   value: string | number;
   snippet: string;
+  updatedAt: Date;
+  updatedBy: string;
 }
 
 export interface ContractObligation {
@@ -18,6 +20,8 @@ export interface ContractObligation {
   label: string;
   dueDate?: Date;
   responsibleParty?: string | ObjectId;
+  updatedAt: Date;
+  updatedBy: string;
 }
 
 export interface Contract {
