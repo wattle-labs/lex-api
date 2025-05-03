@@ -9,7 +9,6 @@ import ContractController from '../controllers/contracts.controller';
 import { IngestController } from '../controllers/ingest.controller';
 import PartyController from '../controllers/parties.controller';
 import UserController from '../controllers/users.controller';
-import UsersController from '../controllers/users.controller';
 import ViewsController from '../controllers/views.controller';
 import { authMiddleware } from '../middlewares/auth.middleware';
 import { businessService } from '../services/businesses.service';
@@ -54,7 +53,7 @@ const contractRoutes = new ContractRoutes(
   new ContractController(contractService),
 );
 
-const userRoutes = new UserRoutes(new UserController(usersService));
+const usersRoutes = new UserRoutes(new UserController(usersService));
 const ingestRoutes = new IngestRoutes(new IngestController(ingestService));
 
 const contractTypeRoutes = new ContractTypeRoutes(
@@ -65,19 +64,16 @@ const partyRoutes = new PartyRoutes(new PartyController(partyService));
 
 const viewsRoutes = new ViewsRoutes(new ViewsController(viewsService));
 
-const usersRoutes = new UsersRoutes(new UsersController(userService));
-
 router.route(businessRoutes.PATH, businessRoutes.getRouter());
 router.route(contractRoutes.PATH, contractRoutes.getRouter());
 router.route(contractTypeRoutes.PATH, contractTypeRoutes.getRouter());
 router.route(ingestRoutes.PATH, ingestRoutes.getRouter());
 router.route(partyRoutes.PATH, partyRoutes.getRouter());
 router.route(viewsRoutes.PATH, viewsRoutes.getRouter());
-router.route(usersRoutes.PATH, usersRoutes.getRouter());
 
 protectedRouter.route(businessRoutes.PATH, businessRoutes.getRouter());
 protectedRouter.route(contractRoutes.PATH, contractRoutes.getRouter());
-protectedRouter.route(userRoutes.PATH, userRoutes.getRouter());
+protectedRouter.route(usersRoutes.PATH, usersRoutes.getRouter());
 
 router.route('/', protectedRouter);
 

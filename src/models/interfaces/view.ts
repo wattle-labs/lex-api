@@ -13,7 +13,7 @@ export interface View {
    * View type
    * @default ViewType.CONTRACT
    */
-  type: ViewType;
+  type: 'contract' | 'obligation';
   /**
    * User IDs
    */
@@ -23,11 +23,6 @@ export interface View {
   updatedAt?: Date;
   createdBy?: string;
   updatedBy?: string;
-}
-
-export enum ViewType {
-  CONTRACT = 'contract',
-  OBLIGATION = 'obligation',
 }
 
 export interface ViewCriteria {

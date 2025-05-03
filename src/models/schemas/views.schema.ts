@@ -1,6 +1,6 @@
 import { Schema } from 'mongoose';
 
-import { MongooseModel } from '../interfaces/document';
+import { MongooseModel } from '../interfaces/document.interface';
 import { View, ViewCriteria } from '../interfaces/view';
 
 export const viewCriteriaSchema = new Schema<MongooseModel<ViewCriteria>>({

@@ -1,7 +1,7 @@
 import { Schema } from 'mongoose';
 import { mongooseLeanVirtuals } from 'mongoose-lean-virtuals';
 
-import { Contract, ContractStatus } from '../interfaces/contract';
+import { Contract } from '../interfaces/contract';
 import { MongooseModel } from '../interfaces/document.interface';
 
 export const contractSchema = new Schema<MongooseModel<Contract>>(
@@ -23,8 +23,8 @@ export const contractSchema = new Schema<MongooseModel<Contract>>(
     },
     status: {
       type: String,
-      enum: Object.values(ContractStatus),
-      default: ContractStatus.PENDING,
+      enum: ['pending', 'processed', 'error'],
+      default: 'pending',
     },
     tags: { type: [String] },
     createdBy: { type: String },
