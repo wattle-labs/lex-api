@@ -65,7 +65,7 @@ export interface IRepository<T> {
   find(options: findAllOptions<T>): Promise<T[]>;
   findOne(options: findOneOptions<T>): Promise<T | null>;
   findById(options: findByIdOptions<T>): Promise<T | null>;
-  findByBusinessId(options: findByBusinessIdOptions<T>): Promise<T | null>;
+  // findByBusinessId(options: findByBusinessIdOptions<T>): Promise<T | null>;
   update(options: updateOptions<T>): Promise<T | null>;
   delete(options: deleteOptions<T>): Promise<boolean>;
 }
