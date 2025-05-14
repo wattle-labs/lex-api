@@ -37,7 +37,7 @@ export class UserRoutes extends BaseRoutes {
               },
             },
             '404': {
-              description: 'Contracts not found',
+              description: 'User not found',
               content: {},
             },
             '500': {
@@ -52,6 +52,43 @@ export class UserRoutes extends BaseRoutes {
             target: VALIDATION_TARGETS.BODY,
             schema: zod.object({
               invitationId: zod.string(),
+            }),
+          },
+        ],
+        middlewares: [],
+      },
+      {
+        route: createRoute({
+          method: 'get',
+          path: '/:userId',
+          summary: 'Get user by external ID',
+          tags: [this.RESOURCE_NAME],
+          request: {},
+          responses: {
+            '200': {
+              description: 'Successful response',
+              content: {
+                'application/json': {
+                  schema: userSchema,
+                },
+              },
+            },
+            '404': {
+              description: 'User not found',
+              content: {},
+            },
+            '500': {
+              description: 'Internal server error',
+              content: {},
+            },
+          },
+        }),
+        handler: this.userController.findByExternalId,
+        validations: [
+          {
+            target: VALIDATION_TARGETS.PARAMS,
+            schema: zod.object({
+              userId: zod.string(),
             }),
           },
         ],

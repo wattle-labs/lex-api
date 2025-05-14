@@ -14,6 +14,7 @@ export interface User {
     invitationId?: string | ObjectId;
     isBusinessOwner: boolean;
   };
+  viewIds?: (string | ObjectId)[];
   profile: {
     firstName: string;
     lastName: string;

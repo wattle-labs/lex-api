@@ -1,4 +1,4 @@
-import { createRoute } from '@hono/zod-openapi';
+import { createRoute, z } from '@hono/zod-openapi';
 
 import { VALIDATION_TARGETS } from '../constants/validation.constants';
 import ContractController from '../controllers/contracts.controller';
@@ -147,6 +147,41 @@ export class ContractRoutes extends BaseRoutes {
             schema: contractIdPathParamValidator,
           },
         ],
+      },
+      {
+        route: createRoute({
+          method: 'get',
+          path: '/statistics',
+          summary: 'Get dashboard statistics',
+          tags: [this.RESOURCE_NAME],
+          request: {},
+          responses: {
+            '200': {
+              description: 'Successful response',
+              content: {
+                'application/json': {
+                  schema: createSuccessResponseSchema(
+                    z.object({
+                      countByStatus: z.array(
+                        z.object({
+                          _id: z.string(),
+                          count: z.number().default(0),
+                        }),
+                      ),
+                      countOfParties: z.number().default(0),
+                    }),
+                  ),
+                },
+              },
+            },
+            '500': {
+              description: 'Internal server error',
+              content: {},
+            },
+          },
+        }),
+        handler: this.contractController.getDashboardStatistics,
+        validations: [],
       },
     ];
 

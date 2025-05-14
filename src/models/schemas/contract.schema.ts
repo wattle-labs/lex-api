@@ -1,8 +1,14 @@
 import { Schema } from 'mongoose';
 import { mongooseLeanVirtuals } from 'mongoose-lean-virtuals';
 
-import { Contract } from '../interfaces/contract';
+import { Contract, ContractStatus } from '../interfaces/contract';
 import { MongooseModel } from '../interfaces/document.interface';
+import { Party } from '../interfaces/party';
+
+export const partySchema = new Schema<MongooseModel<Party>>({
+  _id: { type: Schema.Types.ObjectId },
+  name: { type: String, required: true },
+});
 
 export const contractSchema = new Schema<MongooseModel<Contract>>(
   {
@@ -12,8 +18,7 @@ export const contractSchema = new Schema<MongooseModel<Contract>>(
     contractTypeId: { type: Schema.Types.ObjectId, ref: 'ContractType' },
     summary: { type: String },
     terms: { type: Schema.Types.Mixed },
-    obligations: { type: Schema.Types.Mixed },
-    parties: { type: [Schema.Types.ObjectId], ref: 'Party' },
+    parties: { type: [partySchema] },
     label: { type: String, required: true },
     text: { type: String },
     businessId: {
@@ -23,8 +28,8 @@ export const contractSchema = new Schema<MongooseModel<Contract>>(
     },
     status: {
       type: String,
-      enum: ['pending', 'processed', 'error'],
-      default: 'pending',
+      enum: ContractStatus,
+      default: ContractStatus.PENDING,
     },
     tags: { type: [String] },
     createdBy: { type: String },

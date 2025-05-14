@@ -2,31 +2,66 @@ import { Context } from 'hono';
 
 import { logger } from '../lib/logger';
 import { ResponseBuilder } from '../lib/response.handler';
-import { ContractService } from '../services/contracts.service';
+import {
+  ContractService,
+  contractService,
+} from '../services/contracts.service';
 
-class ContractController {
+class ContractController implements Record<string, unknown> {
+  [key: string]: unknown;
+
   constructor(private readonly service: ContractService) {}
 
-  findByBusinessId = async (c: Context): Promise<Response> => {
+  findById = async (ctx: Context): Promise<Response> => {
     try {
-      const businessId = c.req.param('businessId');
-      const contract = await this.service.findByBusinessId(businessId);
-      return c.json(ResponseBuilder.success(contract), 200);
+      const contract = await this.service.findById(ctx.req.param('id'));
+      return ctx.json(ResponseBuilder.success(contract), 200);
     } catch (error) {
-      logger.error(
-        'Failed to find businesses by slug',
-        { businessId: c.req.param('businessId') },
-        error instanceof Error ? error : new Error(String(error)),
-      );
+      const message =
+        error instanceof Error ? error.message : 'Error fetching contract';
+      logger.error(message, { error });
+      return ctx.json(ResponseBuilder.serverError(message), 500);
+    }
+  };
 
+  findAll = async (ctx: Context): Promise<Response> => {
+    try {
+      const contracts = await this.service.findAll({});
+      return ctx.json(ResponseBuilder.success(contracts), 200);
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : 'Error fetching contracts';
+      logger.error(message, { error });
+      return ctx.json(ResponseBuilder.serverError(message), 500);
+    }
+  };
+
+  delete = async (ctx: Context): Promise<Response> => {
+    try {
+      await this.service.deleteById(ctx.req.param('id'));
+      return ctx.json(ResponseBuilder.deleted());
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : 'Error deleting contract';
+      logger.error(message, { error });
+      return ctx.json(ResponseBuilder.serverError(message), 500);
+    }
+  };
+
+  getDashboardStatistics = async (ctx: Context): Promise<Response> => {
+    try {
+      const statistics = await this.service.getDashboardStatistics();
+      return ctx.json(ResponseBuilder.success(statistics), 200);
+    } catch (error) {
       const message =
         error instanceof Error
           ? error.message
-          : 'Failed to find businesses by slug';
-
-      return c.json(ResponseBuilder.badRequest(message), 400);
+          : 'Error fetching dashboard statistics';
+      logger.error(message, { error });
+      return ctx.json(ResponseBuilder.serverError(message), 500);
     }
   };
 }
 
 export default ContractController;
+export const contractController = new ContractController(contractService);

@@ -1,4 +1,5 @@
 import {
+  AggregateOptions,
   ClientSession,
   Document,
   FilterQuery,
@@ -9,6 +10,10 @@ import {
 
 export type countOptions<T> = {
   filter?: FilterQuery<T & Document>;
+};
+
+export type aggregateOptions = {
+  options?: AggregateOptions;
 };
 
 export type createOptions<T> = {

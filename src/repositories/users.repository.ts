@@ -19,7 +19,10 @@ export class UserRepository extends BaseRepository<MongooseModel<User>> {
   }
 
   async findByExternalId(externalId: string): Promise<User | null> {
-    const result = await this.findOne({ filter: { externalId } });
+    const result = await this.findOne({
+      filter: { externalId },
+      options: { populate: ['viewIds'] },
+    });
     return result;
   }
 

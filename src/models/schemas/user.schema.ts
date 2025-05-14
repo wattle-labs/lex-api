@@ -72,6 +72,12 @@ export const userSchema = new Schema<MongooseModel<User>>(
         },
       ],
     },
+    viewIds: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'View',
+      },
+    ],
     authProvider: {
       provider: {
         type: String,

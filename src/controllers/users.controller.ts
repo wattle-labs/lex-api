@@ -51,6 +51,20 @@ class UserController {
       return c.json(ResponseBuilder.error('Internal Server Error'), 500);
     }
   };
+
+  findByExternalId = async (c: Context): Promise<Response> => {
+    try {
+      const { userId } = c.req.param();
+      if (!userId) {
+        return c.json(ResponseBuilder.error('User ID is required'), 400);
+      }
+      const user = await this.service.findByExternalId(userId);
+      return c.json(ResponseBuilder.success(user, 'User fetched', 200), 200);
+    } catch (error: unknown) {
+      logger.error('Error getting user by external ID', { error });
+      return c.json(ResponseBuilder.serverError('Internal Server Error'), 500);
+    }
+  };
 }
 
 export default UserController;
