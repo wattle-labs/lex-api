@@ -1,0 +1,210 @@
+[
+  {
+    "id": "businessAssociateDefinition",
+    "term": "Business Associate Definition",
+    "description": "Identifies the party acting as the Business Associate (BA), typically the service provider/SaaS vendor receiving Protected Health Information (PHI).",
+    "output_format": "Party name and role",
+    "sample_output": [
+      "Vendor designated as BA",
+      "Service provider is BA",
+      "Defines Business Associate role"
+    ]
+  },
+  {
+    "id": "coveredEntityDefinition",
+    "term": "Covered Entity Definition",
+    "description": "Identifies the party acting as the Covered Entity (CE), typically the healthcare provider, health plan, or clearinghouse providing the PHI.",
+    "output_format": "Party name and role",
+    "sample_output": [
+      "Customer designated as CE",
+      "Client is Covered Entity",
+      "Defines Covered Entity role"
+    ]
+  },
+  {
+    "id": "phiDefinition",
+    "term": "PHI Definition",
+    "description": "Defines Protected Health Information (PHI) as referenced in the agreement, usually aligning with the HIPAA definition.",
+    "output_format": "Definition text",
+    "sample_output": [
+      "References HIPAA PHI definition",
+      "Defines PHI scope",
+      "Specifies protected data elements"
+    ]
+  },
+  {
+    "id": "permittedUsesdisclosures",
+    "term": "Permitted Uses/Disclosures",
+    "description": "Specifies how the Business Associate is allowed to use and disclose the PHI received from the Covered Entity.",
+    "output_format": "List of permitted uses",
+    "sample_output": [
+      "Use PHI for Services",
+      "Disclose PHI as required",
+      "Limited to Service Agreement scope",
+      "Permits BA internal administration"
+    ]
+  },
+  {
+    "id": "baObligationsGeneral",
+    "term": "BA Obligations (General)",
+    "description": "Outlines the general responsibilities of the Business Associate under HIPAA.",
+    "output_format": "List of obligations",
+    "sample_output": [
+      "Comply with HIPAA rules",
+      "Follow BAA restrictions strictly",
+      "Use appropriate safeguards",
+      "Ensure subcontractor compliance"
+    ]
+  },
+  {
+    "id": "safeguardsImplementation",
+    "term": "Safeguards Implementation",
+    "description": "Requires the Business Associate to implement and maintain appropriate safeguards to protect PHI.",
+    "output_format": "List of required safeguards",
+    "sample_output": [
+      "Implement administrative safeguards",
+      "Maintain physical security measures",
+      "Use required technical safeguards",
+      "Comply with Security Rule"
+    ]
+  },
+  {
+    "id": "reportingImproperUsedisclosure",
+    "term": "Reporting Improper Use/Disclosure",
+    "description": "Obligates the Business Associate to report to the Covered Entity any use or disclosure of PHI not permitted by the BAA.",
+    "output_format": "Yes | No",
+    "sample_output": [
+      "Report non-permitted uses promptly",
+      "Notify CE of potential violations",
+      "Report known security incidents"
+    ]
+  },
+  {
+    "id": "breachNotificationToCe",
+    "term": "Breach Notification to CE",
+    "description": "Details the Business Associate's obligation to notify the Covered Entity following the discovery of a Breach of Unsecured PHI.",
+    "output_format": "Yes | No",
+    "sample_output": [
+      "Notify CE of PHI Breach",
+      "Report Breach discovery promptly",
+      "Provide Breach details to CE"
+    ]
+  },
+  {
+    "id": "breachNotificationTimeline",
+    "term": "Breach Notification Timeline",
+    "description": "Specifies the maximum timeframe within which the Business Associate must notify the Covered Entity after discovering a Breach.",
+    "output_format": "X days",
+    "sample_output": [
+      "Notify CE without delay",
+      "Report breach within 10 days",
+      "Follow HIPAA notification timeline",
+      "Report immediately upon discovery"
+    ]
+  },
+  {
+    "id": "subcontractorCompliance",
+    "term": "Subcontractor Compliance",
+    "description": "Requires the Business Associate to ensure that any subcontractors handling PHI agree to the same restrictions and safeguards.",
+    "output_format": "Yes | No",
+    "sample_output": [
+      "Ensure subcontractor BAA signed",
+      "Bind subcontractors to terms",
+      "Downstream BAA required",
+      "Manage agent PHI access"
+    ]
+  },
+  {
+    "id": "individualRightsSupport",
+    "term": "Individual Rights Support",
+    "description": "Obligates the Business Associate to assist the Covered Entity in responding to individuals' requests regarding their PHI.",
+    "output_format": "Yes | No",
+    "sample_output": [
+      "Provide PHI access support",
+      "Assist with PHI amendment",
+      "Provide disclosure accounting support",
+      "Support CE individual rights duties"
+    ]
+  },
+  {
+    "id": "hhsAccessAudits",
+    "term": "HHS Access / Audits",
+    "description": "Requires the Business Associate to make its internal practices and records available to HHS for compliance determination.",
+    "output_format": "Yes | No",
+    "sample_output": [
+      "Allow HHS compliance audits",
+      "Provide records to HHS",
+      "Cooperate with HHS investigations"
+    ]
+  },
+  {
+    "term": "CE Obligations",
+    "description": "Specifies the responsibilities of the Covered Entity regarding PHI use and disclosure.",
+    "output_format": "List of obligations",
+    "sample_output": [
+      "CE provides privacy notices",
+      "CE notifies BA of changes",
+      "CE informs BA restrictions"
+    ],
+    "id": "ceObligations"
+  },
+  {
+    "term": "Data Return/Destruction",
+    "description": "Specifies the Business Associate's obligations upon termination to return or destroy all PHI.",
+    "output_format": "Yes | No",
+    "sample_output": [
+      "Return or destroy all PHI",
+      "Certify PHI destruction required",
+      "Destroy PHI upon termination",
+      "Protections continue if infeasible"
+    ],
+    "id": "dataReturndestruction"
+  },
+  {
+    "term": "Indemnification",
+    "description": "Provisions where one party agrees to financially protect the other party against specific losses or claims.",
+    "output_format": "Yes | No",
+    "sample_output": [
+      "BA indemnifies CE for breach",
+      "Mutual indemnification clause",
+      "Covers third-party claim costs",
+      "Indemnity for HIPAA violations"
+    ],
+    "id": "indemnification"
+  },
+  {
+    "term": "Limitation of Liability",
+    "description": "Sets caps or exclusions on the financial liability of one or both parties for damages.",
+    "output_format": "Yes | No",
+    "sample_output": [
+      "Liability capped at fees paid",
+      "Excludes consequential damages",
+      "Mutual liability limitations set",
+      "Specifies liability cap exceptions"
+    ],
+    "id": "limitationOfLiability"
+  },
+  {
+    "term": "Minimum Necessary Standard",
+    "description": "Reflects the HIPAA requirement to limit PHI use and disclosure to the minimum necessary.",
+    "output_format": "Yes | No",
+    "sample_output": [
+      "Adhere to minimum necessary",
+      "Limit PHI use/disclosure",
+      "Request minimum PHI needed"
+    ],
+    "id": "minimumNecessaryStandard"
+  },
+  {
+    "term": "De-identification Standard",
+    "description": "Specifies the standard or methods by which PHI can be de-identified according to HIPAA.",
+    "output_format": "Safe Harbor | Expert Determination",
+    "sample_output": [
+      "Allows HIPAA de-identification",
+      "Permits use of de-identified data",
+      "References Safe Harbor method",
+      "Requires expert determination method"
+    ],
+    "id": "deidentificationStandard"
+  }
+]

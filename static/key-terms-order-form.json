@@ -1,0 +1,137 @@
+[
+  {
+    "term": "Start date",
+    "description": "The date upon which the terms of the Order Form become legally binding and services typically commence.",
+    "output_format": "Date",
+    "sample_output": [
+      "2024-07-01",
+      "2024-08-15"
+    ],
+    "id": "startDate"
+  },
+  {
+    "term": "Duration",
+    "description": "The duration for which the subscription services are purchased and active under this order form.",
+    "output_format": "X months | X years",
+    "sample_output": [
+      "12 Months",
+      "3 Years"
+    ],
+    "id": "duration"
+  },
+  {
+    "term": "Pricing model",
+    "description": "Describes the cost structure for the services, such as subscription fees, usage-based charges, or tiered pricing.",
+    "output_format": "Type",
+    "sample_output": [
+      "Per user per month",
+      "Usage-based pricing",
+      "Tiered pricing",
+      "Fixed fee",
+      "Other"
+    ],
+    "id": "pricingModel"
+  },
+  {
+    "term": "Quantity",
+    "description": "The numerical amount of the License Metric being purchased.",
+    "output_format": "X units",
+    "sample_output": [
+      "100 Users",
+      "500 GB",
+      "1 Million API Calls",
+      "2 Production Environments",
+      "Up to 10,000 Contacts"
+    ],
+    "id": "quantity"
+  },
+  {
+    "term": "Subscription fee",
+    "description": "The recurring cost for the licensed products/services during the Subscription Term.",
+    "output_format": "Amount",
+    "sample_output": [
+      "$10,000",
+      "$500",
+      "$25,000"
+    ],
+    "id": "subscriptionFee"
+  },
+  {
+    "term": "Payment frequency",
+    "description": "Specifies how often the customer will be invoiced for the subscription fees.",
+    "output_format": "Frequency",
+    "sample_output": [
+      "Annually",
+      "Monthly",
+      "Quarterly",
+      "Upfront"
+    ],
+    "id": "paymentFrequency"
+  },
+  {
+    "term": "Total contract value (TCV)",
+    "description": "The total potential value of the order form over its entire initial term.",
+    "output_format": "Amount",
+    "sample_output": [
+      "$12,000",
+      "$75,000",
+      "$30,000"
+    ],
+    "id": "totalContractValueTcv"
+  },
+  {
+    "term": "Auto-renewal",
+    "description": "Indicates whether the subscription term automatically extends beyond the initial term.",
+    "output_format": "Yes | No",
+    "sample_output": [
+      "Yes",
+      "No"
+    ],
+    "id": "autorenewal"
+  },
+  {
+    "term": "Implementation fee",
+    "description": "Any one-time charges associated with setting up, configuring, or onboarding the service.",
+    "output_format": "Amount | None",
+    "sample_output": [
+      "$2,500",
+      "None",
+      "$5,000"
+    ],
+    "id": "implementationFee"
+  },
+  {
+    "term": "Overage fees",
+    "description": "Specifies the cost incurred if the customer exceeds the purchased Quantity of the License Metric.",
+    "output_format": "Amount per unit",
+    "sample_output": [
+      "$10/GB excess storage",
+      "No overages applicable",
+      "$0.01 per API call"
+    ],
+    "id": "overageFees"
+  },
+  {
+    "term": "Support level",
+    "description": "Indicates the tier or type of technical support included with the subscription.",
+    "output_format": "Type",
+    "sample_output": [
+      "Standard support included",
+      "Premier support tier",
+      "Business hours only",
+      "24/7 critical support"
+    ],
+    "id": "supportLevel"
+  },
+  {
+    "term": "Discount applied",
+    "description": "Specific discounts applied to the standard pricing.",
+    "output_format": "Percentage | Amount",
+    "sample_output": [
+      "15%",
+      "$1,000",
+      "None"
+    ],
+    "id": "discountApplied"
+  }
+]

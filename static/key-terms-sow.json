@@ -1,0 +1,25 @@
+[
+  {
+    "term": "Change control",
+    "description": "Outlines the formal procedure for proposing, evaluating, approving, and implementing modifications to the scope, timeline, or deliverables.",
+    "output_format": "Change order | Notice | Written approval | None | Other",
+    "sample_output": [
+      "Change order",
+      "Notice",
+      "Written approval",
+      "None",
+      "Other"
+    ],
+    "id": "changeControl"
+  },
+  {
+    "term": "Intellectual property",
+    "description": "Clarifies ownership rights for any new intellectual property created during the SOW engagement.",
+    "output_format": "Owner | Joint | None",
+    "sample_output": [
+      "Customer",
+      "Provider"
+    ],
+    "id": "intellectualProperty"
+  }
+]

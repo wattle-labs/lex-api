@@ -1,0 +1,141 @@
+[
+  {
+    "term": "AI use permitted",
+    "description": "Defines if the processor is allowed to use the controller's data for AI purposes, e.g., for training, inference, or other purposes.",
+    "output_format": "Yes | No",
+    "sample_output": [
+      "Yes",
+      "No"
+    ],
+    "id": "aiUsePermitted"
+  },
+  {
+    "term": "Confidentiality",
+    "description": "Requires the processor to ensure that any personnel authorized to process personal data are bound by confidentiality obligations.",
+    "output_format": "Yes | No",
+    "sample_output": [
+      "Yes",
+      "No"
+    ],
+    "id": "confidentiality"
+  },
+  {
+    "term": "Additional subprocessors",
+    "description": "Specifies how the processor can engage other companies to process personal data, i.e., adding them as a subprocessor, and if consent from the controller is required, or if the controller needs to be notified.",
+    "output_format": "Consent required | Notice required | None | Other",
+    "sample_output": [
+      "Consent required",
+      "Notice required",
+      "None",
+      "Other"
+    ],
+    "id": "additionalSubprocessors"
+  },
+  {
+    "term": "Data residency requirements",
+    "description": "Geographic restrictions on where personal data can be processed or stored.",
+    "output_format": "Region | None",
+    "sample_output": [
+      "US only",
+      "EU only",
+      "None",
+      "Excluding China"
+    ],
+    "id": "dataResidencyRequirements"
+  },
+  {
+    "term": "Data Subject Rights (DSR) Assistance",
+    "description": "Processor's obligation to assist the controller in responding to requests from data subjects exercising their rights.",
+    "output_format": "Yes | No",
+    "sample_output": [
+      "Yes",
+      "No"
+    ],
+    "id": "dataSubjectRightsDsrAssistance"
+  },
+  {
+    "term": "Security incident notification",
+    "description": "Processor's obligation to notify the controller upon becoming aware of a personal data breach or security incident.",
+    "output_format": "X hours",
+    "sample_output": [
+      "48 hours",
+      "72 hours",
+      "Other"
+    ],
+    "id": "securityIncidentNotification"
+  },
+  {
+    "term": "Incident cooperation",
+    "description": "Requires the processor to reasonably cooperate with the controller in the investigation, mitigation, and remediation of any security incident.",
+    "output_format": "Yes | No",
+    "sample_output": [
+      "Yes",
+      "No"
+    ],
+    "id": "incidentCooperation"
+  },
+  {
+    "term": "Audit rights",
+    "description": "Controller's right to audit the processor's compliance with the DPA.",
+    "output_format": "Yes | No",
+    "sample_output": [
+      "Yes",
+      "No"
+    ],
+    "id": "auditRights"
+  },
+  {
+    "term": "Data protection impact assessment assistance",
+    "description": "Processor's obligation to provide reasonable assistance to the controller with conducting Data Protection Impact Assessments.",
+    "output_format": "Yes | No",
+    "sample_output": [
+      "Yes",
+      "No"
+    ],
+    "id": "dataProtectionImpactAssessmentAssistance"
+  },
+  {
+    "term": "Data deletion",
+    "description": "Procedures for returning or deleting personal data at the end of the service agreement.",
+    "output_format": "X days",
+    "sample_output": [
+      "60 days",
+      "Other"
+    ],
+    "id": "dataDeletion"
+  },
+  {
+    "term": "Specific law compliance",
+    "description": "Clauses addressing compliance with other emerging US state privacy laws.",
+    "output_format": "Acronym | None",
+    "sample_output": [
+      "CCPA",
+      "CPRA",
+      "VCDPA",
+      "Other",
+      "None"
+    ],
+    "id": "specificLawCompliance"
+  },
+  {
+    "term": "GDPR compliance",
+    "description": "Explicit clauses addressing compliance with the EU General Data Protection Regulation (GDPR).",
+    "output_format": "Yes | No",
+    "sample_output": [
+      "Yes",
+      "No"
+    ],
+    "id": "gdprCompliance"
+  },
+  {
+    "term": "Limitation of liability",
+    "description": "Clauses addressing liability and/or indemnification specifically related to data protection breaches or failures under the DPA.",
+    "output_format": "X times annual fees | Capped at X | None",
+    "sample_output": [
+      "2x annual fees",
+      "100k",
+      "None"
+    ],
+    "id": "limitationOfLiability"
+  }
+]

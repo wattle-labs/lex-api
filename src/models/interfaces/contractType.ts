@@ -1,18 +1,21 @@
 import { ObjectId } from 'mongoose';
 
-export interface ContractKeyTermDefinition {
-  term: string;
-  description: string;
-  outputFormat: string;
-  sampleOutput: string[];
-}
+import { Clause } from './clause';
 
 export interface ContractType {
   id?: string | ObjectId;
   shortName: string;
   longName: string;
   description?: string;
-  keyTerms: ContractKeyTermDefinition[];
+  /**
+   * The clauses that are applicable to the contract type. References the ids of the clauses.
+   * Previously "keyTerms"
+   */
+  clauses: string[] | ObjectId[];
   createdAt?: Date;
   updatedAt?: Date;
+}
+
+export interface ContractTypePopulated extends Omit<ContractType, 'clauses'> {
+  clauses: Clause[];
 }

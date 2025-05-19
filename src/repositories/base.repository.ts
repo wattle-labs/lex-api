@@ -3,6 +3,7 @@ import { ClientSession, Document, Model, UpdateQuery } from 'mongoose';
 import {
   IRepository,
   countOptions,
+  createManyOptions,
   createOptions,
   deleteOptions,
   findAllOptions,
@@ -42,6 +43,30 @@ export class BaseRepository<T> implements IRepository<T> {
       if (error instanceof Error) {
         const enhancedError: EnhancedError = new Error(
           `Failed to create document: ${error.message}`,
+        );
+
+        enhancedError.stack = error.stack;
+
+        enhancedError.originalError = error;
+        enhancedError.data = data;
+        throw enhancedError;
+      }
+      throw error;
+    }
+  }
+
+  public async createMany(options: createManyOptions<T>): Promise<T[]> {
+    const { data, session } = options;
+    try {
+      const result = await this.model.create(data, { session });
+      if (!result || result.length === 0) {
+        throw new Error(`Create operation failed to return documents`);
+      }
+      return result.map(doc => doc.toObject() as T);
+    } catch (error) {
+      if (error instanceof Error) {
+        const enhancedError: EnhancedError = new Error(
+          `Failed to create documents: ${error.message}`,
         );
 
         enhancedError.stack = error.stack;

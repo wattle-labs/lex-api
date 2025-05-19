@@ -1,6 +1,6 @@
-import { ContractObligation } from '../models/interfaces/contract';
+import { Clause } from '../models/interfaces/clause';
 
-export interface ObligationResponse extends ContractObligation {
+export interface ObligationResponse extends Clause {
   contractId: string;
   partyId: string;
   contractDetails: {

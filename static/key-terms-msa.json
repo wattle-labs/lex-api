@@ -1,0 +1,134 @@
+[
+  {
+    "term": "Payment terms",
+    "description": "Details the payment schedule, frequency, due dates, and methods for the services rendered.",
+    "output_format": "Net X days",
+    "sample_output": [
+      "Net 30 days",
+      "Net 60 days",
+      "Upfront payment",
+      "Net 45 days"
+    ],
+    "id": "paymentTerms"
+  },
+  {
+    "term": "Pricing model",
+    "description": "Describes the cost structure for the services, such as subscription fees, usage-based charges, or tiered pricing.",
+    "output_format": "Type",
+    "sample_output": [
+      "Per user per month",
+      "Usage-based pricing",
+      "Tiered pricing",
+      "Fixed fee",
+      "Other"
+    ],
+    "id": "pricingModel"
+  },
+  {
+    "term": "SLA requirements",
+    "description": "Specifies measurable performance standards the provider commits to meeting, such as system uptime guarantees and support response times.",
+    "output_format": "Brief SLA requirement under 3 words",
+    "sample_output": ["99.9% uptime", "24h response time"],
+    "id": "slaRequirements"
+  },
+  {
+    "term": "Limitation of Liability",
+    "description": "Sets a cap on the total financial liability one party (usually the provider) has towards the other for damages arising from the agreement. Often excludes certain types of damages (like consequential or indirect damages) and may tie the cap to fees paid.",
+    "output_format": "X times contract fees, not to exceed X | Capped at X | $X | None",
+    "sample_output": [
+      "2x contract fees",
+      "2x contract fees, not to exceed $100,000",
+      "1x contract fees, not to exceed amount paid",
+      "$100,000",
+      "$2m",
+      "None"
+    ],
+    "id": "limitationOfLiability"
+  },
+  {
+    "term": "Indemnification",
+    "description": "Specifies which party is responsible for defending against and paying for third-party claims arising from specific issues.",
+    "output_format": "Brief indemnification requirement under 3 words",
+    "sample_output": [
+      "Mutual IP infringement",
+      "Provider indemnifies data breach",
+      "Customer indemnifies misuse"
+    ],
+    "id": "indemnification"
+  },
+  {
+    "term": "IP ownership",
+    "description": "Clarifies ownership rights for intellectual property, including pre-existing IP and any new IP created during the services.",
+    "output_format": "Provider | Customer | Joint | Other",
+    "sample_output": ["Provider", "Customer", "Joint", "Other"],
+    "id": "ipOwnership"
+  },
+  {
+    "term": "Data ownership",
+    "description": "Explicitly states who owns the data that the customer inputs into or generates through the use of the service.",
+    "output_format": "Customer | Provider | Joint | Other",
+    "sample_output": ["Customer", "Provider", "Joint", "Other"],
+    "id": "dataOwnership"
+  },
+  {
+    "term": "Warranties",
+    "description": "Provides guarantees or promises made by the provider about the services and includes disclaimers of other warranties.",
+    "output_format": "Standard performance warranty | Warranty of non-infringement | No malicious code warranty | Disclaims implied warranties | Services provided 'as is' | Other",
+    "sample_output": [
+      "Standard performance warranty",
+      "Warranty of non-infringement",
+      "No malicious code warranty",
+      "Disclaims implied warranties",
+      "Services provided 'as is'",
+      "Other"
+    ],
+    "id": "warranties"
+  },
+  {
+    "term": "Dispute resolution",
+    "description": "Defines the process for resolving conflicts under the agreement.",
+    "output_format": "Mandatory arbitration (AAA/JAMS) | Litigation in specified jurisdiction | Requires executive escalation first | Mediation required before litigation | Specifies venue for lawsuits | Other",
+    "sample_output": [
+      "Mandatory arbitration (AAA/JAMS)",
+      "Litigation in specified jurisdiction",
+      "Requires executive escalation first",
+      "Mediation required before litigation",
+      "Specifies venue for lawsuits",
+      "Other"
+    ],
+    "id": "disputeResolution"
+  },
+  {
+    "term": "Assignment",
+    "description": "Controls whether either party can transfer its rights or obligations under the agreement to a third party.",
+    "output_format": "Consent required | Notice required | Permitted for M&A | Not permitted | Permitted to affiliates | Other",
+    "sample_output": [
+      "Consent required",
+      "Notice required",
+      "Not permitted",
+      "Other"
+    ],
+    "id": "assignment"
+  },
+  {
+    "term": "Insurance required",
+    "description": "Specifies the types and minimum amounts of insurance coverage that the provider must maintain during the term.",
+    "output_format": "Cyber | E&O | CGL | Other",
+    "sample_output": ["Cyber", "E&O", "CGL", "Other"],
+    "id": "insuranceRequired"
+  },
+  {
+    "term": "Audit rights",
+    "description": "Grants one party (the customer) the right to inspect the other party's (the provider's) records or facilities to verify compliance with the agreement.",
+    "output_format": "Yes | No",
+    "sample_output": ["Yes", "No"],
+    "id": "auditRights"
+  },
+  {
+    "term": "Force majeure",
+    "description": "Excuses a party from performing its obligations if prevented by unforeseeable events beyond its reasonable control.",
+    "output_format": "Yes | No | Limited | Other",
+    "sample_output": ["Yes", "No", "Limited", "Other"],
+    "id": "forceMajeure"
+  }
+]

@@ -1,27 +1,11 @@
 import { ObjectId } from 'mongoose';
 
+import { Clause } from './clause';
+
 export enum ContractStatus {
   PENDING = 'pending',
   PROCESSED = 'processed',
   ERROR = 'error',
-}
-
-export interface ContractTerm {
-  term: string;
-  id: string;
-  value: string | number;
-  snippet: string;
-  updatedAt: Date;
-  updatedBy: string;
-}
-
-export interface ContractObligation {
-  id: string;
-  label: string;
-  dueDate?: Date;
-  responsibleParty?: string | ObjectId;
-  updatedAt: Date;
-  updatedBy: string;
 }
 
 export interface Party {
@@ -34,13 +18,12 @@ export interface Contract {
   url: string;
   gsBucketName?: string;
   parties: Party[];
-  obligations: Record<string, ContractObligation>;
   text?: string;
   fileName: string;
   contractTypeId?: string | ObjectId;
   summary?: string;
   label: string;
-  terms?: Record<string, ContractTerm>;
+  clauses?: Record<string, Clause>;
   businessId: string | ObjectId;
   tags: string[];
   status: ContractStatus;

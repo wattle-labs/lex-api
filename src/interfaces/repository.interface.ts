@@ -21,6 +21,11 @@ export type createOptions<T> = {
   session?: ClientSession;
 };
 
+export type createManyOptions<T> = {
+  data: Partial<T>[];
+  session?: ClientSession;
+};
+
 export type findAllOptions<T> = {
   filter?: FilterQuery<T & Document>;
   fields?: string | string[] | null;

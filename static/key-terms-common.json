@@ -1,0 +1,128 @@
+[
+  {
+    "id": "counterpartyName",
+    "name": "Counterparty name",
+    "description": "Specifies the name of the counterparty (often, the customer's company name). Ensure this is the customer's legal entity name, and not the name of the provider or the provider's parent company.",
+    "outputFormat": "Company legal name",
+    "sampleOutput": ["Wattle, Inc.", "Google, LLC"],
+    "isStandard": true
+  },
+  {
+    "id": "counterpartySignerName",
+    "name": "Counterparty signer name",
+    "description": "Specifies the name of the signer for the counterparty. Ensure this is the customer's employee name, and not the name of the provider or the provider's employee.",
+    "outputFormat": "Full name",
+    "sampleOutput": ["John Doe", "Jane Smith"],
+    "isStandard": true
+  },
+  {
+    "id": "counterpartySignerTitle",
+    "name": "Counterparty signer title",
+    "description": "Specifies the title of the signer for the counterparty. Ensure this is the customer's employee title, and not the title of the provider or the provider's employee.",
+    "outputFormat": "Title",
+    "sampleOutput": [
+      "CEO",
+      "CFO",
+      "General Counsel",
+      "VP of Procurement",
+      "Head of Sales"
+    ],
+    "isStandard": true
+  },
+  {
+    "id": "counterpartySignerEmail",
+    "name": "Counterparty signer email",
+    "description": "Specifies the email of the signer for the counterparty. Ensure this is the customer's employee email, and not the email of the provider or the provider's employee.",
+    "outputFormat": "Email",
+    "sampleOutput": ["john.doe@clarusapp.com", "jane.smith@google.com"],
+    "isStandard": true
+  },
+  {
+    "id": "signed",
+    "name": "Signed",
+    "description": "Specifies if the counterparty has signed the agreement. This is often provided as a checkbox or a signature block at the end of the document, or as a separate page from a verification authority (e.g., DocuSign, e-SignLive, etc.).",
+    "outputFormat": "Yes | No",
+    "sampleOutput": ["Yes", "No"],
+    "isStandard": true
+  },
+  {
+    "id": "effectiveDate",
+    "name": "Effective date",
+    "description": "Specifies the date on which the agreement becomes effective.",
+    "outputFormat": "Date",
+    "sampleOutput": ["2025-01-01", "2026-01-01"],
+    "isStandard": true
+  },
+  {
+    "id": "signingDate",
+    "name": "Signing date",
+    "description": "Specifies the date on which the agreement was signed by the counterparty. This is often provided as a date in the signature block or as a separate page from a verification authority (e.g., DocuSign, e-SignLive, etc.).",
+    "outputFormat": "Date",
+    "sampleOutput": ["2025-01-01", "2026-01-01"],
+    "isStandard": true
+  },
+  {
+    "id": "terminationDate",
+    "name": "Termination date",
+    "description": "Specifies the date on which the agreement will terminate, or date on which the agreement ends.",
+    "outputFormat": "Date",
+    "sampleOutput": ["2025-01-01", "2026-01-01", "Perpetual"],
+    "isStandard": true
+  },
+  {
+    "id": "term",
+    "name": "Term",
+    "description": "Specifies the duration of the agreement",
+    "outputFormat": "X years | X months | X days",
+    "sampleOutput": ["1 year", "2 years", "3 years"],
+    "isStandard": true
+  },
+  {
+    "id": "renewable",
+    "name": "Renewable",
+    "description": "Specifies if the agreement is renewable beyond the initial term stated.",
+    "outputFormat": "Frequency | None | Perpetual",
+    "sampleOutput": ["Yearly", "Monthly", "Quarterly", "None", "Perpetual"],
+    "isStandard": true
+  },
+  {
+    "id": "terminationForConvenience",
+    "name": "Termination for convenience",
+    "description": "Outlines the conditions under which either party can end the agreement before the term expires. This includes termination for cause (like breach of contract) and termination for convenience (without cause, often requiring notice).",
+    "outputFormat": "Yes (X days notice) | No",
+    "sampleOutput": ["Yes (30 days notice)", "Yes (60 days notice)", "No"],
+    "isStandard": true
+  },
+  {
+    "id": "consentRequiredForTermination",
+    "name": "Consent required for termination",
+    "description": "If either party can end the agreement before the term expires for any reason (not including cause), this clause states if consent is required from the other party.",
+    "outputFormat": "Yes | No",
+    "sampleOutput": ["Yes", "No"],
+    "isStandard": true
+  },
+  {
+    "id": "terminationForCause",
+    "name": "Termination for cause",
+    "description": "Outlines the conditions under which either party can end the agreement before the term expires. This includes termination for cause (like breach of contract) and termination for cause",
+    "outputFormat": "Yes | No",
+    "sampleOutput": ["Yes", "No"],
+    "isStandard": true
+  },
+  {
+    "id": "governingLaw",
+    "name": "Governing law",
+    "description": "Specifies the governing law of the agreement.",
+    "outputFormat": "State | Province | Country",
+    "sampleOutput": ["United States", "Delaware", "California"],
+    "isStandard": true
+  },
+  {
+    "id": "optOutPeriod",
+    "name": "Opt-out period",
+    "description": "Specifies the period of time after the contract is signed during which the counterparty can opt out of the agreement.",
+    "outputFormat": "X days",
+    "sampleOutput": ["30 days", "60 days", "90 days", "Not available"],
+    "isStandard": true
+  }
+]

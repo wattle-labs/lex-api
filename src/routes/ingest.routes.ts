@@ -6,7 +6,7 @@ import { BaseRoutes } from './base.routes';
 export class IngestRoutes extends BaseRoutes {
   PATH = '/upload';
 
-  protected RESOURCE_NAME = 'uploadFile';
+  protected RESOURCE_NAME = 'upload-file';
 
   constructor(protected readonly ingestController: IngestController) {
     super();
@@ -20,7 +20,7 @@ export class IngestRoutes extends BaseRoutes {
           method: 'get',
           path: '/get-signed-url',
           summary: 'Get signed URL for GCS',
-          tags: [this.RESOURCE_NAME, 'getSignedUrl'],
+          tags: [this.RESOURCE_NAME],
           request: {
             query: z
               .object({
@@ -83,7 +83,7 @@ export class IngestRoutes extends BaseRoutes {
           method: 'post',
           path: '/process',
           summary: 'Run workflow for contract ingestion after uploading a file',
-          tags: [this.RESOURCE_NAME, 'runWorkflowForUpload'],
+          tags: [this.RESOURCE_NAME],
           request: {
             body: {
               content: {

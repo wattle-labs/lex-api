@@ -9,16 +9,7 @@ export const contractTypeSchema = new Schema<MongooseModel<ContractType>>(
     shortName: { type: String, required: true },
     longName: { type: String, required: true },
     description: { type: String },
-    keyTerms: {
-      type: [
-        {
-          term: { type: String, required: true },
-          description: { type: String, required: true },
-          outputFormat: { type: String, required: true },
-          sampleOutput: { type: [String], required: true },
-        },
-      ],
-    },
+    clauses: { type: [Schema.Types.ObjectId], ref: 'Clause' },
   },
   {
     timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' },
