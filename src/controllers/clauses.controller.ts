@@ -30,6 +30,19 @@ class ClauseController extends BaseController<
       return ctx.json(ResponseBuilder.badRequest(message), 400);
     }
   };
+
+  findAll = async (ctx: Context): Promise<Response> => {
+    try {
+      const clauses = await this.service.findAll({});
+      return ctx.json(ResponseBuilder.success(clauses), 200);
+    } catch (error) {
+      logger.error('Failed to find clauses', { error });
+      const message =
+        error instanceof Error ? error.message : 'Failed to find clauses';
+
+      return ctx.json(ResponseBuilder.badRequest(message), 400);
+    }
+  };
 }
 
 export default ClauseController;

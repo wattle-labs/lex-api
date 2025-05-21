@@ -2,7 +2,8 @@
   {
     "term": "Permitted use",
     "description": "Explicitly states how the receiving party is allowed to use the disclosed confidential information.",
-    "output_format": "Yes | No | Limited",
+    "contractTypes": ["nda"],
+    "output_format": "Use only for purpose | Internal evaluation only | Cannot use commercially | Use for specified project",
     "sample_output": [
       "Use only for purpose",
       "Internal evaluation only",
@@ -14,7 +15,8 @@
   {
     "term": "Data return/destruction",
     "description": "Requires the receiving party to return or destroy the confidential information upon request or at the end of the agreement term.",
-    "output_format": "Destroy | Return | Certify destruction | None | Other",
+    "contractTypes": ["nda"],
+      "output_format": "Destroy | Return | Certify destruction | None | Other",
     "sample_output": [
       "Destroy",
       "Return",
@@ -25,18 +27,9 @@
     "id": "dataReturndestruction"
   },
   {
-    "term": "Compelled disclosure",
-    "description": "Outlines the procedure if the receiving party is legally required to disclose confidential information.",
-    "output_format": "Yes | No",
-    "sample_output": [
-      "Yes",
-      "No"
-    ],
-    "id": "compelledDisclosure"
-  },
-  {
     "term": "Residuals clause",
     "description": "Allows the receiving party to use 'residual' information retained in unaided memory of its personnel who had authorized access.",
+    "contractTypes": ["nda"],
     "output_format": "Yes | No",
     "sample_output": [
       "Yes",
@@ -47,6 +40,7 @@
   {
     "term": "Feedback rights",
     "description": "Grants the disclosing party broad rights to use any feedback, suggestions, or ideas provided by the receiving party.",
+    "contractTypes": ["nda"],
     "output_format": "Yes | No",
     "sample_output": [
       "Yes",
@@ -57,6 +51,7 @@
   {
     "term": "Mutual",
     "description": "Identifies whether confidentiality obligations apply to both parties or only to one party.",
+    "contractTypes": ["nda"],
     "output_format": "Mutual | Unilateral",
     "sample_output": [
       "Mutual",
@@ -67,6 +62,7 @@
   {
     "term": "Affiliate coverage",
     "description": "Specifies whether the definition of 'Disclosing Party' or 'Receiving Party' includes their respective affiliated companies.",
+    "contractTypes": ["nda"],
     "output_format": "Yes | No",
     "sample_output": [
       "Yes",
@@ -77,6 +73,7 @@
   {
     "term": "Penalties",
     "description": "Specifies the penalties for a breach of the agreement.",
+    "contractTypes": ["nda"],
     "output_format": "Yes | No | Limited | Other",
     "sample_output": [
       "Yes",

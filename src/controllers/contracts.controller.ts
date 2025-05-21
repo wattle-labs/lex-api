@@ -24,9 +24,18 @@ class ContractController implements Record<string, unknown> {
     }
   };
 
+  /** User should only be able to see contracts for which they have read access */
   findAll = async (ctx: Context): Promise<Response> => {
     try {
-      const contracts = await this.service.findAll({});
+      const user = ctx.get('user');
+      logger.info('Fetching contracts for businessId: ', {
+        businessId: user?.businessId,
+      });
+      const contracts = await this.service.findAll({
+        options: {
+          businessId: user?.businessId,
+        },
+      });
       return ctx.json(ResponseBuilder.success(contracts), 200);
     } catch (error) {
       const message =

@@ -15,6 +15,7 @@ export const userSchema = z.object({
     invitationId: z.union([z.string(), objectIdSchema]).optional(),
     isBusinessOwner: z.boolean(),
   }),
+  viewIds: z.array(z.union([z.string(), objectIdSchema])).optional(),
   profile: z.object({
     firstName: z.string(),
     lastName: z.string(),

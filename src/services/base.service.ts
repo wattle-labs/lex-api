@@ -36,9 +36,21 @@ export abstract class BaseService<T> {
 
   async findAll({ options }: { options?: FindOptionsType }): Promise<T[]> {
     try {
-      const filter = {};
-      const { page = 1, pageSize = QUERY_CONFIG.DEFAULT_PAGE_SIZE } =
-        options ?? {};
+      const {
+        page = 1,
+        pageSize = QUERY_CONFIG.DEFAULT_PAGE_SIZE,
+        businessId,
+      } = options ?? {};
+
+      // Return documents where businessId matches, or where businessId is null, or where businessId does not exist
+      const filter = {
+        $or: [
+          { businessId },
+          { businessId: null },
+          { businessId: { $exists: false } },
+        ],
+      };
+
       const skip = (page - 1) * pageSize;
       const sort = this.buildSortObject(options);
 

@@ -1,41 +1,56 @@
 [
   {
-    "term": "Payment terms",
-    "description": "Details the payment schedule, frequency, due dates, and methods for the services rendered.",
-    "output_format": "Net X days",
-    "sample_output": [
+    "name": "Payment terms",
+    "description": "Details the payment schedule, frequency, due dates, and methods for the services rendered that the customer must abide by.",
+    "outputFormat": "Net X days",
+    "isObligation": true,
+    "responsibleParty": "Customer",
+    "contractTypes": ["msa"],
+    "sampleOutput": [
       "Net 30 days",
       "Net 60 days",
       "Upfront payment",
       "Net 45 days"
     ],
-    "id": "paymentTerms"
+    "id": "paymentTerms",
+    "type": "financial"
   },
   {
-    "term": "Pricing model",
-    "description": "Describes the cost structure for the services, such as subscription fees, usage-based charges, or tiered pricing.",
-    "output_format": "Type",
-    "sample_output": [
-      "Per user per month",
-      "Usage-based pricing",
-      "Tiered pricing",
-      "Fixed fee",
-      "Other"
-    ],
-    "id": "pricingModel"
+    "name": "SLA (uptime)",
+    "description": "Specifies measurable performance standards the provider commits to meeting, such as system uptime guarantees.",
+    "outputFormat": "Brief SLA requirement under 3 words",
+    "contractTypes": ["msa"],
+    "isObligation": true,
+    "responsibleParty": "Provider",
+    "sampleOutput": ["99.9% uptime", "99.5% uptime"],
+    "id": "slaUptimeRequirements",
+    "type": "service_provision"
   },
   {
-    "term": "SLA requirements",
-    "description": "Specifies measurable performance standards the provider commits to meeting, such as system uptime guarantees and support response times.",
-    "output_format": "Brief SLA requirement under 3 words",
-    "sample_output": ["99.9% uptime", "24h response time"],
-    "id": "slaRequirements"
+    "name": "SLA (response times)",
+    "description": "Specifies measurable support response time standards the provider commits to meeting.",
+    "outputFormat": "Brief SLA requirement under 5 words",
+    "contractTypes": ["msa"],
+    "isObligation": true,
+    "responsibleParty": "Provider",
+    "sampleOutput": ["24h response time", "4h response time", "1h response time"],
+    "id": "slaResponseTimeRequirements",
+    "type": "service_provision"
   },
   {
-    "term": "Limitation of Liability",
-    "description": "Sets a cap on the total financial liability one party (usually the provider) has towards the other for damages arising from the agreement. Often excludes certain types of damages (like consequential or indirect damages) and may tie the cap to fees paid.",
-    "output_format": "X times contract fees, not to exceed X | Capped at X | $X | None",
-    "sample_output": [
+    "name": "SLA remedies",
+    "description": "Specifies the remedies available to the customer if the provider fails to meet its SLA obligations.",
+    "outputFormat": "Brief SLA remedy under 5 words",
+    "contractTypes": ["msa"],
+    "sampleOutput": ["Credit", "Credit, replacement services", "Termination rights", "Other", "None"],
+    "id": "slaRemedies"
+  },
+  {
+    "name": "Limitation of Liability",
+    "description": "Sets a cap on the total financial liability of the provider towards the customer for damages arising from the agreement",
+    "contractTypes": ["msa"],
+    "outputFormat": "X times contract fees, not to exceed X | Capped at X | $X | None",
+    "sampleOutput": [
       "2x contract fees",
       "2x contract fees, not to exceed $100,000",
       "1x contract fees, not to exceed amount paid",
@@ -46,49 +61,92 @@
     "id": "limitationOfLiability"
   },
   {
-    "term": "Indemnification",
-    "description": "Specifies which party is responsible for defending against and paying for third-party claims arising from specific issues.",
-    "output_format": "Brief indemnification requirement under 3 words",
-    "sample_output": [
-      "Mutual IP infringement",
-      "Provider indemnifies data breach",
-      "Customer indemnifies misuse"
+    "name": "Liability carve-outs",
+    "description": "Specifies if there are any exceptions to the general limitation of liability clause.",
+    "contractTypes": ["msa"],
+    "outputFormat": "Yes | No",
+    "sampleOutput": [
+      "Yes",
+      "No"
     ],
-    "id": "indemnification"
+    "id": "liabilityCarveOutScope"
   },
   {
-    "term": "IP ownership",
-    "description": "Clarifies ownership rights for intellectual property, including pre-existing IP and any new IP created during the services.",
-    "output_format": "Provider | Customer | Joint | Other",
-    "sample_output": ["Provider", "Customer", "Joint", "Other"],
-    "id": "ipOwnership"
-  },
-  {
-    "term": "Data ownership",
-    "description": "Explicitly states who owns the data that the customer inputs into or generates through the use of the service.",
-    "output_format": "Customer | Provider | Joint | Other",
-    "sample_output": ["Customer", "Provider", "Joint", "Other"],
-    "id": "dataOwnership"
-  },
-  {
-    "term": "Warranties",
-    "description": "Provides guarantees or promises made by the provider about the services and includes disclaimers of other warranties.",
-    "output_format": "Standard performance warranty | Warranty of non-infringement | No malicious code warranty | Disclaims implied warranties | Services provided 'as is' | Other",
-    "sample_output": [
-      "Standard performance warranty",
-      "Warranty of non-infringement",
-      "No malicious code warranty",
-      "Disclaims implied warranties",
-      "Services provided 'as is'",
+    "name": "Liability carve-out scope",
+    "description": "Specifies exceptions, if any, to the general limitation of liability clause, such as IP infringement, data breaches, etc.",
+    "contractTypes": ["msa"],
+    "outputFormat": "2-3 word description of each exception, separated by semicolons",
+    "isObligation": true,
+    "responsibleParty": "Provider",
+    "sampleOutput": [
+      "IP infringement; Breach of confidentiality",
+      "Data breaches; IP infringement; Other",
+      "None",
       "Other"
     ],
-    "id": "warranties"
+    "id": "liabilityCarveOutScope"
   },
   {
-    "term": "Dispute resolution",
+    "name": "Provider indemnification",
+    "description": "Describes the specific situations where the provider must protect the customer from third-party claims and cover any associated costs, such as legal fees or damages, that result from those claims.",
+    "contractTypes": ["msa"],
+    "outputFormat": "2-3 word description of each indemnification clause, separated by semicolons",
+    "isObligation": true,
+    "responsibleParty": "Provider",
+    "sampleOutput": [
+      "Mutual IP infringement; Data breach; Other",
+      "Third-party IP infringement; Data breach; Other",
+      "None"
+    ],
+    "id": "providerIndemnification",
+    "type": "indemnification"
+  },
+  {
+    "name": "Customer indemnification",
+    "description": "Describes the specific situations where the customer must protect the provider from third-party claims and cover any associated costs, such as legal fees or damages, that result from those claims.",
+    "contractTypes": ["msa"],
+    "outputFormat": "2-3 word description of each indemnification clause, separated by semicolons",
+    "isObligation": true,
+    "responsibleParty": "Customer",
+    "sampleOutput": [
+      "Customer misuse; Customer negligence; Customer breach of contract; Other",
+      "Customer infringing IP; Customer negligence",
+      "None"
+    ],
+    "id": "customerIndemnification",
+    "type": "indemnification"
+  },
+  {
+    "name": "Data rights",
+    "description": "Specifies if the provider has rights to use customer's data (incl. aggregated and/or anonymized), and scope of those rights, incl. for training of AI models",
+    "contractTypes": ["msa"],
+    "outputFormat": "Anonymized | Aggregated | Anonymized and Aggregated | X | None",
+    "sampleOutput": ["Anonymized", "Aggregated", "Anonymized and Aggregated", "Not for AI training", "None"],
+    "id": "dataRights"
+  },
+  {
+    "name": "Warranties",
+    "description": "Provides guarantees or promises made by the provider about the services and includes disclaimers of other warranties. These should be specific to the services being provided, vs. general warranties. Examples of general warranties include 'compliance with laws', 'no malicious code'.",
+    "contractTypes": ["msa"],
+    "outputFormat": "2-3 word description of each warranty, separated by semicolons",
+    "isObligation": true,
+    "responsibleParty": "Provider",
+    "sampleOutput": [
+      "Standard performance warranty; Warranty of non-infringement; Disclaims implied warranties; Other",
+      "Service provided 'as is'",
+      "Other"
+    ],
+    "id": "warranties",
+    "type": "warranty"
+  },
+  {
+    "name": "Dispute resolution",
     "description": "Defines the process for resolving conflicts under the agreement.",
-    "output_format": "Mandatory arbitration (AAA/JAMS) | Litigation in specified jurisdiction | Requires executive escalation first | Mediation required before litigation | Specifies venue for lawsuits | Other",
-    "sample_output": [
+    "contractTypes": ["msa"],
+    "outputFormat": "Mandatory arbitration (AAA/JAMS) | Litigation in specified jurisdiction | Requires executive escalation first | Mediation required before litigation | Specifies venue for lawsuits | Other",
+    "isObligation": true,
+    "responsibleParty": "Provider",
+    "sampleOutput": [
       "Mandatory arbitration (AAA/JAMS)",
       "Litigation in specified jurisdiction",
       "Requires executive escalation first",
@@ -96,39 +154,68 @@
       "Specifies venue for lawsuits",
       "Other"
     ],
-    "id": "disputeResolution"
+    "id": "disputeResolution",
+    "type": "cooperation"
   },
   {
-    "term": "Assignment",
-    "description": "Controls whether either party can transfer its rights or obligations under the agreement to a third party.",
-    "output_format": "Consent required | Notice required | Permitted for M&A | Not permitted | Permitted to affiliates | Other",
-    "sample_output": [
-      "Consent required",
-      "Notice required",
-      "Not permitted",
-      "Other"
+    "name": "Audit rights",
+    "description": "Evaluate if the customer has the right to inspect the provider's records or facilities to verify compliance with the agreement.",
+    "contractTypes": ["msa"],
+    "outputFormat": "Yes | No",
+    "isObligation": true,
+    "responsibleParty": "Provider",
+    "sampleOutput": ["Yes", "No"],
+    "id": "auditRights",
+    "type": "cooperation"
+  },
+  {
+    "name": "Publicity rights",
+    "description": "Whether the provider has the right to use customer’s name, and possibly logo, in vendor marketing, or at least in list of customers.",
+    "contractTypes": ["msa"],
+    "outputFormat": "Yes | No | Limited | Other",
+    "sampleOutput": ["Yes", "No", "Limited", "Other"],
+    "id": "publicityRights"
+  },
+  {
+    "name": "Anti-assignment",
+    "description": "Evaluates if consent or notice is required of the provider if the customer assigns the contract to a third party.",
+    "contractTypes": ["msa"],
+    "outputFormat": "Consent | Notice | None | Other",
+    "sampleOutput": ["Consent", "Notice", "None", "Other"],
+    "id": "antiAssignment"
+  },
+  {
+    "name": "Data breach notification",
+    "description": "Evaluates if the provider has a data breach notification obligation, and if so, the scope of that obligation.",
+    "contractTypes": ["msa"],
+    "outputFormat": "X hours | None",
+    "isObligation": true,
+    "responsibleParty": "Provider",
+    "sampleOutput": ["48 hours", "72 hours", "Other", "None"],
+    "id": "dataBreachNotification",
+    "type": "data_handling"
+  },
+  {
+    "name": "IP ownership rights",
+    "description": "Evaluates if the provider has the right to own the intellectual property created by the customer, and if so, the scope of that obligation.",
+    "contractTypes": ["msa"],
+    "outputFormat": "Provider | Customer | Joint | None",
+    "sampleOutput": ["Provider", "Customer", "Joint", "None"],
+    "id": "ipOwnershipRights"
+  },
+  {
+    "name": "Data deletion requirements",
+    "description": "Specifies if the provider must delete the customer's data after the contract expires, and if so, how long after the contract expires.",
+    "contractTypes": ["msa"],
+    "outputFormat": "Within X days | None",
+    "isObligation": true,
+    "responsibleParty": "Provider",
+    "sampleOutput": [
+      "Within 30 days",
+      "Within 60 days",
+      "None"
     ],
-    "id": "assignment"
-  },
-  {
-    "term": "Insurance required",
-    "description": "Specifies the types and minimum amounts of insurance coverage that the provider must maintain during the term.",
-    "output_format": "Cyber | E&O | CGL | Other",
-    "sample_output": ["Cyber", "E&O", "CGL", "Other"],
-    "id": "insuranceRequired"
-  },
-  {
-    "term": "Audit rights",
-    "description": "Grants one party (the customer) the right to inspect the other party's (the provider's) records or facilities to verify compliance with the agreement.",
-    "output_format": "Yes | No",
-    "sample_output": ["Yes", "No"],
-    "id": "auditRights"
-  },
-  {
-    "term": "Force majeure",
-    "description": "Excuses a party from performing its obligations if prevented by unforeseeable events beyond its reasonable control.",
-    "output_format": "Yes | No | Limited | Other",
-    "sample_output": ["Yes", "No", "Limited", "Other"],
-    "id": "forceMajeure"
+    "type": "data_handling",
+    "id": "dataDeletionRequirements"
   }
 ]
