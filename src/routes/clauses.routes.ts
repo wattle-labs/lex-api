@@ -1,6 +1,7 @@
 import { createRoute } from '@hono/zod-openapi';
 import { z } from 'zod';
 
+import { VALIDATION_TARGETS } from '../constants/validation.constants';
 // import { VALIDATION_TARGETS } from '../constants/validation.constants';
 import ClauseController from '../controllers/clauses.controller';
 import {
@@ -51,6 +52,56 @@ export class ClauseRoutes extends BaseRoutes {
         }),
         handler: this.clauseController.findAll,
         validations: [],
+      },
+      {
+        route: createRoute({
+          method: 'post',
+          path: '/',
+          summary: 'Create clause',
+          tags: [this.RESOURCE_NAME],
+          request: {
+            body: {
+              content: {
+                'application/json': {
+                  schema: clauseSchema,
+                },
+              },
+            },
+          },
+          responses: {
+            '201': {
+              description: 'Successful response',
+              content: {
+                'application/json': {
+                  schema: createSuccessResponseSchema(z.object({})),
+                },
+              },
+            },
+            '400': {
+              description: 'Bad request',
+              content: {
+                'application/json': {
+                  schema: ErrorResponseSchema,
+                },
+              },
+            },
+            '500': {
+              description: 'Internal server error',
+              content: {
+                'application/json': {
+                  schema: ErrorResponseSchema,
+                },
+              },
+            },
+          },
+        }),
+        handler: this.clauseController.create,
+        validations: [
+          {
+            target: VALIDATION_TARGETS.BODY,
+            schema: clauseSchema,
+          },
+        ],
       },
       {
         route: createRoute({
