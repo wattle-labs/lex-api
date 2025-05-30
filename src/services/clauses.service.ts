@@ -7,10 +7,6 @@ export class ClauseService extends BaseService<MongooseModel<Clause>> {
   constructor(repository: ClauseRepository) {
     super(repository, 'clause');
   }
-
-  async initialize(): Promise<void> {
-    return await (this.repository as ClauseRepository).initialize();
-  }
 }
 
 export const clauseService = new ClauseService(clauseRepository);

@@ -3,7 +3,7 @@ import { z } from 'zod';
 
 const objectIdSchema = z.any();
 
-const clauseSchema = z.any();
+const clauseDefinitionSchema = z.any();
 
 export const contractTypeSchema = z.object({
   id: z.union([z.string(), objectIdSchema]).optional(),
@@ -11,8 +11,8 @@ export const contractTypeSchema = z.object({
   longName: z.string(),
   description: z.string().optional(),
   /**
-   * The clauses that are applicable to the contract type. References the ids of the clauses.
-   * Previously "keyTerms"
+   * The **standard** clauses that are applicable to the contract type, set during initialization
+   * ONLY for standard clauses (i.e., clauses that have isCustom set to false or undefined)
    */
   clauses: z.union([z.array(z.string()), z.array(objectIdSchema)]),
   createdAt: z.date().optional(),
@@ -22,5 +22,5 @@ export const contractTypeSchema = z.object({
 export const contractTypePopulatedSchema = contractTypeSchema
   .omit({ clauses: true })
   .extend({
-    clauses: z.array(clauseSchema),
+    clauses: z.array(clauseDefinitionSchema),
   });

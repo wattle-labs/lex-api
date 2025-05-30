@@ -1,6 +1,6 @@
 import { ObjectId } from 'mongoose';
 
-import { Clause } from './clause';
+import { ClauseDefinition } from './clauseDefinition';
 
 export interface ContractType {
   id?: string | ObjectId;
@@ -17,5 +17,5 @@ export interface ContractType {
 }
 
 export interface ContractTypePopulated extends Omit<ContractType, 'clauses'> {
-  clauses: Clause[];
+  clauses: ClauseDefinition[];
 }

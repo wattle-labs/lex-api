@@ -23,6 +23,9 @@ export interface Contract {
   contractTypeId?: string | ObjectId;
   summary?: string;
   label: string;
+  /**
+   * The key is the clause id, and the value is the clause.
+   */
   clauses?: Record<string, Clause>;
   businessId: string | ObjectId;
   tags: string[];

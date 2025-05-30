@@ -1,21 +1,17 @@
 import { ObjectId } from 'mongoose';
 
+/**
+ * This interface is used to represent a clause instance in a contract. Can either be:
+ * - A standard form clause, i.e., a clause that represents the gold standard against which to compare extracted clauses for any violations/deviations
+ * - An example clause, i.e., a clause that is used as an example for training the model
+ * - An extracted clause, i.e., a clause that is extracted from the contract text
+ */
 export interface Clause {
   id?: string | ObjectId;
-  name: string; // Previously "term"
-  description: string;
-  outputFormat: string;
-  sampleOutput?: string[];
   /**
-   * Whether the clause is a custom clause, i.e., created by the user (vs. standard, i.e., provided by Clarus)
-   * If true, the clause will not be automatically added to new contract types or available to other businesses.
+   * The id of the clause definition that this clause is based on.
    */
-  isCustom?: boolean;
-  /**
-   * True if the clause is an obligation
-   * @default false
-   */
-  isObligation?: boolean;
+  clauseDefinitionId: string | ObjectId;
   /**
    * The due date of the obligation.
    */
@@ -25,10 +21,6 @@ export interface Clause {
    */
   responsibleParty?: string | ObjectId;
   /**
-   * The type of obligation (or other category) of the clause.
-   */
-  type?: string;
-  /**
    * The value of the clause.
    */
   value?: string | number;
@@ -37,10 +29,21 @@ export interface Clause {
    */
   snippet?: string;
   /**
-   * The contract types that the clause belongs to / is applicable to. If not specified, the clause will be applicable to all contract types.
-   * The key is the contract type id, and the value is true if the clause is applicable to the contract type.
+   * True if the clause is a standard form clause, i.e., gold standard against which to compare extracted clauses for any violations/deviations
    */
-  contractTypes?: string[] | ObjectId[];
+  isStandardForm?: boolean;
+  /**
+   * The label of the standard form option, if the clause is a standard form clause,
+   */
+  standardFormOptionType?: 'preferred' | 'fallback';
+  /**
+   * True if the clause is an example clause, i.e., a clause that is used as an example for training the model
+   */
+  isExample?: boolean;
+  /**
+   * Context to give the model to help it choose the correct standard form option or example option
+   */
+  usageCriteria?: string;
   /**
    * The business that the clause belongs to. If not specified, the clause will be available to all businesses.
    * MUST be specified if isCustom is true.

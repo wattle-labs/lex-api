@@ -17,7 +17,7 @@ export const viewSchema = new Schema<MongooseModel<View>>(
     updatedBy: { type: String },
   },
   {
-    timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' },
+    timestamps: true,
     toJSON: { virtuals: true, getters: true },
     toObject: { virtuals: true, getters: true },
   },

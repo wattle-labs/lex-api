@@ -24,6 +24,9 @@ export const contractSchema = z.object({
   contractTypeId: z.union([z.string(), objectIdSchema]).optional(),
   summary: z.string().optional(),
   label: z.string(),
+  /**
+   * The key is the clause id, and the value is the clause.
+   */
   clauses: z.record(clauseSchema).optional(),
   businessId: z.union([z.string(), objectIdSchema]),
   tags: z.array(z.string()),

@@ -3,22 +3,18 @@ import { z } from 'zod';
 
 const objectIdSchema = z.any();
 
+/**
+ * This interface is used to represent a clause instance in a contract. Can either be:
+ * - A standard form clause, i.e., a clause that represents the gold standard against which to compare extracted clauses for any violations/deviations
+ * - An example clause, i.e., a clause that is used as an example for training the model
+ * - An extracted clause, i.e., a clause that is extracted from the contract text
+ */
 export const clauseSchema = z.object({
   id: z.union([z.string(), objectIdSchema]).optional(),
-  name: z.string(),
-  description: z.string(),
-  outputFormat: z.string(),
-  sampleOutput: z.array(z.string()).optional(),
   /**
-   * Whether the clause is a custom clause, i.e., created by the user (vs. standard, i.e., provided by Clarus)
-   * If true, the clause will not be automatically added to new contract types or available to other businesses.
+   * The id of the clause definition that this clause is based on.
    */
-  isCustom: z.boolean().optional(),
-  /**
-   * True if the clause is an obligation
-   * @default false
-   */
-  isObligation: z.boolean().optional().default(false),
+  clauseDefinitionId: z.union([z.string(), objectIdSchema]),
   /**
    * The due date of the obligation.
    */
@@ -28,10 +24,6 @@ export const clauseSchema = z.object({
    */
   responsibleParty: z.union([z.string(), objectIdSchema]).optional(),
   /**
-   * The type of obligation (or other category) of the clause.
-   */
-  type: z.string().optional(),
-  /**
    * The value of the clause.
    */
   value: z.union([z.string(), z.number()]).optional(),
@@ -40,12 +32,23 @@ export const clauseSchema = z.object({
    */
   snippet: z.string().optional(),
   /**
-   * The contract types that the clause belongs to / is applicable to. If not specified, the clause will be applicable to all contract types.
-   * The key is the contract type id, and the value is true if the clause is applicable to the contract type.
+   * True if the clause is a standard form clause, i.e., gold standard against which to compare extracted clauses for any violations/deviations
    */
-  contractTypes: z
-    .union([z.array(z.string()), z.array(objectIdSchema)])
+  isStandardForm: z.boolean().optional(),
+  /**
+   * The label of the standard form option, if the clause is a standard form clause,
+   */
+  standardFormOptionType: z
+    .union([z.literal('preferred'), z.literal('fallback')])
     .optional(),
+  /**
+   * True if the clause is an example clause, i.e., a clause that is used as an example for training the model
+   */
+  isExample: z.boolean().optional(),
+  /**
+   * Context to give the model to help it choose the correct standard form option or example option
+   */
+  usageCriteria: z.string().optional(),
   /**
    * The business that the clause belongs to. If not specified, the clause will be available to all businesses.
    * MUST be specified if isCustom is true.
